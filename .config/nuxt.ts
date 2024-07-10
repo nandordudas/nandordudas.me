@@ -1,4 +1,4 @@
-import { httpsServerFiles } from './lib/server.utils'
+import { httpsServerFiles } from '../lib/server.utils'
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
@@ -17,6 +17,11 @@ export default defineNuxtConfig({
       meta: [
         { name: 'color-scheme', content: 'light dark' },
       ],
+      templateParams: { separator: '·' },
     },
+    pageTransition: { name: 'page', mode: 'out-in' },
   },
+  css: [
+    '~/assets/css/main.css',
+  ],
 })
