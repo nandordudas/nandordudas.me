@@ -14,6 +14,10 @@ useSeoMeta({
   twitterImage: imageData,
   twitterCard: 'summary',
 })
+
+definePageMeta({
+  title: 'pages.title.welcome',
+})
 </script>
 
 <template>
