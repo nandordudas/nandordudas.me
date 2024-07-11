@@ -2,7 +2,7 @@ import { httpsServerFiles } from '../lib/server.utils'
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  compatibilityDate: '2024-04-03',
+  compatibilityDate: '2024-07-10',
   future: {
     compatibilityVersion: 4,
   },
@@ -11,6 +11,7 @@ export default defineNuxtConfig({
   },
   devServer: {
     https: httpsServerFiles(),
+    host: 'nandordudas.me',
   },
   app: {
     head: {
@@ -24,13 +25,20 @@ export default defineNuxtConfig({
   css: [
     '~/assets/css/main.css',
   ],
-  modules: ['@nuxtjs/i18n'],
+  modules: ['@nuxtjs/i18n', '@nuxt/content', '@nuxt/image'],
   i18n: {
     defaultLocale: 'en',
     langDir: 'locales/',
     locales: [
       { code: 'en', iso: 'en-US', file: 'en-US.yaml', isCatchallLocale: true },
+      { code: 'hu', iso: 'hu-HU', file: 'hu-HU.yaml' },
     ],
     lazy: true,
+  },
+  content: {
+    // documentDriven: true,
+    // contentHead: false,
+    locales: ['en', 'hu'],
+    defaultLocale: 'en',
   },
 })

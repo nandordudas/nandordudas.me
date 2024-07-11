@@ -1,9 +1,4 @@
 <script setup lang="ts">
-const route = useRoute()
-const { t } = useI18n()
-
-const title = computed(() => t(route.meta.title!))
-
 const head = useLocaleHead({
   addDirAttribute: true,
   addSeoAttributes: true,
@@ -14,7 +9,6 @@ useHead({
   htmlAttrs: head.value.htmlAttrs,
   link: head.value.link,
   meta: head.value.meta,
-  title: title.value,
 })
 </script>
 

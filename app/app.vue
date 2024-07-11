@@ -14,12 +14,10 @@ useHead({
 </script>
 
 <template>
-  <div>
-    <NuxtRouteAnnouncer />
-    <NuxtLoadingIndicator />
+  <NuxtRouteAnnouncer />
+  <NuxtLoadingIndicator />
 
-    <NuxtPage :page-key="route => route.fullPath" />
-  </div>
+  <NuxtPage :page-key="route => route.fullPath" />
 </template>
 
 <style lang="css">
