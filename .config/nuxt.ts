@@ -15,9 +15,6 @@ export default defineNuxtConfig({
   },
   app: {
     head: {
-      meta: [
-        { name: 'color-scheme', content: 'light dark' },
-      ],
       templateParams: { separator: '·' },
     },
     pageTransition: { name: 'page', mode: 'out-in' },
@@ -25,20 +22,32 @@ export default defineNuxtConfig({
   css: [
     '~/assets/css/main.css',
   ],
-  modules: ['@nuxtjs/i18n', '@nuxt/content', '@nuxt/image'],
+  modules: [
+    '@nuxtjs/i18n',
+    '@nuxt/content',
+    '@nuxt/image',
+    '@nuxt/ui',
+  ],
+  extends: [
+    '@nuxt/ui-pro',
+  ],
   i18n: {
     defaultLocale: 'en',
     langDir: 'locales/',
     locales: [
-      { code: 'en', iso: 'en-US', file: 'en-US.yaml', isCatchallLocale: true },
-      { code: 'hu', iso: 'hu-HU', file: 'hu-HU.yaml' },
+      { code: 'en', iso: 'en', file: 'en.yaml', isCatchallLocale: true },
+      { code: 'hu', iso: 'hu', file: 'hu.yaml' },
     ],
     lazy: true,
+    strategy: 'no_prefix',
   },
   content: {
-    // documentDriven: true,
-    // contentHead: false,
+    documentDriven: true,
     locales: ['en', 'hu'],
     defaultLocale: 'en',
+  },
+  routeRules: {
+    '/api/en/search.json': { prerender: true },
+    '/api/hu/search.json': { prerender: true },
   },
 })

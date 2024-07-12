@@ -1,0 +1,12 @@
+hello: Hello
+welcome: Welcome
+pages.title.blog: Blog
+pages.title.home: Home
+pages.title.welcome: Welcome
+page.title.not_found: Page not found
+page.title.not_found.subtitle: We are sorry but this page could not be found.
+document-not-found: Document not found
+go.back.home: Go back home
+search: Search
+switch.to.dark: Switch to light mode
+switch.to.light: Switch to dark mode

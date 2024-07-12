@@ -5,7 +5,26 @@
   "i18n-ally.localesPaths": [
     "app/locales"
   ],
-  "i18n-ally.displayLanguage": "en-US",
-  "i18n-ally.namespace": true
+  "i18n-ally.displayLanguage": "en",
+  "i18n-ally.namespace": true,
+  "i18n-ally.editor.preferEditor": true,
   /*  */
+  "typescript.tsdk": "node_modules/typescript/lib",
+  /*  */
+  "files.associations": {
+    "*.css": "tailwindcss"
+  },
+  "editor.quickSuggestions": {
+    "strings": true
+  },
+  "tailwindCSS.classAttributes": [
+    "class",
+    "className",
+    "ui"
+  ],
+  "tailwindCSS.experimental.classRegex": [
+    ["ui:\\s*{([^)]*)\\s*}", "[\"'`]([^\"'`]*).*?[\"'`]"],
+    ["/\\*\\s?ui\\s?\\*/\\s*{([^;]*)}", ":\\s*[\"'`]([^\"'`]*).*?[\"'`]"]
+  ],
+  "tailwindCSS.experimental.configFile": "tailwind.config.ts"
 }

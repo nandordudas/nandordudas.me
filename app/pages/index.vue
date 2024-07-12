@@ -25,15 +25,17 @@ useSeoMeta({
 <template>
   <div>
     <NuxtLayout>
-      <NuxtLink :to="localePath('welcome')">
-        {{ $t('welcome') }}
-      </NuxtLink>
+      <UPage>
+        <NuxtLink :to="localePath('welcome')">
+          {{ $t('welcome') }}
+        </NuxtLink>
 
-      <br>
+        <br>
 
-      <NuxtLink :to="localePath('blog')">
-        {{ $t('pages.title.blog') }}
-      </NuxtLink>
+        <NuxtLink :to="localePath('blog')">
+          {{ $t('pages.title.blog') }}
+        </NuxtLink>
+      </UPage>
     </NuxtLayout>
   </div>
 </template>

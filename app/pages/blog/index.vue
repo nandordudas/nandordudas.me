@@ -27,13 +27,15 @@ definePageMeta({
 <template>
   <div>
     <NuxtLayout>
-      <ContentList :query v-slot="{ list }">
-        <template v-for="article in list" :key="article._path">
-          <NuxtLink :to="localePath(article._path!)">
-            {{ article.title }}
-          </NuxtLink>
-        </template>
-      </ContentList>
+      <UPage>
+        <ContentList :query v-slot="{ list }">
+          <template v-for="article in list" :key="article._path">
+            <NuxtLink :to="localePath(article._path!)">
+              {{ article.title }}
+            </NuxtLink>
+          </template>
+        </ContentList>
+      </UPage>
     </NuxtLayout>
   </div>
 </template>

@@ -4,4 +4,9 @@ pages.title.blog: Blog
 pages.title.home: Kezdőlap
 pages.title.welcome: Üdvözlünk
 page.title.not_found: Az oldal nem található
+page.title.not_found.subtitle: Sajnálom, de ez az oldal nem található.
 document-not-found: A cikk nem található
+go.back.home: Vissza a kezdőlapra
+search: Keresés
+switch.to.dark: Sötet szín be
+switch.to.light: Világos szín be
