@@ -27,6 +27,7 @@ export default defineNuxtConfig({
     '@nuxt/content',
     '@nuxt/image',
     '@nuxt/ui',
+    '@nuxt/eslint',
   ],
   extends: [
     '@nuxt/ui-pro',
@@ -49,5 +50,8 @@ export default defineNuxtConfig({
   routeRules: {
     '/api/en/search.json': { prerender: true },
     '/api/hu/search.json': { prerender: true },
+  },
+  eslint: {
+    config: { autoInit: false, standalone: false },
   },
 })

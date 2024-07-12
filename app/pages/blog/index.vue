@@ -11,7 +11,7 @@ const localePath = useLocalePath()
 const query: QueryBuilderParams = {
   path: '/blog',
   where: [
-    { '_locale': locale.value },
+    { _locale: locale.value },
   ],
   limit: 5,
   sort: [
@@ -28,7 +28,7 @@ definePageMeta({
   <div>
     <NuxtLayout>
       <UPage>
-        <ContentList :query v-slot="{ list }">
+        <ContentList v-slot="{ list }" :query>
           <template v-for="article in list" :key="article._path">
             <NuxtLink :to="localePath(article._path!)">
               {{ article.title }}

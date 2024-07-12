@@ -1,6 +1,9 @@
 <script setup lang="ts">
-import type { NuxtError } from '#app'
 import type { ParsedContent } from '@nuxt/content'
+
+import type { NuxtError } from '#app'
+
+const props = defineProps<{ error: NuxtError }>()
 
 const { data: navigation } = await useAsyncData('navigation', () => fetchContentNavigation(), {
   default: () => [],
@@ -12,8 +15,6 @@ const { data: files } = useLazyFetch<ParsedContent[]>(`/api/${locale.value}/sear
   default: () => [],
   server: false,
 })
-
-const props = defineProps<{ error: NuxtError }>()
 
 const head = useLocaleHead({
   addDirAttribute: true,

@@ -27,15 +27,17 @@ useHead({
 </script>
 
 <template>
-  <Header />
+  <div>
+    <Header />
 
-  <UContainer>
-    <slot />
-  </UContainer>
+    <UContainer>
+      <slot />
+    </UContainer>
 
-  <UFooter :links>
-    <template #left>
-      Copyright &copy; 2024 - {{ new Date().getFullYear() }}
-    </template>
-  </UFooter>
+    <UFooter :links>
+      <template #left>
+        Copyright &copy; 2024 - {{ new Date().getFullYear() }}
+      </template>
+    </UFooter>
+  </div>
 </template>

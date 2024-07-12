@@ -1,5 +1,5 @@
 languageIds:
   - vue
 usageMatchRegex:
-  - "[^\\w\\d]title: ['\"`]({key})['\"`]"
+  - '[^\w\d]title: [''"`]({key})[''"`]'
 sortKeys: true
