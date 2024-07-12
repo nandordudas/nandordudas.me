@@ -28,8 +28,6 @@
   ],
   "tailwindCSS.experimental.configFile": "tailwind.config.ts",
   /*  */
-  // Enable the ESlint flat config support
-  "eslint.useFlatConfig": true,
   // Auto fix
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": "explicit",
@@ -99,7 +97,8 @@
     "less",
     "scss",
     "pcss",
-    "postcss"
+    "postcss",
+    "tailwindcss"
   ],
   "eslint.runtime": "node"
 }

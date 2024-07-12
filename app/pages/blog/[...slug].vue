@@ -56,7 +56,7 @@ useSeoMeta({
 </template>
 
 <style scoped>
-img[data-error="1"] {
+img[data-error='1'] {
   position: relative;
   filter: sepia(15%);
 
