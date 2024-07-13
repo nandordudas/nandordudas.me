@@ -1,3 +1,6 @@
+import { pathcat } from 'pathcat'
+
+import { ALLOWED_LOCALES, DEFAULT_LOCALE } from '../lib/utils'
 import { httpsServerFiles } from '../lib/server.utils'
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
@@ -33,7 +36,7 @@ export default defineNuxtConfig({
     '@nuxt/ui-pro',
   ],
   i18n: {
-    defaultLocale: 'en',
+    defaultLocale: DEFAULT_LOCALE,
     langDir: 'locales/',
     locales: [
       { code: 'en', iso: 'en', file: 'en.yaml', isCatchallLocale: true },
@@ -41,15 +44,20 @@ export default defineNuxtConfig({
     ],
     lazy: true,
     strategy: 'no_prefix',
+    experimental: {
+      localeDetector: './lib/locale-detector.ts',
+    },
   },
   content: {
     documentDriven: true,
-    locales: ['en', 'hu'],
-    defaultLocale: 'en',
+    locales: ALLOWED_LOCALES as unknown as string[],
+    defaultLocale: DEFAULT_LOCALE,
   },
   routeRules: {
-    '/api/en/search.json': { prerender: true },
-    '/api/hu/search.json': { prerender: true },
+    ...ALLOWED_LOCALES.reduce((acc, locale) => ({
+      ...acc,
+      [pathcat('/api/:locale/search.json', { locale })]: { prerender: true },
+    }), Object.create(null) as unknown as any), // INFO: NuxtConfig['routeRules']
   },
   eslint: {
     config: { autoInit: false, standalone: false },

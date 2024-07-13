@@ -10,3 +10,5 @@ go.back.home: Go back home
 search: Search
 switch.to.dark: Switch to light mode
 switch.to.light: Switch to dark mode
+error.invalid.locale: Invalid locale
+error.validation: Validation error

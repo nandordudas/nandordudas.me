@@ -5,6 +5,21 @@ import type { NuxtError } from '#app'
 
 const props = defineProps<{ error: NuxtError }>()
 
+interface CustomErrorData {
+  name: string
+  message: string
+}
+
+// TODO: fix /api/search.json 'Invalid error occurred'/'Invalid arguments'
+const errorData = computed<CustomErrorData>(() => {
+  try {
+    return JSON.parse(props.error.data as string)
+  }
+  catch {
+    return props.error.data
+  }
+})
+
 const { data: navigation } = await useAsyncData('navigation', () => fetchContentNavigation(), {
   default: () => [],
 })
@@ -43,7 +58,12 @@ useSeoMeta({
     <UMain>
       <UContainer>
         <UPage>
-          <UPageError :error :ui="{ default: { clearButton: { label: $t('go.back.home'), color: 'primary', size: 'lg' } } }" />
+          <UPageError
+            :status="error?.statusCode"
+            :name="errorData?.name ?? error?.name"
+            :message="errorData?.message ?? error?.message"
+            :ui="{ default: { clearButton: { label: $t('go.back.home'), color: 'primary', size: 'lg' } } }"
+          />
         </UPage>
       </UContainer>
     </UMain>
