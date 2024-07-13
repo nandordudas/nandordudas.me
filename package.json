@@ -1,14 +1,14 @@
 {
   "name": "nandordudas.me",
   "type": "module",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": true,
   "packageManager": "pnpm@9.5.0",
   "scripts": {
     "build": "nuxt build",
     "dev": "nuxt dev",
     "generate": "nuxt generate",
-    "lint": "eslint --max-warnings 0 --report-unused-disable-directives .",
+    "lint": "eslint",
     "postinstall": "nuxt prepare",
     "preview": "nuxt preview",
     "typecheck": "nuxt typecheck"
@@ -20,12 +20,12 @@
     "vue": "latest"
   },
   "devDependencies": {
-    "@antfu/eslint-config": "^2.22.0",
+    "@antfu/eslint-config": "^2.22.2",
     "@nuxt/content": "^2.13.1",
     "@nuxt/eslint": "^0.3.13",
     "@nuxt/ui": "^2.17.0",
     "@nuxtjs/i18n": "^8.3.1",
-    "eslint": "^9.6.0",
+    "eslint": "^9.7.0",
     "eslint-plugin-format": "^0.1.2",
     "typescript": "^5.5.3",
     "vue-tsc": "^2.0.26"
