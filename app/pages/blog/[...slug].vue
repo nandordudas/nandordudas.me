@@ -28,6 +28,8 @@ useSeoMeta({
   // twitterImage: imageData,
   twitterCard: 'summary',
 })
+
+// TODO: check image loaded event cause of content search navigation will shown without image or HMR update too
 </script>
 
 <template>

@@ -20,7 +20,7 @@ export default defineNuxtConfig({
     head: {
       templateParams: { separator: '·' },
     },
-    pageTransition: { name: 'page', mode: 'out-in' },
+    // pageTransition: { name: 'page', mode: 'out-in' },
   },
   css: [
     '~/assets/css/main.css',
@@ -61,5 +61,8 @@ export default defineNuxtConfig({
   },
   eslint: {
     config: { autoInit: false, standalone: false },
+  },
+  experimental: {
+    viewTransition: true,
   },
 })
