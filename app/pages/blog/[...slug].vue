@@ -30,6 +30,7 @@ useSeoMeta({
 })
 
 // TODO: check image loaded event cause of content search navigation will shown without image or HMR update too
+// TODO: https://i18n.nuxtjs.org/docs/guide/lang-switcher#dynamic-route-parameters
 </script>
 
 <template>

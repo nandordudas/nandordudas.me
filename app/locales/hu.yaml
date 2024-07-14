@@ -12,3 +12,4 @@ switch.to.dark: Sötet szín be
 switch.to.light: Világos szín be
 error.invalid.locale: Invalid nyelv
 error.validation: Validációs hiba
+language: Nyelv

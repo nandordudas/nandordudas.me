@@ -100,5 +100,8 @@
     "postcss",
     "tailwindcss"
   ],
-  "eslint.runtime": "node"
+  "eslint.runtime": "node",
+  "cSpell.words": [
+    "twemoji"
+  ]
 }

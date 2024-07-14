@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import type { HeaderLink } from '@nuxt/ui-pro/types'
 
+import type { DropdownItem } from '#ui/types'
+
 defineOptions({
   inheritAttrs: false,
 })
@@ -13,13 +15,30 @@ const links: HeaderLink[] = [
   // { label: 'About', to: '/about' },
 ]
 
+const route = useRoute()
 const { metaSymbol } = useShortcuts()
 const colorMode = useColorMode()
-const { t } = useI18n()
+const { locale, locales, setLocale, t } = useI18n()
 
 const colorModeTooltipText = computed(() => {
   return colorMode.preference === 'dark' ? t('switch.to.light') : t('switch.to.dark')
 })
+
+function getCountryIcon(locale: string) {
+  const countryIconMap = {
+    en: 'i-twemoji-flag-united-states',
+    hu: 'i-twemoji-flag-hungary',
+  } as const
+
+  return countryIconMap[locale as keyof typeof countryIconMap] as string
+}
+
+const items = locales.value.map(locale => [{
+  label: locale.name!,
+  value: locale.code,
+  click: () => setLocale(locale.code).then(() => location.reload()),
+  icon: getCountryIcon(locale.code),
+} as DropdownItem])
 </script>
 
 <template>
@@ -33,8 +52,8 @@ const colorModeTooltipText = computed(() => {
         draggable="false"
       />
 
-      <span class="italic font-mono font-thin">
-        nandordudas.me
+      <span class="italic font-mono font-thin md:hidden">
+        NandorDudas
       </span>
     </template>
 
@@ -43,6 +62,21 @@ const colorModeTooltipText = computed(() => {
     </template>
 
     <template #right>
+      <UDropdown
+        v-if="!route.path.startsWith('/blog/')"
+        :items
+        :popper="{ placement: 'bottom-start' }"
+        class="hidden sm:flex"
+        mode="hover"
+      >
+        <UButton
+          color="white"
+          :label="$t('language')"
+          trailing-icon="i-heroicons-chevron-down-20-solid"
+          :icon="getCountryIcon(locale)"
+        />
+      </UDropdown>
+
       <UTooltip :text="$t('search')" :shortcuts="[metaSymbol, 'K']">
         <UContentSearchButton size="xl" label="" />
       </UTooltip>
