@@ -3,7 +3,7 @@
   /*  */
   "i18n-ally.keystyle": "nested",
   "i18n-ally.localesPaths": [
-    "app/locales"
+    "website/app/locales"
   ],
   "i18n-ally.displayLanguage": "en",
   "i18n-ally.namespace": true,
@@ -23,8 +23,14 @@
     "ui"
   ],
   "tailwindCSS.experimental.classRegex": [
-    ["ui:\\s*{([^)]*)\\s*}", "[\"'`]([^\"'`]*).*?[\"'`]"],
-    ["/\\*\\s?ui\\s?\\*/\\s*{([^;]*)}", ":\\s*[\"'`]([^\"'`]*).*?[\"'`]"]
+    [
+      "ui:\\s*{([^)]*)\\s*}",
+      "[\"'`]([^\"'`]*).*?[\"'`]"
+    ],
+    [
+      "/\\*\\s?ui\\s?\\*/\\s*{([^;]*)}",
+      ":\\s*[\"'`]([^\"'`]*).*?[\"'`]"
+    ]
   ],
   "tailwindCSS.experimental.configFile": "tailwind.config.ts",
   /*  */
@@ -102,6 +108,7 @@
   ],
   "eslint.runtime": "node",
   "cSpell.words": [
+    "bumpp",
     "twemoji"
   ]
 }

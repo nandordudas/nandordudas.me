@@ -1,0 +1,8 @@
+packages:
+  - layers
+  - website
+
+catalog:
+  nuxt: ^3.12.3
+  vue: ^3.4.31
+  typescript: ^5.5.3
