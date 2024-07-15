@@ -9,16 +9,17 @@ defineOptions({
 
 const navigation = injectStrict(NavigationKey, ref([]))
 
-const links: HeaderLink[] = [
-  // { label: 'Home', to: '/' },
-  { label: 'Blog', to: '/blog' },
-  // { label: 'About', to: '/about' },
-]
-
+const toast = useToast()
 const route = useRoute()
 const { metaSymbol } = useShortcuts()
 const colorMode = useColorMode()
 const { locale, locales, setLocale, t } = useI18n()
+
+const links: HeaderLink[] = [
+  { label: t('home'), to: '/' },
+  { label: t('blog'), to: '/blog' },
+  { label: t('about'), to: '/about' },
+]
 
 const colorModeTooltipText = computed(() => {
   return colorMode.preference === 'dark' ? t('switch.to.light') : t('switch.to.dark')
@@ -36,7 +37,11 @@ function getCountryIcon(locale: string) {
 const items = locales.value.map(locale => [{
   label: locale.name!,
   value: locale.code,
-  click: () => setLocale(locale.code).then(() => location.reload()),
+  click: async () => {
+    await setLocale(locale.code)
+    // location.reload()
+    toast.add({ title: t('locale.changed'), callback: () => location.reload(), timeout: 1_500 })
+  },
   icon: getCountryIcon(locale.code),
 } as DropdownItem])
 </script>

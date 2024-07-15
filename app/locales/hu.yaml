@@ -2,6 +2,7 @@ hello: Hello
 welcome: Üdvözlünk
 pages.title.blog: Blog
 pages.title.home: Kezdőlap
+pages.title.about: Rólam
 pages.title.welcome: Üdvözlünk
 page.title.not_found: Az oldal nem található
 page.title.not_found.subtitle: Sajnálom, de ez az oldal nem található.
@@ -13,3 +14,8 @@ switch.to.light: Világos szín be
 error.invalid.locale: Invalid nyelv
 error.validation: Validációs hiba
 language: Nyelv
+locale:
+  changed: A nyelv megvaltozott
+home: Kezdőlap
+blog: Blog
+about: Rólam

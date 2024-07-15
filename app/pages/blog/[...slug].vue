@@ -2,8 +2,10 @@
 const route = useRoute()
 const { locale, t } = useI18n()
 
-const { data: page } = await useAsyncData(`blog-${route.path}`, () => {
-  return queryContent<CustomParsedContent>(route.path).locale(locale.value).findOne()
+const slug = computed(() => route.path)
+
+const { data: page } = await useAsyncData(`${slug.value}-blog`, () => {
+  return queryContent<CustomParsedContent>(slug.value).locale(locale.value).findOne()
 })
 
 if (!page.value)

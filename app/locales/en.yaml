@@ -2,6 +2,7 @@ hello: Hello
 welcome: Welcome
 pages.title.blog: Blog
 pages.title.home: Home
+pages.title.about: About
 pages.title.welcome: Welcome
 page.title.not_found: Page not found
 page.title.not_found.subtitle: We are sorry but this page could not be found.
@@ -13,3 +14,8 @@ switch.to.light: Switch to dark mode
 error.invalid.locale: Invalid locale
 error.validation: Validation error
 language: Language
+locale:
+  changed: Locale changed
+home: Home
+blog: Blog
+about: About
