@@ -43,8 +43,8 @@ importers:
         version: 3.23.8
     devDependencies:
       '@antfu/eslint-config':
-        specifier: ^2.22.2
-        version: 2.22.2(@vue/compiler-sfc@3.4.31)(eslint-plugin-format@0.1.2(eslint@9.7.0))(eslint@9.7.0)(typescript@5.5.3)
+        specifier: ^2.22.4
+        version: 2.22.4(@vue/compiler-sfc@3.4.31)(eslint-plugin-format@0.1.2(eslint@9.7.0))(eslint@9.7.0)(typescript@5.5.3)
       '@nuxt/content':
         specifier: ^2.13.1
         version: 2.13.1(ioredis@5.4.1)(magicast@0.3.4)(nuxt@3.12.3(@parcel/watcher@2.4.1)(@types/node@20.14.10)(eslint@9.7.0)(ioredis@5.4.1)(magicast@0.3.4)(optionator@0.9.4)(rollup@4.18.1)(terser@5.31.2)(typescript@5.5.3)(vite@5.3.3(@types/node@20.14.10)(terser@5.31.2))(vue-tsc@2.0.26(typescript@5.5.3)))(rollup@4.18.1)(vue@3.4.31(typescript@5.5.3))
@@ -89,8 +89,8 @@ packages:
     resolution: {integrity: sha512-30iZtAPgz+LTIYoeivqYo853f02jBYSd5uGnGpkFV0M3xOt9aN73erkgYAmZU43x4VfqcnLxW9Kpg3R5LC4YYw==}
     engines: {node: '>=6.0.0'}
 
-  '@antfu/eslint-config@2.22.2':
-    resolution: {integrity: sha512-LKC61Rm1VC0CduV4XAZzzEQ1nmTd+H4Y1rVvNg47MgcaCVGftUpY50MD2us3QCC+ktt3AAQYT9Kmbr/nsFW73g==}
+  '@antfu/eslint-config@2.22.4':
+    resolution: {integrity: sha512-r0XgZQt0qyNKk8yzsRZ0u+MjxiIX3RZmsKVJEgfNcxHzmbuEvOhUEiUZFpxWys5fVMiYll/uqZB7VN288mSWJg==}
     hasBin: true
     peerDependencies:
       '@eslint-react/eslint-plugin': ^1.5.8
@@ -2638,8 +2638,8 @@ packages:
     peerDependencies:
       eslint: '>=6.0.0'
 
-  eslint-config-flat-gitignore@0.1.7:
-    resolution: {integrity: sha512-K4UcPriNg6IvNozipPVnLRxuhxys9vRkxYoLLdMPgPDngtWEP/xBT946oUYQHUWLoz4jvX5k+AF/MWh3VN5Lrg==}
+  eslint-config-flat-gitignore@0.1.8:
+    resolution: {integrity: sha512-OEUbS2wzzYtUfshjOqzFo4Bl4lHykXUdM08TCnYNl7ki+niW4Q1R0j0FDFDr0vjVsI5ZFOz5LvluxOP+Ew+dYw==}
 
   eslint-flat-config-utils@0.2.5:
     resolution: {integrity: sha512-iO+yLZtC/LKgACerkpvsZ6NoRVB2sxT04mOpnNcEM1aTwKy+6TsT46PUvrML4y2uVBS6I67hRCd2JiKAPaL/Uw==}
@@ -2947,6 +2947,10 @@ packages:
   fill-range@7.1.1:
     resolution: {integrity: sha512-YsGpe3WHLK8ZYi4tWDg2Jy3ebRz2rXowDxnld4bkQB00cc/1Zw9AWnC0i9ztDJitivtQvaI9KaLyKrc+hBW0yg==}
     engines: {node: '>=8'}
+
+  find-up-simple@1.0.0:
+    resolution: {integrity: sha512-q7Us7kcjj2VMePAa02hDAF6d+MzsdsAWEwYyOpwUtlerRBkOEPBCRZrAV4XfcSN8fHAgaD0hP7miwoay6DCprw==}
+    engines: {node: '>=18'}
 
   find-up@4.1.0:
     resolution: {integrity: sha512-PpOwAdQ/YlXQ2vj8a3h8IipDuYRi3wceVQQGYWxNINccq40Anw7BlsEXCMbt1Zt+OLA6Fq9suIpIWD0OsnISlw==}
@@ -5613,7 +5617,7 @@ snapshots:
       '@jridgewell/gen-mapping': 0.3.5
       '@jridgewell/trace-mapping': 0.3.25
 
-  '@antfu/eslint-config@2.22.2(@vue/compiler-sfc@3.4.31)(eslint-plugin-format@0.1.2(eslint@9.7.0))(eslint@9.7.0)(typescript@5.5.3)':
+  '@antfu/eslint-config@2.22.4(@vue/compiler-sfc@3.4.31)(eslint-plugin-format@0.1.2(eslint@9.7.0))(eslint@9.7.0)(typescript@5.5.3)':
     dependencies:
       '@antfu/install-pkg': 0.3.3
       '@clack/prompts': 0.7.0
@@ -5621,7 +5625,7 @@ snapshots:
       '@typescript-eslint/eslint-plugin': 8.0.0-alpha.40(@typescript-eslint/parser@8.0.0-alpha.40(eslint@9.7.0)(typescript@5.5.3))(eslint@9.7.0)(typescript@5.5.3)
       '@typescript-eslint/parser': 8.0.0-alpha.40(eslint@9.7.0)(typescript@5.5.3)
       eslint: 9.7.0
-      eslint-config-flat-gitignore: 0.1.7
+      eslint-config-flat-gitignore: 0.1.8
       eslint-flat-config-utils: 0.2.5
       eslint-merge-processors: 0.1.0(eslint@9.7.0)
       eslint-plugin-antfu: 2.3.4(eslint@9.7.0)
@@ -6566,7 +6570,7 @@ snapshots:
       '@typescript-eslint/eslint-plugin': 7.16.0(@typescript-eslint/parser@7.16.0(eslint@9.7.0)(typescript@5.5.3))(eslint@9.7.0)(typescript@5.5.3)
       '@typescript-eslint/parser': 7.16.0(eslint@9.7.0)(typescript@5.5.3)
       eslint: 9.7.0
-      eslint-config-flat-gitignore: 0.1.7
+      eslint-config-flat-gitignore: 0.1.8
       eslint-flat-config-utils: 0.2.5
       eslint-plugin-import-x: 0.5.3(eslint@9.7.0)(typescript@5.5.3)
       eslint-plugin-jsdoc: 48.7.0(eslint@9.7.0)
@@ -7577,8 +7581,8 @@ snapshots:
     dependencies:
       '@mapbox/node-pre-gyp': 1.0.11
       '@rollup/pluginutils': 4.2.1
-      acorn: 8.12.0
-      acorn-import-attributes: 1.9.5(acorn@8.12.0)
+      acorn: 8.12.1
+      acorn-import-attributes: 1.9.5(acorn@8.12.1)
       async-sema: 3.1.1
       bindings: 1.5.0
       estree-walker: 2.0.2
@@ -7826,9 +7830,9 @@ snapshots:
       mime-types: 2.1.35
       negotiator: 0.6.3
 
-  acorn-import-attributes@1.9.5(acorn@8.12.0):
+  acorn-import-attributes@1.9.5(acorn@8.12.1):
     dependencies:
-      acorn: 8.12.0
+      acorn: 8.12.1
 
   acorn-jsx@5.3.2(acorn@8.12.1):
     dependencies:
@@ -8638,9 +8642,9 @@ snapshots:
       eslint: 9.7.0
       semver: 7.6.2
 
-  eslint-config-flat-gitignore@0.1.7:
+  eslint-config-flat-gitignore@0.1.8:
     dependencies:
-      find-up: 7.0.0
+      find-up-simple: 1.0.0
       parse-gitignore: 2.0.0
 
   eslint-flat-config-utils@0.2.5:
@@ -9091,6 +9095,8 @@ snapshots:
   fill-range@7.1.1:
     dependencies:
       to-regex-range: 5.0.1
+
+  find-up-simple@1.0.0: {}
 
   find-up@4.1.0:
     dependencies:
@@ -11753,7 +11759,7 @@ snapshots:
   terser@5.31.2:
     dependencies:
       '@jridgewell/source-map': 0.3.6
-      acorn: 8.12.0
+      acorn: 8.12.1
       commander: 2.20.3
       source-map-support: 0.5.21
 
@@ -11841,7 +11847,7 @@ snapshots:
 
   unctx@2.3.1:
     dependencies:
-      acorn: 8.12.0
+      acorn: 8.12.1
       estree-walker: 3.0.3
       magic-string: 0.30.10
       unplugin: 1.11.0
