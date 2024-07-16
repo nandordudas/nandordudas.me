@@ -12,17 +12,14 @@ jobs:
     permissions:
       contents: write
 
+    environment: Release
+
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - uses: pnpm/action-setup@v4
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
-        with:
-          cache: pnpm
+      - uses: ./.github/actions/setup-and-cache
 
       - name: Generate changelog
         run: npx changelogithub
