@@ -32,7 +32,7 @@
       ":\\s*[\"'`]([^\"'`]*).*?[\"'`]"
     ]
   ],
-  "tailwindCSS.experimental.configFile": "tailwind.config.ts",
+  "tailwindCSS.experimental.configFile": "website/tailwind.config.ts",
   /*  */
   // Auto fix
   "editor.codeActionsOnSave": {
@@ -109,6 +109,7 @@
   "eslint.runtime": "node",
   "cSpell.words": [
     "bumpp",
+    "shiki",
     "twemoji"
   ]
 }

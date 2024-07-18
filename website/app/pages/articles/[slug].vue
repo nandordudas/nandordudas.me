@@ -30,10 +30,6 @@ if (!article.value)
       <template v-else>
         <UBlogPost v-bind="article" />
         <ContentRenderer v-if="article.body" :value="article" class="mt-8 container" />
-
-        <ProsePre>
-          {{ article.body?.children[4]?.props }}
-        </ProsePre>
       </template>
     </UPageBody>
   </UPage>

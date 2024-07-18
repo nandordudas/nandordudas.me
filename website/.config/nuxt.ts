@@ -52,6 +52,10 @@ export default defineNuxtConfig({
     documentDriven: true,
     locales: ALLOWED_LOCALES as unknown as string[],
     defaultLocale: DEFAULT_LOCALE,
+    highlight: {
+      theme: 'vitesse-dark',
+      langs: ['ts', 'php'],
+    },
   },
   routeRules: {
     ...ALLOWED_LOCALES.reduce((acc, locale) => ({
