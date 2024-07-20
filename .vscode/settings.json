@@ -10,6 +10,9 @@
   "i18n-ally.editor.preferEditor": true,
   /*  */
   "typescript.tsdk": "node_modules/typescript/lib",
+  "typescript.enablePromptUseWorkspaceTsdk": true,
+  // https://github.com/microsoft/vscode/issues/214226
+  "typescript.tsserver.experimental.useVsCodeWatcher":false,
   /*  */
   "files.associations": {
     "*.css": "tailwindcss"
@@ -109,6 +112,8 @@
   "eslint.runtime": "node",
   "cSpell.words": [
     "bumpp",
+    "Dudás",
+    "Nándor",
     "shiki",
     "twemoji"
   ]
