@@ -29,16 +29,6 @@ if (!article.value)
       draggable="false"
     />
 
-    <!-- <iframe
-      src="https://www.youtube.com/embed/nJRKEHTqsbg?vq=hd1080"
-      title="Untitled video"
-      frameborder="0"
-      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-      referrerpolicy="strict-origin-when-cross-origin"
-      allowfullscreen
-      class="mt-8 w-full object-cover rounded-lg aspect-video"
-    /> -->
-
     <UPageHeader v-bind="article" :icon="null">
       <template #headline>
         <UBadge v-bind="article.badge" variant="subtle" />
