@@ -11,6 +11,7 @@ defineProps<{
 
 const config = {
   wrapper: '[&>pre]:!rounded-t-none [&>pre]:!my-0 my-5',
+  // eslint-disable-next-line vue/max-len
   header: 'flex items-center gap-1.5 border border-gray-200 dark:border-gray-700 border-b-0 relative rounded-t-md px-4 py-3 not-prose',
   icon: {
     base: '',
@@ -42,6 +43,42 @@ const { ui } = useUI('content.prose.code', undefined, config, undefined, true)
 
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Victor+Mono:ital,wght@0,100..700;1,100..700&display=swap');
+
+:root {
+  --twoslash-popup-bg: rgb(var(--color-gray-800) / 1);
+  --twoslash-popup-color: rgb(var(--color-gray-300) / 1);
+  --twoslash-docs-color: inherit;
+  --twoslash-docs-font: inherit;
+  --twoslash-code-font: 'Victor Mono', monospace;
+  --twoslash-underline-color: #8888;
+  --twoslash-border-color: rgb(var(--color-gray-700) / 1); /*  */
+  --twoslash-cursor-color: rgb(var(--color-primary-DEFAULT) / 1);
+  --twoslash-matched-color: rgb(var(--color-primary-DEFAULT) / 1);
+}
+
+html:not(.dark) {
+  --twoslash-popup-bg: rgb(var(--color-gray-100) / 1);
+  --twoslash-popup-color: rgb(var(--color-gray-600) / 1);
+  --twoslash-border-color: rgb(var(--color-gray-300) / 1);
+}
+
+.twoslash-popup-container .twoslash-popup-code {
+  font-size: 0.9em;
+}
+
+.twoslash-popup-container .twoslash-popup-code .line {
+  display: block;
+}
+
+.twoslash-popup-container .shiki .line {
+  --shiki-default-bg: transparent;
+  --shiki-dark-bg: transparent;
+}
+
+.twoslash-floating .twoslash-popup-docs-tags .twoslash-popup-docs-tag-name {
+  color: inherit;
+  opacity: 0.5;
+}
 
 .prose-code {
   --highlighted-error-color: rgba(244, 63, 94, 0.16);
@@ -99,14 +136,14 @@ const { ui } = useUI('content.prose.code', undefined, config, undefined, true)
         counter-increment: line-num;
 
         &:hover {
-          background-color: lch(from var(--base-color) calc(l - 15) c h);
+          background-color: lch(from var(--base-color) calc(l - 20) c h);
         }
 
         &::before {
           content: counter(line-num);
           color: var(--counter-color);
           display: inline-block;
-          width: 1rem;
+          width: 3ch; /* if(counter(line-num) > 9, 2ch, ...) */
           text-align: right;
           margin-right: 1rem;
         }
@@ -115,13 +152,8 @@ const { ui } = useUI('content.prose.code', undefined, config, undefined, true)
           background-color: #44475a;
 
           &:hover {
-            background-color: lch(from #44475a calc(l - 15) c h);
+            background-color: lch(from #44475a calc(l - 20) c h);
           }
-        }
-
-        &:first-child {
-          border-top-left-radius: 0.375rem;
-          border-top-right-radius: 0.375rem;
         }
 
         &:last-child {

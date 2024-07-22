@@ -1,27 +1,32 @@
 <script setup lang="ts">
-const iconHref = import.meta.dev ? '/favicon-dev.svg' : '/favicon.svg'
+import type { NavItem, ParsedContent } from '@nuxt/content'
 
-const { data: navigation } = await useAsyncData('navigation', () => fetchContentNavigation())
+useHead({
+  link: [
+    { rel: 'icon', type: 'image/svg+xml', href: import.meta.dev ? '/favicon-dev.svg' : '/favicon.svg' },
+  ],
+})
 
-const { locale } = useI18n()
+const { data: navigation } = await useLazyAsyncData('navigation', () => fetchContentNavigation(), {
+  default: () => [] as NavItem[],
+})
 
-const { data: files } = useLazyFetch<CustomParsedContent[]>(`/api/${locale.value}/search.json`, {
+const { data: files } = useLazyFetch<ParsedContent[]>('/api/search.json', {
   default: () => [],
   server: false,
 })
 
+const siteConfig = useSiteConfig()
+
+useSeoMeta({
+  ogSiteName: siteConfig.name,
+  ogType: 'website',
+  twitterCard: 'summary_large_image',
+  twitterSite: 'nandordudas',
+})
+
 provide('navigation', navigation)
 provide('files', files)
-
-useServerSeoMeta({
-  robots: 'index, follow',
-})
-
-useHead({
-  link: [
-    { rel: 'icon', type: 'image/svg+xml', href: iconHref },
-  ],
-})
 </script>
 
 <template>
@@ -29,11 +34,11 @@ useHead({
   <NuxtLoadingIndicator />
 
   <UMain>
-    <NuxtPage :page-key="route => route.fullPath" />
+    <NuxtPage />
   </UMain>
 
   <ClientOnly>
-    <LazyUContentSearch :files :navigation :placeholder="`${$t('search')}...`" hide-color-mode />
+    <UContentSearch :files :navigation />
   </ClientOnly>
 
   <UNotifications />

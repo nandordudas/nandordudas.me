@@ -1,16 +1,11 @@
-import { pathcat } from 'pathcat'
-
-import { ALLOWED_LOCALES, DEFAULT_LOCALE } from '../lib/utils'
 import { httpsServerFiles } from '../lib/server.utils'
+import { DEFAULT_LOCALE } from '../lib/utils'
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   compatibilityDate: '2024-07-10',
   future: {
     compatibilityVersion: 4,
-  },
-  devtools: {
-    timeline: { enabled: true },
   },
   devServer: {
     https: httpsServerFiles(),
@@ -20,17 +15,19 @@ export default defineNuxtConfig({
     head: {
       templateParams: { separator: '·' },
     },
-    // pageTransition: { name: 'page', mode: 'out-in' },
   },
   css: [
     '~/assets/css/main.css',
   ],
   modules: [
+    'nuxt-content-twoslash',
+    '@nuxt/fonts',
     '@nuxtjs/i18n',
     '@nuxt/content',
     '@nuxt/image',
     '@nuxt/ui',
     '@nuxt/eslint',
+    '@nuxtjs/seo',
   ],
   extends: [
     '@nuxt/ui-pro',
@@ -39,8 +36,7 @@ export default defineNuxtConfig({
     defaultLocale: DEFAULT_LOCALE,
     langDir: 'locales/',
     locales: [
-      { code: 'en', iso: 'en', file: 'en.yaml', isCatchallLocale: true, name: 'English' },
-      { code: 'hu', iso: 'hu', file: 'hu.yaml', name: 'Magyar' },
+      { code: 'en', iso: 'en-US', file: 'en.yaml', isCatchallLocale: true, name: 'English' },
     ],
     lazy: true,
     strategy: 'no_prefix',
@@ -49,24 +45,36 @@ export default defineNuxtConfig({
     },
   },
   content: {
-    documentDriven: true,
-    locales: ALLOWED_LOCALES as unknown as string[],
-    defaultLocale: DEFAULT_LOCALE,
     highlight: {
-      theme: 'vitesse-dark',
-      langs: ['ts', 'php'],
+      theme: {
+        default: 'vitesse-light',
+        dark: 'material-theme-darker',
+      },
     },
   },
   routeRules: {
-    ...ALLOWED_LOCALES.reduce((acc, locale) => ({
-      ...acc,
-      [pathcat('/api/:locale/search.json', { locale })]: { prerender: true },
-    }), Object.create(null) as unknown as any), // INFO: NuxtConfig['routeRules']
+    '/api/search.json': { prerender: true },
   },
   eslint: {
     config: { autoInit: false, standalone: false },
   },
   experimental: {
     viewTransition: true,
+  },
+  site: {
+    url: 'https://nandordudas.me',
+    name: 'Nándor Dudás',
+    description: 'Welcome to my awesome site!',
+  },
+  devtools: {
+    enabled: false,
+  },
+  twoslash: {
+    floatingVueOptions: {
+      classMarkdown: 'prose prose-primary dark:prose-invert',
+    },
+    // enableInDev: false,
+    // Do not throw when twoslash fails, the typecheck should be down in github.com/nuxt/nuxt's CI
+    throws: false,
   },
 })

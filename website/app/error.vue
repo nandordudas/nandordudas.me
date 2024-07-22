@@ -1,7 +1,6 @@
 <script setup lang="ts">
-import type { ParsedContent } from '@nuxt/content'
-
 import type { NuxtError } from '#app'
+import type { NavItem, ParsedContent } from '@nuxt/content'
 
 const props = defineProps<{ error: NuxtError }>()
 
@@ -21,12 +20,10 @@ const errorData = computed<CustomErrorData>(() => {
 })
 
 const { data: navigation } = await useAsyncData('navigation', () => fetchContentNavigation(), {
-  default: () => [],
+  default: () => [] as NavItem[],
 })
 
-const { locale } = useI18n()
-
-const { data: files } = useLazyFetch<ParsedContent[]>(`/api/${locale.value}/search.json`, {
+const { data: files } = useLazyFetch<ParsedContent[]>('/api/search.json', {
   default: () => [],
   server: false,
 })
@@ -45,15 +42,18 @@ useHead({
 })
 
 useSeoMeta({
+  title: 'Page not found',
   description: props.error.message,
 })
+
+provide('navigation', navigation)
 </script>
 
 <template>
   <div>
     <NuxtRouteAnnouncer />
     <NuxtLoadingIndicator />
-    <Header />
+    <AppHeader />
 
     <UMain>
       <UContainer>
@@ -62,14 +62,15 @@ useSeoMeta({
             :status="error?.statusCode"
             :name="errorData?.name ?? error?.name"
             :message="errorData?.message ?? error?.message"
-            :ui="{ default: { clearButton: { label: $t('go.back.home'), color: 'primary', size: 'lg' } } }"
           />
         </UPage>
       </UContainer>
     </UMain>
 
+    <AppFooter />
+
     <ClientOnly>
-      <LazyUContentSearch :files :navigation :placeholder="`${$t('search')}...`" hide-color-mode />
+      <UContentSearch :files :navigation />
     </ClientOnly>
 
     <UNotifications />

@@ -1,15 +1,15 @@
 export default defineAppConfig({
   ui: {
-    button: {
-      rounded: 'rounded-full',
-      default: {
-        size: 'md',
-      },
-    },
+    // button: {
+    //   rounded: 'rounded-full',
+    //   default: {
+    //     size: 'md',
+    //   },
+    // },
     icons: {
       dynamic: true,
     },
-    primary: 'red',
-    gray: 'stone',
+    // primary: 'red',
+    // gray: 'stone',
   },
 })

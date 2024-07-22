@@ -1,0 +1,61 @@
+<script setup lang="ts">
+import type { ParsedContent } from '@nuxt/content'
+
+import { withoutTrailingSlash } from 'ufo'
+
+definePageMeta({
+  path: '/articles/:slug',
+})
+
+interface Article extends ParsedContent {}
+
+const route = useRoute()
+
+const { data: article } = await useAsyncData(withoutTrailingSlash(route.path), () => {
+  return queryContent<Article>(route.path).findOne()
+})
+
+if (!article.value)
+  throw createError({ statusCode: 404, statusMessage: 'Article not found', fatal: true })
+</script>
+
+<template>
+  <UPage>
+    <NuxtImg
+      v-if="article.image?.src"
+      :src="article.image.src"
+      :alt="article.image.alt"
+      class="mt-8 w-full object-cover rounded-lg aspect-video"
+      draggable="false"
+    />
+
+    <!-- <iframe
+      src="https://www.youtube.com/embed/nJRKEHTqsbg?vq=hd1080"
+      title="Untitled video"
+      frameborder="0"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+      referrerpolicy="strict-origin-when-cross-origin"
+      allowfullscreen
+      class="mt-8 w-full object-cover rounded-lg aspect-video"
+    /> -->
+
+    <UPageHeader v-bind="article" :icon="null">
+      <template #headline>
+        <UBadge v-bind="article.badge" variant="subtle" />
+
+        <span class="text-gray-500 dark:text-gray-400">&middot;</span>
+        <time class="text-gray-500 dark:text-gray-400">{{ article.date }}</time>
+      </template>
+    </UPageHeader>
+
+    <UPageBody prose>
+      <ContentRenderer v-if="article.body" :value="article" class="mt-8 container" />
+    </UPageBody>
+  </UPage>
+</template>
+
+<style scoped>
+img {
+  view-transition-name: selected-article;
+}
+</style>

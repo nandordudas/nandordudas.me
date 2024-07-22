@@ -1,6 +1,6 @@
 <script setup lang="ts">
 definePageMeta({
-  title: 'pages.title.about',
+  title: 'About',
 })
 </script>
 
@@ -8,7 +8,9 @@ definePageMeta({
   <div>
     <NuxtLayout>
       <UPage>
-        About
+        <UPageBody>
+          About
+        </UPageBody>
       </UPage>
     </NuxtLayout>
   </div>

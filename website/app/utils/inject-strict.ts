@@ -1,4 +1,5 @@
 import type { NavItem, ParsedContent } from '@nuxt/content'
+
 import { type InjectionKey, type Ref, inject } from 'vue'
 
 export function injectStrict<T>(key: InjectionKey<T>, fallback?: T) {
