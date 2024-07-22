@@ -20,9 +20,9 @@ if (!article.value)
 </script>
 
 <template>
-  <UPage>
+  <UPage v-if="article">
     <NuxtImg
-      v-if="article.image?.src"
+      v-if="article.image?.src && !article.image?.isThumbnail"
       :src="article.image.src"
       :alt="article.image.alt"
       class="mt-8 w-full object-cover rounded-lg aspect-video"
