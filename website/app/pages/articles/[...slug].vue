@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { NuxtError } from '#app'
 import type { ParsedContent } from '@nuxt/content'
 
 import { withoutTrailingSlash } from 'ufo'
@@ -15,8 +16,7 @@ const { data: article } = await useAsyncData(withoutTrailingSlash(route.path), (
   return queryContent<Article>(route.path).findOne()
 })
 
-if (!article.value)
-  throw createError({ statusCode: 404, statusMessage: 'Article not found', fatal: true })
+assert(article.value !== undefined, 'Article not found')
 </script>
 
 <template>

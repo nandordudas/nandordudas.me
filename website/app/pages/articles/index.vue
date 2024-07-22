@@ -3,17 +3,15 @@ import type { ParsedContent } from '@nuxt/content'
 
 interface Article extends ParsedContent {}
 
-const SORT_ORDER = { ASC: 1, DESC: -1 } as const
+const { data: articles } = await useAsyncData('articles', () => {
+  return queryContent<Article>('articles')
+    .where({ _extension: 'md' })
+    .sort({ date: SORT_ORDER.DESC, $numeric: true })
+    .limit(5)
+    .find()
+})
 
-const contentQuery = queryContent<Article>('articles')
-  .where({ _extension: 'md' })
-  .sort({ date: SORT_ORDER.DESC, $numeric: true })
-  .limit(5)
-
-const { data: articles } = await useAsyncData('articles', () => contentQuery.find())
-
-if (!articles.value)
-  throw createError({ statusCode: 404, statusMessage: 'Articles not found', fatal: true })
+assert(articles.value !== undefined, 'Articles not found')
 
 const selectedArticle = useState<number>()
 </script>
