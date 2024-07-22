@@ -1,7 +1,7 @@
 {
   "name": "@workspace/website",
   "type": "module",
-  "version": "0.1.7",
+  "version": "0.1.11",
   "private": true,
   "packageManager": "pnpm@9.5.0",
   "engines": {
