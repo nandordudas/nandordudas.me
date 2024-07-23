@@ -6,8 +6,6 @@ defineOptions({
 })
 
 const navigation = injectStrict(NavigationKey, ref([]))
-
-const siteConfig = useSiteConfig()
 const { metaSymbol } = useShortcuts()
 
 const links: HeaderLink[] = [
@@ -23,7 +21,7 @@ const links: HeaderLink[] = [
       <UAvatar alt="Picture of" icon="i-heroicons-user" src="/images/profile.png" class="sm:w-10 sm:h-10" />
 
       <span class="italic font-mono font-thin">
-        {{ siteConfig.name }}
+        {{ $nuxtSiteConfig.name }}
       </span>
     </template>
 

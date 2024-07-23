@@ -7,15 +7,7 @@ declare module '#app' {
 }
 
 declare global {
-  interface Image {
-    src: string
-    alt: string
-    draggable: boolean
-    width: number
-    title: string
-  }
-
   interface CustomParsedContent extends MarkdownParsedContent {
-    image: Image
+    image: HTMLImageElement
   }
 }

@@ -9,7 +9,6 @@ export default defineNuxtConfig({
   },
   devServer: {
     https: httpsServerFiles(),
-    host: 'nandordudas.me',
   },
   app: {
     head: {
@@ -36,7 +35,7 @@ export default defineNuxtConfig({
     defaultLocale: DEFAULT_LOCALE,
     langDir: 'locales/',
     locales: [
-      { code: 'en', iso: 'en-US', file: 'en.yaml', isCatchallLocale: true, name: 'English' },
+      { code: 'en', iso: 'en-US', file: 'en-US.yaml', isCatchallLocale: true, name: 'English' },
     ],
     lazy: true,
     strategy: 'no_prefix',
@@ -45,6 +44,7 @@ export default defineNuxtConfig({
     },
   },
   content: {
+    defaultLocale: DEFAULT_LOCALE,
     highlight: {
       theme: {
         default: 'vitesse-light',
@@ -68,6 +68,11 @@ export default defineNuxtConfig({
   },
   devtools: {
     enabled: false,
+  },
+  mdc: {
+    highlight: {
+      langs: ['ts', 'php'],
+    },
   },
   twoslash: {
     floatingVueOptions: {

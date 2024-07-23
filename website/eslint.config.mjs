@@ -5,7 +5,7 @@ import withNuxt from './.nuxt/eslint.config.mjs'
 
 export default withNuxt(
   antfu({
-    formatters: { css: true },
+    formatters: { css: true, markdown: true },
   })
     .override(
       'antfu/imports/rules',

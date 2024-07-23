@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import type { NuxtError } from '#app'
 import type { ParsedContent } from '@nuxt/content'
 
 import { withoutTrailingSlash } from 'ufo'
@@ -13,7 +12,9 @@ interface Article extends ParsedContent {}
 const route = useRoute()
 
 const { data: article } = await useAsyncData(withoutTrailingSlash(route.path), () => {
-  return queryContent<Article>(route.path).findOne()
+  const queryBuilder = queryContent<Article>(route.path)
+
+  return queryBuilder.findOne()
 })
 
 assert(article.value !== undefined, 'Article not found')

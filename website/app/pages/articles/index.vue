@@ -4,11 +4,12 @@ import type { ParsedContent } from '@nuxt/content'
 interface Article extends ParsedContent {}
 
 const { data: articles } = await useAsyncData('articles', () => {
-  return queryContent<Article>('articles')
+  const queryBuilder = queryContent<Article>('articles')
     .where({ _extension: 'md' })
     .sort({ date: SORT_ORDER.DESC, $numeric: true })
     .limit(5)
-    .find()
+
+  return queryBuilder.find()
 })
 
 assert(articles.value !== undefined, 'Articles not found')

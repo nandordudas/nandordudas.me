@@ -1,8 +1,7 @@
 packages:
   - layers
   - website
-
 catalog:
   nuxt: ^3.12.4
-  typescript: ^5.5.3
+  typescript: ^5.5.4
   vue: ^3.4.33

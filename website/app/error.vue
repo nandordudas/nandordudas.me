@@ -2,22 +2,9 @@
 import type { NuxtError } from '#app'
 import type { NavItem, ParsedContent } from '@nuxt/content'
 
-const props = defineProps<{ error: NuxtError }>()
-
-interface CustomErrorData {
-  name: string
-  message: string
-}
-
-// TODO: fix /api/search.json 'Invalid error occurred'/'Invalid arguments'
-const errorData = computed<CustomErrorData>(() => {
-  try {
-    return JSON.parse(props.error.data as string)
-  }
-  catch {
-    return props.error.data
-  }
-})
+const props = defineProps<{
+  error: NuxtError
+}>()
 
 const { data: navigation } = await useAsyncData('navigation', () => fetchContentNavigation(), {
   default: () => [] as NavItem[],
@@ -35,7 +22,7 @@ const head = useLocaleHead({
 })
 
 useHead({
-  title: props.error.statusMessage,
+  title: 'Page not found',
   htmlAttrs: head.value.htmlAttrs,
   link: head.value.link,
   meta: head.value.meta,
@@ -58,11 +45,7 @@ provide('navigation', navigation)
     <UMain>
       <UContainer>
         <UPage>
-          <UPageError
-            :status="error?.statusCode"
-            :name="errorData?.name ?? error?.name"
-            :message="errorData?.message ?? error?.message"
-          />
+          <UPageError :error />
         </UPage>
       </UContainer>
     </UMain>
