@@ -10,6 +10,3 @@ export function isReadable(path: PathLike) {
     return false
   }
 }
-
-export const DEFAULT_LOCALE = 'en-US'
-export const ALLOWED_LOCALES = [DEFAULT_LOCALE, 'hu'] as const

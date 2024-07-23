@@ -1,5 +1,4 @@
 import { httpsServerFiles } from '../lib/server.utils'
-import { DEFAULT_LOCALE } from '../lib/utils'
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
@@ -32,7 +31,7 @@ export default defineNuxtConfig({
     '@nuxt/ui-pro',
   ],
   i18n: {
-    defaultLocale: DEFAULT_LOCALE,
+    defaultLocale: 'en',
     langDir: 'locales/',
     locales: [
       { code: 'en', iso: 'en-US', file: 'en-US.yaml', isCatchallLocale: true, name: 'English' },
@@ -44,7 +43,7 @@ export default defineNuxtConfig({
     },
   },
   content: {
-    defaultLocale: DEFAULT_LOCALE,
+    defaultLocale: 'en',
     highlight: {
       theme: {
         default: 'vitesse-light',
@@ -78,8 +77,6 @@ export default defineNuxtConfig({
     floatingVueOptions: {
       classMarkdown: 'prose prose-primary dark:prose-invert',
     },
-    // enableInDev: false,
-    // Do not throw when twoslash fails, the typecheck should be down in github.com/nuxt/nuxt's CI
     throws: false,
   },
 })
