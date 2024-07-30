@@ -1,24 +1,16 @@
 export function pipe<T extends unknown[], R>(fn: (...args: T) => R) {
-  function piped(...args: T): R {
-    const result = fn(...args)
-
-    return result
-  }
-
-  piped.pipe = <U>(nextFn: (_: R) => U) => {
-    return pipe((...args: T) => {
-      const intermediateResult = fn(...args)
-
-      return nextFn(intermediateResult)
-    })
-  }
-
-  return piped
+  return Object.assign((...args: T) => fn(...args), {
+    pipe: <U>(nextFn: (_: R) => U) => pipe((...args: T) => nextFn(fn(...args))),
+  })
 }
 
+const MAX_CACHE_SIZE = 1_000
 const _cache = new Map<string, string>()
 
 export function removeLeadingHyphen(name: string) {
+  if (_cache.size > MAX_CACHE_SIZE)
+    _cache.clear()
+
   if (_cache.has(name))
     return _cache.get(name)!
 

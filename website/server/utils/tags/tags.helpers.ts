@@ -35,16 +35,16 @@ export function fetchContent(event: H3Event) {
   return queryBuilder.find()
 }
 
-interface QuerySortable {
-  sort?: z.infer<ReturnType<typeof createQuerySchema>>['sort']
+interface QuerySortable<T extends string[]> {
+  sort?: z.infer<ReturnType<typeof createQuerySchema<T>>>['sort']
 }
 
-interface SortFieldParams<T, R extends QuerySortable> {
+interface SortFieldParams<T extends Record<string, any>, R extends QuerySortable<keyof T extends string ? (keyof T)[] : never>> {
   sort: NonNullable<R['sort']>
   allowedFieldNames: readonly (keyof T)[]
 }
 
-export function sortFields<const T extends Record<string, any>, R extends QuerySortable>({
+export function sortFields<const T extends Record<string, any>, R extends QuerySortable<keyof T extends string ? (keyof T)[] : never>>({
   sort,
   allowedFieldNames,
 }: SortFieldParams<T, R>): (input: readonly T[]) => T[] {
