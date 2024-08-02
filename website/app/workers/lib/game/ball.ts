@@ -1,6 +1,5 @@
 import { Vector } from '../vector'
 
-import { drawArc } from './helpers'
 import { Particle } from './particle.base'
 
 export class Ball extends Particle {
@@ -14,7 +13,7 @@ export class Ball extends Particle {
   }
 
   public override draw(context: OffscreenCanvasRenderingContext2D): void {
-    drawArc(context, {
+    this._drawArc(context, {
       position: this.position,
       radius: this.radius,
       color: this.color,
