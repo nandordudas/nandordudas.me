@@ -121,6 +121,8 @@ export class Game {
 
   public start(): void {
     this._rafId = requestAnimationFrame(this._animate.bind(this))
+
+    logger.log('[Game]', 'Started')
   }
 
   public stop(): void {
@@ -128,6 +130,8 @@ export class Game {
 
     this._lastTimestamp = 0
     this._rafId = 0
+
+    logger.log('[Game]', 'Stopped')
   }
 
   private _setLevel(level: Level): void {
@@ -143,6 +147,8 @@ export class Game {
 
     if (direction === Direction.Down)
       this._setLevel(precendentLevel[currentLevel - 1] ?? 'easy')
+
+    logger.log('[Game]', 'Changed level to', this._level)
   }
 
   private _animate(timestamp: DOMHighResTimeStamp): void {
@@ -152,6 +158,12 @@ export class Game {
 
     this._lastTimestamp = timestamp
     this._rafId = requestAnimationFrame(this._animate.bind(this))
+
+    // INFO: enable Chrome DevTools to see FPS: Rendering / Frame Rendering Stats
+    const fps = 1_000 / dt
+
+    if (fps < 59.9 || fps > 62.5)
+      logger.log('[Game]', 'Animating', 1_000 / dt)
   }
 
   private _draw(_dt: number): void {
