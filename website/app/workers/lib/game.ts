@@ -1,59 +1,13 @@
-import type { Board, Drawable } from './game/type'
+import type { Board, Drawable, Level } from './game/type'
 
 import { ContextMissingError } from './errors'
 import { Ball } from './game/ball'
+import { Direction, LEVELS, MAX_DELTA_TIME, Position } from './game/constants'
 import { logger } from './game/helpers'
 import { Net } from './game/net'
 import { Paddle } from './game/paddle'
 import { Wall } from './game/wall'
 import { Vector } from './vector'
-
-const FPS = 1_000 / 60
-const MAX_DELTA_TIME = FPS
-
-const LEVELS = {
-  easy: {
-    paddle: {
-      lengthRatio: 2,
-    },
-    ball: {
-      color: 'rgba(0, 255, 0, 0.5)', // lime
-      speed: 2,
-    },
-  },
-  medium: {
-    paddle: {
-      lengthRatio: 4,
-    },
-    ball: {
-      color: 'orange',
-      speed: 4,
-    },
-  },
-  hard: {
-    paddle: {
-      lengthRatio: 6,
-    },
-    ball: {
-      color: 'tomato',
-      speed: 6,
-    },
-  },
-} as const
-
-type Level = keyof typeof LEVELS
-
-const enum Position {
-  Top = 'top',
-  Right = 'right',
-  Bottom = 'bottom',
-  Left = 'left',
-}
-
-const enum Direction {
-  Up = 'up',
-  Down = 'down',
-}
 
 export class Game {
   public devicePixelRatio = 1.0
