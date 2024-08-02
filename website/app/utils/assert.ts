@@ -4,3 +4,7 @@ export function assert(condition: boolean, statusMessage: string, options: Parti
   if (!condition)
     throw createError({ ...options, statusMessage, fatal: true })
 }
+
+export function raise(message: string, ErrorConstructor = Error): never {
+  throw new ErrorConstructor(message)
+}

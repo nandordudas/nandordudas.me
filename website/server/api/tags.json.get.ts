@@ -1,6 +1,6 @@
 import type { z } from 'zod'
 
-import { useLogger } from 'nuxt/kit'
+// import { logger } from 'nuxt/kit'
 
 const allowedFieldNames = ['count', 'tag'] as const
 const QuerySchema = createQuerySchema(allowedFieldNames)
@@ -8,9 +8,8 @@ const QuerySchema = createQuerySchema(allowedFieldNames)
 type Query = z.infer<typeof QuerySchema>
 
 export default defineEventHandler(async (event) => {
-  const logger = useLogger('GET /api/tags.json')
-
-  logger.log(event.node.req.url)
+  // eslint-disable-next-line no-console
+  console.log(event.node.req.url)
 
   const [query, data] = await Promise.all([
     getValidatedQuery(event, QuerySchema.parse),
