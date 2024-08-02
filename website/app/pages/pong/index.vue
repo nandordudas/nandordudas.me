@@ -9,6 +9,9 @@ onMounted(() => {
   const pongWorker = new PongWorker()
 
   pongWorker.addEventListener('message', (event) => {
+    // eslint-disable-next-line no-console
+    console.log('[WebWorker::PongWorker] >>', event.data)
+
     if (event.data.type === 'initialized')
       pongWorker.postMessage({ type: 'start' })
   })
