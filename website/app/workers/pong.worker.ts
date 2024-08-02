@@ -3,7 +3,6 @@
 import type { Drawable } from './lib/types'
 
 import { Ball } from './lib/ball'
-import { ContextMissingError } from './lib/errors'
 import { Game } from './lib/game'
 import { Paddle } from './lib/paddle'
 import { Vector } from './lib/vector'
@@ -112,7 +111,7 @@ const eventMethodMap: { [K in CustomEvent]: EventHandler<K> } = {
 }
 
 addEventListener('message', (event: CustomMessageEvent): void => {
-  _log(event.data)
+  _log('[WebWorker::PongWorker] <<', event.data)
 
   try {
     const handler = eventMethodMap[event.data.type]

@@ -1,13 +1,15 @@
+import type { Board, Drawable } from './game/type'
+
 import { ContextMissingError } from './errors'
+import { Ball } from './game/ball'
+import { logger } from './game/helpers'
+import { Net } from './game/net'
+import { Paddle } from './game/paddle'
+import { Wall } from './game/wall'
 import { Vector } from './vector'
 
 const FPS = 1_000 / 60
 const MAX_DELTA_TIME = FPS
-
-const _logger = {
-  // eslint-disable-next-line no-console
-  log: console.log.bind(console, '[Game]'),
-}
 
 const LEVELS = {
   easy: {
@@ -79,9 +81,11 @@ export class Game {
       new Wall(Position.Left),
     ] as const
 
-    const wet = new Wet('wet')
+    const net = new Net('net')
 
-    this._drawables = [ball, ...paddles, ...walls, wet]
+    this._drawables = [ball, ...paddles, ...walls, net]
+
+    logger.log('[Game]', 'Initialized')
   }
 
   public setup(): void {
@@ -96,7 +100,7 @@ export class Game {
     const paddleBottom = halfHeight + halfPaddleLength
 
     for (const drawable of this._drawables) {
-      for (const setupMethod of [setupPaddles, setupWalls, setupWet])
+      for (const setupMethod of [setupPaddles, setupWalls, setupNet])
         setupMethod(drawable)
     }
 
@@ -135,13 +139,15 @@ export class Game {
         drawable.setPosition(new Vector(0, 0), new Vector(0, canvas.height))
     }
 
-    function setupWet(drawable: Drawable): void {
-      if (!(drawable instanceof Wet))
+    function setupNet(drawable: Drawable): void {
+      if (!(drawable instanceof Net))
         return
 
-      if (drawable.hasId('wet'))
+      if (drawable.hasId('net'))
         drawable.setPosition(new Vector(halfWidth - 1, 0), new Vector(halfWidth - 1, canvas.height))
     }
+
+    logger.log('[Game]', 'Setup done')
   }
 
   /**
@@ -155,6 +161,8 @@ export class Game {
     context.scale(this.devicePixelRatio, this.devicePixelRatio)
 
     this._context = context
+
+    logger.log('[Game]', 'Context has been set')
   }
 
   public start(): void {
@@ -201,157 +209,3 @@ export class Game {
     this._context!.clearRect(0, 0, this._context!.canvas.width, this._context!.canvas.height)
   }
 }
-
-// #region HELPERS
-
-interface Coordinate {
-  x: number
-  y: number
-}
-
-interface DrawArcProps {
-  position: Coordinate
-  radius: number
-  color: string | CanvasGradient | CanvasPattern
-}
-
-function drawArc(context: OffscreenCanvasRenderingContext2D, options: DrawArcProps): void {
-  const TAU = Math.PI * 2
-
-  context.beginPath()
-  context.arc(options.position.x, options.position.y, options.radius, 0, TAU)
-
-  context.fillStyle = options.color
-  context.strokeStyle = 'black'
-
-  context.fill()
-  context.stroke()
-}
-
-interface DrawLineProps {
-  start: Coordinate
-  end: Coordinate
-  color: string | CanvasGradient | CanvasPattern
-  lineWidth?: number
-  dashed?: number[]
-}
-
-function drawLine(context: OffscreenCanvasRenderingContext2D, options: DrawLineProps): void {
-  context.beginPath()
-  context.setLineDash(options.dashed ?? [])
-  context.moveTo(options.start.x, options.start.y)
-  context.lineTo(options.end.x, options.end.y)
-
-  context.strokeStyle = options.color
-  context.lineWidth = options.lineWidth ?? 1
-
-  context.stroke()
-}
-
-// #endregion
-
-// #region DRAWABLES
-
-interface DrawableProps {
-  draw: (context: OffscreenCanvasRenderingContext2D) => void
-}
-
-abstract class Particle implements DrawableProps {
-  constructor(
-    public readonly id: string,
-    public color: string = 'white',
-    public start = new Vector(0, 0),
-    public end = new Vector(0, 0),
-  ) {}
-
-  public abstract draw(_context: OffscreenCanvasRenderingContext2D): void
-
-  public hasId(value: string): boolean {
-    return this.id === value
-  }
-
-  public setPosition(start: Vector, end: Vector): void {
-    this.start = start
-    this.end = end
-  }
-}
-
-class Ball extends Particle {
-  constructor(
-    public override readonly id: string,
-    public position = new Vector(100, 100),
-    public radius = 4,
-    public override color = 'tomato',
-  ) {
-    super(id, color)
-  }
-
-  public override draw(context: OffscreenCanvasRenderingContext2D): void {
-    drawArc(context, {
-      position: this.position,
-      radius: this.radius,
-      color: this.color,
-    })
-  }
-}
-
-class Paddle extends Particle {
-  constructor(
-    public override readonly id: string,
-    public override start = new Vector(0, 0),
-    public override end = new Vector(0, 0),
-    public width = 2,
-    public override color = 'rgba(255, 99, 71, 0.5)', // tomato
-  ) {
-    super(id, color, start, end)
-  }
-
-  public override draw(context: OffscreenCanvasRenderingContext2D): void {
-    drawLine(context, {
-      start: new Vector(this.start.x, this.start.y),
-      end: new Vector(this.end.x, this.end.y),
-      color: this.color,
-      lineWidth: this.width,
-    })
-  }
-}
-
-class Wall extends Particle {
-  constructor(
-    public override readonly id: string,
-    public override start = new Vector(0, 0),
-    public override end = new Vector(0, 0),
-    public override color = 'transparent',
-    public readonly segments: number[] = [],
-  ) {
-    super(id, color, start, end)
-  }
-
-  public override draw(context: OffscreenCanvasRenderingContext2D): void {
-    drawLine(context, {
-      end: this.end,
-      start: this.start,
-      color: this.color,
-      dashed: this.segments,
-    })
-  }
-}
-
-class Wet extends Wall {
-  constructor(
-    public override readonly id: string,
-    public override start = new Vector(0, 0),
-    public override end = new Vector(0, 0),
-    public override color = 'rgba(255, 255, 255, 0.1)',
-    public override readonly segments: number[] = [10, 10],
-  ) {
-    super(id, start, end, color, segments)
-  }
-}
-
-// #endregion
-
-type Drawable = Ball | Paddle | Wall
-type Paddles = [Paddle, Paddle]
-type Walls = [Wall, Wall, Wall, Wall]
-type Board = [Ball, ...Paddles, ...Walls, Wet]
