@@ -15,7 +15,10 @@ onMounted(() => {
 
   const offscreen = canvas.value.transferControlToOffscreen()
 
-  pongWorker.postMessage({ type: 'init', value: { canvas: offscreen } }, [offscreen])
+  pongWorker.postMessage({
+    type: 'init',
+    value: { canvas: offscreen, devicePixelRatio: window.devicePixelRatio },
+  }, [offscreen])
 })
 
 function isHtmlElement<T extends HTMLElement>(element: unknown): element is T {

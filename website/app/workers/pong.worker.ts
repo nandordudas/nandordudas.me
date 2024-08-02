@@ -3,6 +3,8 @@
 import type { Drawable } from './lib/types'
 
 import { Ball } from './lib/ball'
+import { ContextMissingError } from './lib/errors'
+import { Game } from './lib/game'
 import { Paddle } from './lib/paddle'
 import { Vector } from './lib/vector'
 import { Wall } from './lib/wall'
@@ -15,7 +17,7 @@ const enum EventName {
 type CustomEvent = keyof typeof EventName
 
 interface EventPayloadMap {
-  [EventName.init]: { canvas: OffscreenCanvas }
+  [EventName.init]: { canvas: OffscreenCanvas, devicePixelRatio: number }
   [EventName.start]: never
 }
 
@@ -56,14 +58,18 @@ let rafId = 0
 let lastTimestamp = 0
 
 interface State {
+  devicePixelRatio: number
   context2D: OffscreenCanvasRenderingContext2D | null
   ball: Ball
   walls: [Wall, Wall, Wall, Wall]
   paddles: [Paddle, Paddle]
   drawables: Drawable[]
+  /*  */
+  game: Game
 }
 
 const state: State = {
+  devicePixelRatio: 1,
   context2D: null as OffscreenCanvasRenderingContext2D | null,
   // TODO: check greater velocity value than 4, eg. 10
   ball: new Ball(
@@ -76,34 +82,48 @@ const state: State = {
   walls: [] as unknown as [Wall, Wall, Wall, Wall],
   paddles: [] as unknown as [Paddle, Paddle],
   drawables: [] as Drawable[],
+  game: new Game(),
 }
 
 const eventMethodMap: { [K in CustomEvent]: EventHandler<K> } = {
   init: (event) => {
     const canvas = event.data.value.canvas
 
-    state.context2D = canvas.getContext('2d')
+    // state.context2D = canvas.getContext('2d')
 
+    state.devicePixelRatio = event.data.value.devicePixelRatio
+    state.game.devicePixelRatio = state.devicePixelRatio
+
+    state.game.setContext(canvas.getContext('2d'))
+    state.game.setup()
     postMessage({ type: 'initialized' })
 
-    state.walls = getBounds(state.context2D!)
-    state.paddles = getPaddles(state.context2D!)
-    state.drawables = [state.ball, ...state.walls, ...state.paddles]
+    // state.walls = getBounds(state.context2D!)
+    // state.paddles = getPaddles(state.context2D!)
+    // state.drawables = [state.ball, ...state.walls, ...state.paddles]
   },
   start: () => {
-    stop()
+    // stop()
 
-    rafId = requestAnimationFrame(animate)
+    // rafId = requestAnimationFrame(animate)
+
+    state.game.start()
   },
 }
 
 addEventListener('message', (event: CustomMessageEvent): void => {
   _log(event.data)
 
-  const handler = eventMethodMap[event.data.type]
+  try {
+    const handler = eventMethodMap[event.data.type]
 
-  assert(isEventHandler(handler), 'Unknown event type')
-  handler(event)
+    assert(isEventHandler(handler), 'Unknown event type')
+    handler(event)
+  }
+  catch (error) {
+    // TODO: handle various errors
+    console.error(error)
+  }
 })
 
 function animate(timestamp = performance.now()): void {
