@@ -1,6 +1,5 @@
 import { Vector } from '../vector'
 
-import { drawLine } from './helpers'
 import { Particle } from './particle.base'
 
 export class Paddle extends Particle {
@@ -15,7 +14,7 @@ export class Paddle extends Particle {
   }
 
   public override draw(context: OffscreenCanvasRenderingContext2D): void {
-    drawLine(context, {
+    this._drawLine(context, {
       start: new Vector(this.start.x, this.start.y),
       end: new Vector(this.end.x, this.end.y),
       color: this.color,
