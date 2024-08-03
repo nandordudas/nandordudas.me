@@ -26,6 +26,7 @@ export default defineNuxtConfig({
     '@nuxt/ui',
     '@nuxt/eslint',
     '@nuxtjs/seo',
+    '@vueuse/nuxt',
   ],
   extends: [
     '@nuxt/ui-pro',

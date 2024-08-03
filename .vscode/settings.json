@@ -113,13 +113,15 @@
   "cSpell.words": [
     "antfu",
     "bumpp",
+    "dedupe",
     "Dudás",
     "Nándor",
     "Nuxt",
     "nuxtjs",
     "shiki",
     "twemoji",
-    "vitesse"
+    "vitesse",
+    "vueuse"
   ],
   "workbench.editor.customLabels.patterns": {
     "**/layouts/**": "#${filename}",
