@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import PongWorker from '~/workers/pong.worker?worker'
 
+const LEVEL_UP_TIMEOUT = 30_000
+
 const canvas = ref<HTMLCanvasElement | null>(null)
 const pongWorker = ref<Worker | null>(null)
 
@@ -19,7 +21,7 @@ onMounted(() => {
       pongWorker.value?.postMessage({ type: 'start' })
 
       // INFO: refactor paddle speed name and mechanism
-      setInterval(() => pongWorker.value?.postMessage({ type: 'levelUp' }), 30_000)
+      setInterval(() => pongWorker.value?.postMessage({ type: 'levelUp' }), LEVEL_UP_TIMEOUT)
     }
   })
 

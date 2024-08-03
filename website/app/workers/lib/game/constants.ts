@@ -20,7 +20,7 @@ export const LEVELS = {
     },
     ball: {
       color: 'orange',
-      speed: 2,
+      speed: 1.4,
     },
   },
   hard: {
@@ -30,7 +30,7 @@ export const LEVELS = {
     },
     ball: {
       color: 'tomato',
-      speed: 3,
+      speed: 2,
     },
   },
 } as const
