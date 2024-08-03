@@ -53,6 +53,10 @@ export class Vector implements Coordinate {
     return new Vector(-this.y, this.x)
   }
 
+  public clone(): Vector {
+    return new Vector(this.x, this.y)
+  }
+
   public toJSON(): string {
     return `${this.constructor.name}(${this.x},${this.y})`
   }

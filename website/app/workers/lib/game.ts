@@ -142,7 +142,7 @@ export class Game {
       randomBetween(4, canvas.height - 4),
     )
 
-    this._ball.velocity = new Vector(randomBetween(4, 4), randomBetween(4, 4))
+    this._ball.velocity = new Vector(randomBetween(1, 1), randomBetween(1, 1))
 
     this.start()
 
@@ -272,6 +272,7 @@ export class Game {
       return
 
     this._ball.display(this._context!)
+    this._drawBallPath(this._context!, this._ball)
   }
 
   private _clearCanvas(): void {
@@ -351,5 +352,111 @@ export class Game {
 
     // eslint-disable-next-line no-console
     console.log('[WebWorker::Game]', ...args)
+  }
+
+  private _drawBallPath(context: OffscreenCanvasRenderingContext2D, ball: Ball): void {
+    const canvas = context.canvas
+    const startPoint = ball.position.clone()
+    const endPoint = this._calculateEndPoint(ball)
+
+    // Debugging: Log start and end points
+    this._log('Start Point:', startPoint)
+    this._log('End Point:', endPoint)
+
+    const segments = this._calculatePathSegments(startPoint, endPoint, canvas.width, canvas.height)
+
+    // Debugging: Log segments array
+    this._log('Segments:', segments)
+
+    context.strokeStyle = 'rgba(255, 255, 255, 0.3)' // semi-transparent white
+
+    segments.forEach((segment) => {
+      context.beginPath()
+      context.moveTo(segment.start.x, segment.start.y)
+      context.lineTo(segment.end.x, segment.end.y)
+
+      context.stroke()
+    })
+
+    // For debugging: log the number of segments
+    this._log(`Number of segments: ${segments.length}`)
+  }
+
+  private _calculateEndPoint(ball: Ball): Vector {
+    const [leftPaddle, rightPaddle] = this._paddles
+    const paddleX = ball.velocity.x > 0 ? rightPaddle.end.x : leftPaddle.end.x
+    const offset = Math.abs(paddleX - ball.position.x)
+    const t = offset / Math.abs(ball.velocity.x)
+
+    return ball.position.add(ball.velocity.multiply(t))
+  }
+
+  private _findNextIntersection(
+    start: Vector,
+    direction: Vector,
+    width: number,
+    height: number,
+  ): { point: Vector, axis: 'horizontal' | 'vertical' } | null {
+    const tTop = -start.y / direction.y
+    const tBottom = (height - start.y) / direction.y
+    const tLeft = -start.x / direction.x
+    const tRight = (width - start.x) / direction.x
+
+    const intersections = [
+      { t: tTop, axis: 'horizontal' as const, y: 0 },
+      { t: tBottom, axis: 'horizontal' as const, y: height },
+      { t: tLeft, axis: 'vertical' as const, x: 0 },
+      { t: tRight, axis: 'vertical' as const, x: width },
+    ].filter(i => i.t > 0 && i.t <= 1)
+
+    if (intersections.length === 0)
+      return null
+
+    const nearest = intersections.reduce((a, b) => a.t < b.t ? a : b)
+    const point = start.add(direction.multiply(nearest.t))
+
+    return {
+      point,
+      axis: nearest.axis,
+    }
+  }
+
+  private _calculatePathSegments(
+    start: Vector,
+    end: Vector,
+    width: number,
+    height: number,
+  ): { start: Vector, end: Vector }[] {
+    const segments: { start: Vector, end: Vector }[] = []
+    const maxBounces = 10 // Prevent infinite loops
+
+    let currentPoint = start.clone()
+    let remainingVector = end.subtract(start)
+    let bounceCount = 0
+
+    while (remainingVector.magnitude() > 0.1 && bounceCount < maxBounces) {
+      const nextIntersection = this._findNextIntersection(currentPoint, remainingVector, width, height)
+
+      if (!nextIntersection) {
+        // No more intersections, add final segment
+        segments.push({ start: currentPoint, end })
+
+        break
+      }
+
+      segments.push({ start: currentPoint, end: nextIntersection.point })
+      currentPoint = nextIntersection.point
+      remainingVector = end.subtract(currentPoint)
+
+      // Apply reflection
+      if (nextIntersection.axis === 'vertical')
+        remainingVector.y *= -1
+      else
+        remainingVector.x *= -1
+
+      bounceCount++
+    }
+
+    return segments
   }
 }
