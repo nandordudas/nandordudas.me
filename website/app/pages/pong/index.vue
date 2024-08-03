@@ -1,17 +1,19 @@
 <script setup lang="ts">
 import PongWorker from '~/workers/pong.worker?worker'
 
-const LEVEL_UP_TIMEOUT = 30_000
+const LEVEL_UP_INTERVAL = 30_000
 
 const canvas = ref<HTMLCanvasElement | null>(null)
 const pongWorker = ref<Worker | null>(null)
 
-const { up, down } = useMagicKeys()
+const { up, down, r } = useMagicKeys()
 
 onMounted(() => {
   assert(isHtmlElement<HTMLCanvasElement>(canvas.value), 'Element must be an HTML element')
 
   pongWorker.value = new PongWorker()
+
+  let _intervalId: number
 
   pongWorker.value.addEventListener('message', (event) => {
     // eslint-disable-next-line no-console
@@ -20,8 +22,9 @@ onMounted(() => {
     if (event.data.type === 'initialized') {
       pongWorker.value?.postMessage({ type: 'start' })
 
+      // TODO: run interval only when the game is running
       // INFO: refactor paddle speed name and mechanism
-      setInterval(() => pongWorker.value?.postMessage({ type: 'levelUp' }), LEVEL_UP_TIMEOUT)
+      _intervalId = window.setInterval(() => pongWorker.value?.postMessage({ type: 'levelUp' }), LEVEL_UP_INTERVAL)
     }
   })
 
@@ -64,6 +67,9 @@ watchEffect(() => {
 
   if (down?.value)
     return move('down')
+
+  if (r?.value)
+    return restartGame()
 
   move('stop')
 })

@@ -31,32 +31,26 @@ type EventHandler<K extends CustomEvent> = (event: MessageEvent<Extract<MessageE
 // eslint-disable-next-line no-console
 const log = console.log.bind(console)
 
-interface State {
-  game: Game
-}
-
-const state: State = {
-  game: new Game(),
-}
+const game = new Game()
 
 const eventMethodMap: { [K in CustomEvent]: EventHandler<K> } = {
   init: (event) => {
     const { canvas, devicePixelRatio } = event.data.value
 
     // INFO: devicePixelRatio is not supported yet
-    state.game.devicePixelRatio = 1 ?? devicePixelRatio
+    game.devicePixelRatio = 1 ?? devicePixelRatio
 
-    state.game.setContext(canvas.getContext('2d'))
+    game.setContext(canvas.getContext('2d'))
 
     postMessage({ type: 'initialized' })
   },
   start: () => {
-    state.game.setup()
-    state.game.start()
+    game.setup()
+    game.start()
   },
-  restart: state.game.reset.bind(state.game),
-  move: event => state.game.setPaddleDirection(event.data.value.direction),
-  levelUp: state.game.upgradeLevel.bind(state.game),
+  restart: game.reset.bind(game),
+  move: event => game.setPaddleDirection(event.data.value.direction),
+  levelUp: game.upgradeLevel.bind(game),
 }
 
 addEventListener('message', (event: CustomMessageEvent): void => {

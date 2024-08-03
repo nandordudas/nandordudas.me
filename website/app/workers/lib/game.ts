@@ -4,29 +4,34 @@ import type { Board, Drawable, Level, Paddles, Walls } from './game/type'
 import { ContextMissingError } from './errors'
 import { Ball } from './game/ball'
 import { Direction, FPS, LEVELS, MAX_DELTA_TIME, Position } from './game/constants'
-import { logger, randomBetween } from './game/helpers'
+import { randomBetween } from './game/helpers'
 import { Net } from './game/net'
 import { Paddle } from './game/paddle'
 import { Wall } from './game/wall'
 import { Vector } from './vector'
 
 export class Game {
-  public devicePixelRatio = 1.0
+  public devicePixelRatio: number = 1.0
 
-  private _debug: boolean = true
+  private _debug: boolean = import.meta.dev
   private _lastTimestamp: number = 0.0
   private _rafId: number = 0
   private _context: OffscreenCanvasRenderingContext2D | null = null
   private _level: Level = 'easy'
-  private _paddlePadding: number = 8
+  private _paddlePadding: number = 10
   private _paddleDirection: Direction = Direction.Stop
   private _extraSpace: number = 10
-
+  private _isRunning: boolean = false
+  /*  */
   private _ball: Ball
   private _paddles: Paddles
   private _walls: Walls
   private _net: Net
   private _drawables: Board
+
+  public get isRunning() {
+    return this._isRunning
+  }
 
   constructor() {
     const ballSpeed = LEVELS[this._level].ball.speed * this.devicePixelRatio
@@ -50,8 +55,7 @@ export class Game {
     this._net = new Net('net')
     this._drawables = [this._ball, ...this._paddles, ...this._walls, this._net]
 
-    if (this._debug)
-      logger.log('[Game]', 'Initialized')
+    this._log('Initialized')
   }
 
   public setup(): void {
@@ -82,10 +86,6 @@ export class Game {
     }
 
     function setupWalls(drawable: Drawable): void {
-      setupHorizontalWalls(drawable)
-    }
-
-    function setupHorizontalWalls(drawable: Drawable): void {
       if (drawable.hasId(Position.Top))
         drawable.setPosition(new Vector(0, 0), new Vector(canvas.width, 0))
 
@@ -97,8 +97,7 @@ export class Game {
       drawable.setPosition(new Vector(halfWidth - 1, 0), new Vector(halfWidth - 1, canvas.height))
     }
 
-    if (this._debug)
-      logger.log('[Game]', 'Setup done')
+    this._log('Setup done')
   }
 
   /**
@@ -113,8 +112,7 @@ export class Game {
     context.canvas.width *= this.devicePixelRatio
     context.canvas.height *= this.devicePixelRatio
 
-    if (this._debug)
-      logger.log('[Game]', 'Context has been set')
+    this._log('Context has been set')
   }
 
   public start(): void {
@@ -122,8 +120,7 @@ export class Game {
 
     this._rafId = requestAnimationFrame(this._animate.bind(this))
 
-    if (this._debug)
-      logger.log('[Game]', 'Started')
+    this._log('Started')
   }
 
   public stop(isStart = false): void {
@@ -132,12 +129,12 @@ export class Game {
     this._lastTimestamp = 0
     this._rafId = 0
 
-    if (this._debug && !isStart)
-      logger.log('[Game]', 'Stopped')
+    if (!isStart)
+      this._log('Stopped')
   }
 
   public reset(): void {
-    const canvas = this._context!.canvas
+    const { canvas } = this._context!
 
     // INFO: pretty wild solution, need to find a better one
     this._ball.position = new Vector(
@@ -148,6 +145,10 @@ export class Game {
     this._ball.velocity = new Vector(randomBetween(4, 4), randomBetween(4, 4))
 
     this.start()
+
+    this._isRunning = true
+
+    postMessage({ type: 'data', value: { level: this._level, isRunning: true } })
   }
 
   public setPaddleDirection(direction: Direction): void {
@@ -165,7 +166,7 @@ export class Game {
     if (!rightPaddle)
       return
 
-    const canvas = this._context!.canvas
+    const { canvas } = this._context!
     const paddleHeight = rightPaddle.end.y - rightPaddle.start.y
     const paddleSpeed = LEVELS[this._level].paddle.speed * (dt / FPS)
 
@@ -208,7 +209,6 @@ export class Game {
     this._level = level
   }
 
-  // eslint-disable-next-line complexity
   private _changeLevel(direction: Direction): void {
     const precendentLevel = ['easy', 'medium', 'hard'] as const
     const currentLevel = precendentLevel.findIndex(level => level === this._level)
@@ -223,8 +223,7 @@ export class Game {
 
     this._ball.velocity = this._ball.velocity.multiply(ballSpeed)
 
-    if (this._debug)
-      logger.log('[Game]', 'Changed level to', this._level)
+    this._log('Changed level to', this._level)
   }
 
   private _move(dt: number): void {
@@ -240,8 +239,13 @@ export class Game {
     this._move(dt)
     this._updatePaddlePosition(dt)
 
-    if (this._isGameOver())
+    if (this._isGameOver()) {
+      this._isRunning = false
+
+      postMessage({ type: 'data', value: { isRunning: false } })
+
       return this.stop()
+    }
 
     this.__checkCollisions(dt)
     this._draw(dt)
@@ -254,11 +258,10 @@ export class Game {
 
     // INFO: enable Chrome DevTools to see FPS: Rendering / Frame Rendering Stats
     const fps = 1_000 / dt
-    const lowerTreshold = 58
-    const upperTreshold = 63
+    const threshold = { lower: 58, upper: 63 } as const
 
-    if (fps < lowerTreshold || fps > upperTreshold)
-      logger.log('[Game]', 'Animating', fps)
+    if (fps < threshold.lower || fps > threshold.upper)
+      this._log('Animating', { fps })
   }
 
   private _draw(_dt: number): void {
@@ -335,5 +338,13 @@ export class Game {
     const ballToClosest = this.__closestPointBallToWall(ball, particle).subtract(ball.position)
 
     return ballToClosest.magnitude() <= ball.radius
+  }
+
+  private _log(...args: unknown[]): void {
+    if (!this._debug)
+      return
+
+    // eslint-disable-next-line no-console
+    console.log('[WebWorker::Game]', ...args)
   }
 }
