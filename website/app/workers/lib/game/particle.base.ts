@@ -35,6 +35,10 @@ export abstract class Particle implements DrawableProps {
     this.end = end
   }
 
+  public unit(): Vector {
+    return this.end.subtract(this.start).normalize()
+  }
+
   protected _drawArc(context: OffscreenCanvasRenderingContext2D, options: DrawArcProps): void {
     const TAU = Math.PI * 2
 

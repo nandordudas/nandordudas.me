@@ -1,5 +1,6 @@
 /// <reference lib="webworker" />
 
+import type { Direction } from './lib/game/constants'
 import type { Drawable } from './lib/types'
 
 import { Ball } from './lib/ball'
@@ -11,6 +12,9 @@ import { Wall } from './lib/wall'
 const enum EventName {
   init = 'init',
   start = 'start',
+  restart = 'restart',
+  move = 'move',
+  levelUp = 'levelUp',
 }
 
 type CustomEvent = keyof typeof EventName
@@ -18,6 +22,9 @@ type CustomEvent = keyof typeof EventName
 interface EventPayloadMap {
   [EventName.init]: { canvas: OffscreenCanvas, devicePixelRatio: number }
   [EventName.start]: never
+  [EventName.restart]: never
+  [EventName.move]: { direction: Direction }
+  [EventName.levelUp]: never
 }
 
 type MessageEventPayload = {
@@ -57,7 +64,6 @@ let rafId = 0
 let lastTimestamp = 0
 
 interface State {
-  devicePixelRatio: number
   context2D: OffscreenCanvasRenderingContext2D | null
   ball: Ball
   walls: [Wall, Wall, Wall, Wall]
@@ -68,7 +74,6 @@ interface State {
 }
 
 const state: State = {
-  devicePixelRatio: 1,
   context2D: null as OffscreenCanvasRenderingContext2D | null,
   // TODO: check greater velocity value than 4, eg. 10
   ball: new Ball(
@@ -86,27 +91,27 @@ const state: State = {
 
 const eventMethodMap: { [K in CustomEvent]: EventHandler<K> } = {
   init: (event) => {
-    const canvas = event.data.value.canvas
+    const { canvas, devicePixelRatio } = event.data.value
 
-    // state.context2D = canvas.getContext('2d')
-
-    state.devicePixelRatio = event.data.value.devicePixelRatio
-    state.game.devicePixelRatio = state.devicePixelRatio
+    // INFO: devicePixelRatio is not supported yet
+    state.game.devicePixelRatio = 1 ?? devicePixelRatio
 
     state.game.setContext(canvas.getContext('2d'))
-    state.game.setup()
-    postMessage({ type: 'initialized' })
 
-    // state.walls = getBounds(state.context2D!)
-    // state.paddles = getPaddles(state.context2D!)
-    // state.drawables = [state.ball, ...state.walls, ...state.paddles]
+    postMessage({ type: 'initialized' })
   },
   start: () => {
-    // stop()
-
-    // rafId = requestAnimationFrame(animate)
-
+    state.game.setup()
     state.game.start()
+  },
+  restart: () => {
+    state.game.reset()
+  },
+  move: (event) => {
+    state.game.setPaddleDirection(event.data.value.direction)
+  },
+  levelUp: () => {
+    state.game.upgradeLevel()
   },
 }
 

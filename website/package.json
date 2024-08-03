@@ -30,6 +30,8 @@
     "@nuxt/ui": "^2.18.3",
     "@nuxtjs/i18n": "^8.3.3",
     "@nuxtjs/seo": "2.0.0-rc.16",
+    "@vueuse/core": "^10.11.0",
+    "@vueuse/nuxt": "^10.11.0",
     "change-case": "^5.4.4",
     "eslint": "^9.8.0",
     "eslint-plugin-format": "^0.1.2",
