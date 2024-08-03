@@ -30,6 +30,18 @@ export class Ball extends Particle implements MoveableProps {
     })
   }
 
+  public display(context: OffscreenCanvasRenderingContext2D): void {
+    this._displayVelocity(context)
+  }
+
+  private _displayVelocity(context: OffscreenCanvasRenderingContext2D): void {
+    this._drawLine(context, {
+      start: this.position,
+      end: this.position.add(this.velocity.multiply(4)),
+      color: 'tomato',
+    })
+  }
+
   private _reposition(_dt: number): void {
     this.position = this.position.add(this.velocity) // .multiply(dt)
   }

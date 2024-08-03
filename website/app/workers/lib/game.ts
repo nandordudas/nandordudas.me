@@ -267,6 +267,11 @@ export class Game {
   private _draw(_dt: number): void {
     this._clearCanvas()
     this._drawables.forEach(drawable => drawable.draw(this._context!))
+
+    if (!this._debug)
+      return
+
+    this._ball.display(this._context!)
   }
 
   private _clearCanvas(): void {
