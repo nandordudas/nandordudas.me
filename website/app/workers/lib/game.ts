@@ -272,7 +272,6 @@ export class Game {
       return
 
     this._ball.display(this._context!)
-    this._drawBallPath(this._context!, this._ball)
   }
 
   private _clearCanvas(): void {
