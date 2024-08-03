@@ -1,15 +1,3 @@
 export default defineAppConfig({
-  ui: {
-    // button: {
-    //   rounded: 'rounded-full',
-    //   default: {
-    //     size: 'md',
-    //   },
-    // },
-    icons: {
-      dynamic: true,
-    },
-    // primary: 'red',
-    // gray: 'stone',
-  },
+  // https://github.com/nuxt/ui/releases/tag/v2.18.0
 })

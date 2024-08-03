@@ -30,7 +30,7 @@ assert(article.value !== undefined, 'Article not found')
       draggable="false"
     />
 
-    <UPageHeader v-bind="article" :icon="null">
+    <UPageHeader v-bind="article" icon="">
       <template #headline>
         <UBadge v-bind="article.badge" variant="subtle" />
 

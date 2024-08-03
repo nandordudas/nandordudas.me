@@ -31,7 +31,7 @@ const links: HeaderLink[] = [
 
     <template #right>
       <UTooltip text="Search" :shortcuts="[metaSymbol, 'K']">
-        <UContentSearchButton size="xl" :label="null" />
+        <UContentSearchButton size="xl" label="" />
       </UTooltip>
 
       <UTooltip :text="$colorMode.preference === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'">

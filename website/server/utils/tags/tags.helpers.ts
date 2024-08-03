@@ -55,7 +55,7 @@ export function sortFields<const T extends Record<string, any>, R extends QueryS
     sort.find(item => item.name === name)?.order ?? SORT_ORDER.ASC
 
   const genericCollator: Collator<unknown> = (next, prev, factor) =>
-    compare(toString(next), toString(prev)) * factor as SortOrder
+    compare(String(next), String(prev)) * factor as SortOrder
 
   const collatorMap = allowedFieldNames.reduce((acc, fieldName) => {
     return acc.has(fieldName)
