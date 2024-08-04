@@ -120,6 +120,7 @@
     "nuxtjs",
     "shiki",
     "twemoji",
+    "unstub",
     "vitesse",
     "vueuse"
   ],
