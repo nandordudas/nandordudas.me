@@ -193,14 +193,28 @@ class Vector implements CoordinateContract {
 }
 
 class Point implements BodyContract {
+  /**
+   * @default Vector.zero()
+   */
   public velocity: Vector = Vector.zero()
+
+  /**
+   * @default Vector.zero()
+   */
   public acceleration: Vector = Vector.zero()
 
+  /**
+   * @default false
+   */
   #forceApplied: boolean = false
 
   constructor(
     public position: Vector,
-    public readonly mass: number = 1,
+
+    /**
+     * @default 1.0
+     */
+    public readonly mass: number = 1.0,
   ) { }
 
   /**
@@ -225,9 +239,24 @@ class Point implements BodyContract {
 }
 
 class Line implements LineContract, BodyContract {
+  /**
+   * @default Vector.zero()
+   */
   public readonly velocity: Vector = Vector.zero()
+
+  /**
+   * @default Vector.zero()
+   */
   public readonly acceleration: Vector = Vector.zero()
+
+  /**
+   * @default Vector.zero()
+   */
   public readonly position: Vector = Vector.zero()
+
+  /**
+   * @default Infinity
+   */
   public readonly mass: number = Infinity
 
   public get length(): number {
@@ -241,6 +270,11 @@ class Line implements LineContract, BodyContract {
 }
 
 class Renderer {
+  /**
+   * @default 2 * Math.PI
+   */
+  public static readonly TAU = 2 * Math.PI
+
   #lastTimestamp: number | null = null
   #rafId: number | null = null
 
@@ -296,6 +330,25 @@ class Renderer {
     this.#lastTimestamp = null
   }
 
+  public drawLine(line: Line): void {
+    this.context.beginPath()
+    this.context.moveTo(line.start.x, line.start.y)
+    this.context.lineTo(line.end.x, line.end.y)
+    this.context.stroke()
+    // this.context.closePath()
+  }
+
+  /**
+   * @param point Point to draw.
+   * @param radius Circle radius. Defaults to `4`.
+   */
+  public drawPoint(point: Point, radius: number = 4): void {
+    this.context.beginPath()
+    this.context.arc(point.position.x, point.position.y, radius, 0, Renderer.TAU)
+    this.context.fill()
+    // this.context.closePath()
+  }
+
   #cancelIteration(): void {
     if (this.#rafId === null)
       return
@@ -306,12 +359,151 @@ class Renderer {
   }
 }
 
+interface PhysicsEngineContract {
+  gravity: number
+  friction: number
+  points: Point[]
+  lines: Line[]
+  addPoint: (point: Point) => void
+  addLine: (line: Line) => void
+  update: (deltaTime: number) => void
+}
+
+class PhysicsEngine implements PhysicsEngineContract {
+  /**
+   * @default 0.0
+   */
+  public readonly gravity: number = 0.0
+
+  /**
+   * @default 1.0
+   */
+  public readonly friction: number = 1.0
+
+  /**
+   * @default []
+   */
+  public points: Point[] = []
+
+  /**
+   * @default []
+   */
+  public lines: Line[] = []
+
+  constructor(public renderer: Renderer) { }
+
+  public start(): void {
+    this.renderer.render(this.update)
+  }
+
+  public stop(): void {
+    this.renderer.stop()
+  }
+
+  /**
+   * @modifies This physics engine instance, `lines`.
+   */
+  public addLine(line: Line): void {
+    this.lines.push(line)
+  }
+
+  /**
+   * @modifies This physics engine instance, `points`.
+   */
+  public addPoint(point: Point): void {
+    this.points.push(point)
+  }
+
+  public update = (deltaTime: number): void => {
+    for (const point of this.points) {
+      const force = point.velocity.multiply(-1 * this.friction * this.gravity)
+
+      point.applyForce(force)
+      point.update(deltaTime)
+      this.renderer.drawPoint(point)
+    }
+
+    for (const line of this.lines)
+      this.renderer.drawLine(line)
+
+    // TODO: Add collision detection
+  }
+}
+
+function _main(): void {
+  const context = { canvas: { width: 800, height: 600 } } as OffscreenCanvasRenderingContext2D
+
+  const canvasWidth = context.canvas.width
+  const canvasHeight = context.canvas.height
+  const canvasCenter = new Vector(canvasWidth / 2, canvasHeight / 2)
+
+  const quadrants = {
+    quarter: {
+      top: {
+        left: {
+          start: new Vector(0, 0),
+          end: new Vector(canvasCenter.x, canvasCenter.y),
+        },
+        right: {
+          start: new Vector(canvasCenter.x, 0),
+          end: new Vector(context.canvas.width, canvasCenter.y),
+        },
+      },
+      bottom: {
+        left: {
+          start: new Vector(0, canvasCenter.y),
+          end: new Vector(canvasCenter.x, context.canvas.height),
+        },
+        right: {
+          start: new Vector(canvasCenter.x, canvasCenter.y),
+          end: new Vector(canvasWidth, canvasHeight),
+        },
+      },
+    },
+    half: {
+      right: {
+        start: new Vector(canvasCenter.x, 0),
+        end: new Vector(canvasWidth, canvasHeight),
+      },
+      left: {
+        start: new Vector(0, 0),
+        end: new Vector(canvasCenter.x, canvasHeight),
+      },
+    },
+  }
+
+  const randomPointLeft = Vector.zero().randomize(quadrants.half.left.start, quadrants.half.left.end)
+
+  const { bottom, top } = {
+    top: {
+      left: new Vector(0, 0),
+      right: new Vector(context.canvas.width, 0),
+    },
+    bottom: {
+      left: new Vector(0, context.canvas.height),
+      right: new Vector(context.canvas.width, context.canvas.height),
+    },
+  }
+
+  const renderer = new Renderer(context)
+  const engine = new PhysicsEngine(renderer)
+
+  engine.addPoint(new Point(randomPointLeft))
+
+  engine.addLine(new Line(top.left, top.right))
+  engine.addLine(new Line(top.right, bottom.right))
+  engine.addLine(new Line(bottom.left, bottom.right))
+  engine.addLine(new Line(top.left, bottom.left))
+
+  // engine.start()
+}
+
 if (import.meta.vitest) {
   const { beforeEach, afterEach, it, expect, describe, vi } = import.meta.vitest
 
   const canvasWidthMock = 800
   const canvasHeightMock = 600
-  const noop = () => {}
+  const noop = () => { }
 
   /**
    * Advance timers twice to simulate two animation frames.
@@ -751,7 +943,7 @@ if (import.meta.vitest) {
         })
 
         it('should continue calling requestAnimationFrame', () => {
-          // INFO: Cannot be mocked.
+          // INFO: Cannot be mocked outside of a spec
           const requestAnimationFrameMock = vi
             .spyOn(globalThis, 'requestAnimationFrame')
             .mockImplementation(cb => setTimeout(() => cb(performance.now()), 0) as unknown as number)
