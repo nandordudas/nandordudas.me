@@ -3,17 +3,18 @@ import * as utils from '../utils'
 import { Vector } from '../vector'
 
 const spyMathRandom = vi.spyOn(Math, 'random')
+
 const spyRandom = vi.spyOn(utils, 'random')
 
-describe('vector', () => {
-  const spyAdd = vi.spyOn(Vector.prototype, 'add')
-  const spyMultiply = vi.spyOn(Vector.prototype, 'multiply')
-  const spyMagnitudeSquared = vi.spyOn(Vector.prototype, 'magnitudeSquared')
-  const spyMagnitude = vi.spyOn(Vector.prototype, 'magnitude')
-  const spyNormalize = vi.spyOn(Vector.prototype, 'normalize')
-  const spyInvertX = vi.spyOn(Vector.prototype, 'invertX')
-  const spyInvertY = vi.spyOn(Vector.prototype, 'invertY')
+const spyAdd = vi.spyOn(Vector.prototype, 'add')
+const spyMultiply = vi.spyOn(Vector.prototype, 'multiply')
+const spyMagnitudeSquared = vi.spyOn(Vector.prototype, 'magnitudeSquared')
+const spyMagnitude = vi.spyOn(Vector.prototype, 'magnitude')
+const spyNormalize = vi.spyOn(Vector.prototype, 'normalize')
+const spyInvertX = vi.spyOn(Vector.prototype, 'invertX')
+const spyInvertY = vi.spyOn(Vector.prototype, 'invertY')
 
+describe('vector', () => {
   describe('static', () => {
     it('should create a new zero vector', () => {
       const v = Vector.zero()
@@ -30,13 +31,24 @@ describe('vector', () => {
       expect(v1).toEqual({ x: 3, y: 4 })
     })
 
-    it('should get dot product', () => {
+    it('should get dot product of two vectors', () => {
       const v0 = new Vector(2, 3)
       const v1 = new Vector(4, 5)
 
       expect(Vector.dot(v0, v1)).toBe(23)
       expect(v0).toEqual({ x: 2, y: 3 })
       expect(v1).toEqual({ x: 4, y: 5 })
+    })
+
+    it('should get randomized vector between two vectors', () => {
+      const v0 = new Vector(1, 1)
+      const v1 = new Vector(3, 3)
+
+      spyMathRandom.mockReturnValue(0.5)
+
+      expect(Vector.randomize(v0, v1)).toEqual({ x: 2, y: 2 })
+      expect(spyMathRandom).toHaveBeenCalledTimes(2)
+      expect(spyRandom).toHaveBeenCalledWith(1, 3)
     })
   })
 
@@ -179,18 +191,6 @@ describe('vector', () => {
 
         expect(v.normal()).toEqual({ x: -12, y: 5 })
         expect(v).toEqual({ x: 5, y: 12 })
-      })
-
-      it('should get randomized vector', () => {
-        const v0 = new Vector(2, 2)
-        const v1 = new Vector(1, 1)
-        const v2 = new Vector(3, 3)
-
-        spyMathRandom.mockReturnValue(0.5)
-
-        expect(v0.randomize(v1, v2)).toEqual({ x: 2, y: 2 })
-        expect(spyMathRandom).toHaveBeenCalledTimes(2)
-        expect(spyRandom).toHaveBeenCalledWith(1, 3)
       })
 
       describe('mutations', () => {

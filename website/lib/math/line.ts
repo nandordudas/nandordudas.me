@@ -1,4 +1,4 @@
-import type { BodyContract, LineContract } from './type'
+import type { BodyContract, LineContract } from './types'
 
 import { Vector } from './vector'
 

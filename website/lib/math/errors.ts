@@ -5,7 +5,6 @@ export class DivideByZeroError extends Error {
     super('Cannot divide by zero')
 
     Object.setPrototypeOf(this, DivideByZeroError.prototype)
-    Error.captureStackTrace(this, DivideByZeroError)
   }
 }
 
@@ -16,6 +15,5 @@ export class ContextMissingError extends Error {
     super('Context missing')
 
     Object.setPrototypeOf(this, ContextMissingError.prototype)
-    Error.captureStackTrace(this, ContextMissingError)
   }
 }

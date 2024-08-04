@@ -35,7 +35,7 @@ describe('point', () => {
       expect(point1.acceleration).toEqual({ x: 0.5, y: 0.75 })
     })
 
-    it('should update', () => {
+    it('should update velocity ', () => {
       const mass = 4
       const force = new Vector(2, 3)
       const point0 = new Point(new Vector(2, 3))
