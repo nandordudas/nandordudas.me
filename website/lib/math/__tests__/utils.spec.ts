@@ -5,10 +5,9 @@ const spyMathRandom = vi.spyOn(Math, 'random')
 
 describe('utils', () => {
   describe('random', () => {
-    const min = 0
-    const max = 10
-
     it('should return a random number between min and max', () => {
+      const min = 0
+      const max = 10
       const result = random(min, max)
 
       expect(result).toBeGreaterThanOrEqual(min)

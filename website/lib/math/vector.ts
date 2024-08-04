@@ -1,8 +1,11 @@
-import type { CoordinateContract } from './type'
+import type { CoordinateContract } from './types'
 
 import { DivideByZeroError } from './errors'
 import { random } from './utils'
 
+/**
+ * This class is immutable, meaning its methods always return new instances.
+ */
 export class Vector implements CoordinateContract {
   public x: number
   public y: number
@@ -17,6 +20,10 @@ export class Vector implements CoordinateContract {
 
   public static dot(v1: CoordinateContract, v2: CoordinateContract): number {
     return v1.x * v2.x + v1.y * v2.y
+  }
+
+  public static randomize(from: Vector, to: Vector): Vector {
+    return new Vector(random(from.x, to.x), random(from.y, to.y))
   }
 
   /**
@@ -89,10 +96,10 @@ export class Vector implements CoordinateContract {
    * @alias Vector#unit
    */
   public normalize(): Vector {
-    const mag = this.magnitude()
+    const magnitude = this.magnitude()
 
-    if (mag > 0)
-      return this.multiply(1 / mag)
+    if (magnitude > 0)
+      return this.multiply(1 / magnitude)
 
     return new Vector(0, 0)
   }
@@ -111,14 +118,10 @@ export class Vector implements CoordinateContract {
     return this.y / this.x
   }
 
-  public randomize(from: Vector, to: Vector): Vector {
-    return new Vector(random(from.x, to.x), random(from.y, to.y))
-  }
-
   /**
    * @modifies This vector instance.
    */
-  public invertX(): Vector {
+  public invertX(): this {
     this.x *= -1
 
     return this
@@ -127,7 +130,7 @@ export class Vector implements CoordinateContract {
   /**
    * @modifies This vector instance.
    */
-  public invertY(): Vector {
+  public invertY(): this {
     this.y *= -1
 
     return this
@@ -136,7 +139,7 @@ export class Vector implements CoordinateContract {
   /**
    * @modifies This vector instance.
    */
-  public invert(): Vector {
+  public invert(): this {
     return this.invertX().invertY()
   }
 

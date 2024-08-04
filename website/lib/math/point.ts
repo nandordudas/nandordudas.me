@@ -1,4 +1,4 @@
-import type { BodyContract } from './type'
+import type { BodyContract } from './types'
 
 import { Vector } from './vector'
 
@@ -16,11 +16,10 @@ export class Point implements BodyContract {
   /**
    * @default false
    */
-  #forceApplied: boolean = false
+  #isForceApplied: boolean = false
 
   constructor(
     public position: Vector,
-
     /**
      * @default 1.0
      */
@@ -28,22 +27,23 @@ export class Point implements BodyContract {
   ) { }
 
   /**
-   * @modifies This point `instance`, `acceleration` will be updated.
+   * @modifies This point instance, `acceleration` and `#isForceApplied will be updated.
    */
   public applyForce(force: Vector): void {
     this.acceleration = this.acceleration.add(force.divide(this.mass))
-    this.#forceApplied = true
+    this.#isForceApplied = true
   }
 
   /**
    * @modifies This point instance, `velocity`, `position` and `acceleration` will be updated.
    */
   public update(deltaTime: number): void {
-    if (!this.#forceApplied)
-      console.warn('No force applied to point. Did you forget to call applyForce() before updating?')
+    if (!this.#isForceApplied)
+      console.warn('No force applied to point. Did you forget to call `applyForce` before updating?')
 
     this.velocity = this.velocity.add(this.acceleration.multiply(deltaTime))
     this.position = this.position.add(this.velocity.multiply(deltaTime))
-    this.acceleration = Vector.zero() // Reset acceleration after each update
+    // INFO: Reset acceleration after each update.
+    this.acceleration = Vector.zero()
   }
 }

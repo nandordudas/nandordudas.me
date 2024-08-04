@@ -47,15 +47,10 @@ describe('renderer', () => {
   })
 
   describe('instance', () => {
-    it('should throw an error if context is missing', () => {
+    it('should throw an error if context is null', () => {
       vi.spyOn(offscreenCanvasMock, 'getContext').mockReturnValueOnce(null)
 
-      expect(() => {
-        context = offscreenCanvasMock.getContext('2d')
-
-        // eslint-disable-next-line no-new
-        new Renderer(context)
-      }).toThrowError(ContextMissingError)
+      expect(() => { const _ = new Renderer(offscreenCanvasMock.getContext('2d')) }).toThrowError(ContextMissingError)
     })
 
     it('should set context', () => {
@@ -63,13 +58,13 @@ describe('renderer', () => {
     })
 
     describe('render', () => {
-      it('should clear context', () => {
+      it('should clear the context', () => {
         renderer.clear()
 
         expect(contextMock.clearRect).toHaveBeenCalledWith(0, 0, CANVAS_WIDTH_MOCK, CANVAS_HEIGHT_MOCK)
       })
 
-      it('should call the callback function with deltaTime', () => {
+      it('should call the callback function with `deltaTime`', () => {
         const callback = vi.fn()
 
         renderer.render(callback)
@@ -79,7 +74,7 @@ describe('renderer', () => {
         expect(callback).toHaveBeenCalledWith(expect.any(Number))
       })
 
-      it('should clear the context before calling the callback', () => {
+      it('should clear the context before calling the `callback`', () => {
         const callback = vi.fn()
 
         renderer.render(callback)
@@ -88,7 +83,7 @@ describe('renderer', () => {
         expect(contextMock.clearRect).toHaveBeenCalledWith(0, 0, CANVAS_WIDTH_MOCK, CANVAS_HEIGHT_MOCK)
       })
 
-      it('should continue calling requestAnimationFrame', () => {
+      it('should continue calling `requestAnimationFrame`', () => {
         // INFO: Cannot be mocked outside of a spec
         const requestAnimationFrameMock = vi
           .spyOn(globalThis, 'requestAnimationFrame')
@@ -100,7 +95,7 @@ describe('renderer', () => {
         expect(requestAnimationFrameMock).toHaveBeenCalledTimes(3)
       })
 
-      it('should cancel the animation frame', () => {
+      it('should cancel the animation', () => {
         const cancelAnimationFrameSpy = vi.spyOn(globalThis, 'cancelAnimationFrame')
 
         renderer.render(noop)

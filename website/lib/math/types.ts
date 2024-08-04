@@ -11,13 +11,9 @@ export interface LineContract {
 
 export interface BodyContract {
   position: CoordinateContract
-  velocity: CoordinateContract // Vector
-  acceleration: CoordinateContract // Vector
+  velocity: CoordinateContract
+  acceleration: CoordinateContract
   mass: number
-}
-
-export interface _RigidBodyContract extends BodyContract {
-  inertia: number
 }
 
 export interface PhysicsEngineContract<T extends BodyContract = BodyContract> {
@@ -25,5 +21,5 @@ export interface PhysicsEngineContract<T extends BodyContract = BodyContract> {
   friction: number
   bodies: T[]
   addBody: <U extends T>(body: U) => U
-  update: (deltaTime: number) => void
+  update: FrameRequestCallback
 }

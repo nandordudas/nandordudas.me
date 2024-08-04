@@ -1,14 +1,10 @@
 import type { Line } from './line'
 import type { Point } from './point'
 
+import { TAU } from './constants'
 import { ContextMissingError } from './errors'
 
 export class Renderer {
-  /**
-   * @default 2 * Math.PI
-   */
-  public static readonly TAU = 2 * Math.PI
-
   #lastTimestamp: number | null = null
   #rafId: number | null = null
 
@@ -20,7 +16,7 @@ export class Renderer {
   }
 
   /**
-   * @throws Will throw {@link ContextMissingError} if context is missing.
+   * @throws Will throw {@link ContextMissingError} if `context` is `null`.
    */
   constructor(public context: OffscreenCanvasRenderingContext2D) {
     if (context === null)
@@ -32,15 +28,10 @@ export class Renderer {
   }
 
   /**
-   * @example
-   * const renderer = new Renderer()
-   * renderer.render((deltaTime) => {
-   *   // ...
-   * })
-   * @modifies This renderer instance, `lastTimestamp` and `raf`.
+   * @modifies This renderer instance, `#lastTimestamp` and `#rafId`.
    */
-  public render(callback: (timestamp: number) => void): void {
-    const animate = (timestamp: number) => {
+  public render(callback: FrameRequestCallback): void {
+    const animate: FrameRequestCallback = (timestamp) => {
       if (this.#lastTimestamp !== null) {
         const deltaTime = (timestamp - this.#lastTimestamp) / 1_000
 
@@ -56,7 +47,7 @@ export class Renderer {
   }
 
   /**
-   * @modifies This renderer instance, `lastTimestamp` and `raf`.
+   * @modifies This renderer instance, `#lastTimestamp` and `#rafId`.
    */
   public stop(): void {
     this.#cancelIteration()
@@ -69,7 +60,6 @@ export class Renderer {
     this.context.moveTo(line.start.x, line.start.y)
     this.context.lineTo(line.end.x, line.end.y)
     this.context.stroke()
-    // this.context.closePath()
   }
 
   /**
@@ -78,11 +68,13 @@ export class Renderer {
    */
   public drawPoint(point: Point, radius: number = 4): void {
     this.context.beginPath()
-    this.context.arc(point.position.x, point.position.y, radius, 0, Renderer.TAU)
+    this.context.arc(point.position.x, point.position.y, radius, 0, TAU)
     this.context.fill()
-    // this.context.closePath()
   }
 
+  /**
+   * @modifies This renderer instance, `#rafId`.
+   */
   #cancelIteration(): void {
     if (this.#rafId === null)
       return

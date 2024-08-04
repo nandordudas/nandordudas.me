@@ -1,48 +1,44 @@
-import { Vector } from './vector'
-
 export function random(min: number, max: number): number {
   return Math.floor(Math.random() * (max - min + 1) + min)
 }
 
 export function noop() { }
 
-export function getQuadrants(context: OffscreenCanvasRenderingContext2D) {
-  const canvasWidth = context.canvas.width
-  const canvasHeight = context.canvas.height
-
-  const canvasCenter = new Vector(canvasWidth / 2, canvasHeight / 2)
+export function canvasQuadrants(canvas: OffscreenCanvas) {
+  const { width, height } = canvas
+  const canvasCenter = { x: width / 2, y: height / 2 }
 
   const quadrants = {
     quarter: {
       top: {
         left: {
-          start: new Vector(0, 0),
-          end: new Vector(canvasCenter.x, canvasCenter.y),
+          start: { x: 0, y: 0 },
+          end: { x: canvasCenter.x, y: canvasCenter.y },
         },
         right: {
-          start: new Vector(canvasCenter.x, 0),
-          end: new Vector(context.canvas.width, canvasCenter.y),
+          start: { x: canvasCenter.x, y: 0 },
+          end: { x: canvas.width, y: canvasCenter.y },
         },
       },
       bottom: {
         left: {
-          start: new Vector(0, canvasCenter.y),
-          end: new Vector(canvasCenter.x, context.canvas.height),
+          start: { x: 0, y: canvasCenter.y },
+          end: { x: canvasCenter.x, y: canvas.height },
         },
         right: {
-          start: new Vector(canvasCenter.x, canvasCenter.y),
-          end: new Vector(canvasWidth, canvasHeight),
+          start: { x: canvasCenter.x, y: canvasCenter.y },
+          end: { x: width, y: height },
         },
       },
     },
     half: {
       right: {
-        start: new Vector(canvasCenter.x, 0),
-        end: new Vector(canvasWidth, canvasHeight),
+        start: { x: canvasCenter.x, y: 0 },
+        end: { x: width, y: height },
       },
       left: {
-        start: new Vector(0, 0),
-        end: new Vector(canvasCenter.x, canvasHeight),
+        start: { x: 0, y: 0 },
+        end: { x: canvasCenter.x, y: height },
       },
     },
   }
@@ -50,15 +46,15 @@ export function getQuadrants(context: OffscreenCanvasRenderingContext2D) {
   return quadrants
 }
 
-export function getCanvasCoordinates(context: OffscreenCanvasRenderingContext2D) {
+export function canvasCoordinates(canvas: OffscreenCanvas) {
   const coordinates = {
     top: {
-      left: new Vector(0, 0),
-      right: new Vector(context.canvas.width, 0),
+      left: { x: 0, y: 0 },
+      right: { x: canvas.width, y: 0 },
     },
     bottom: {
-      left: new Vector(0, context.canvas.height),
-      right: new Vector(context.canvas.width, context.canvas.height),
+      left: { x: 0, y: canvas.height },
+      right: { x: canvas.width, y: canvas.height },
     },
   }
 
