@@ -1,10 +1,15 @@
-import { Points, Walls } from './math/constants'
+import { type GameLevel, Points, Walls } from './math/constants'
 import { Line } from './math/line'
 import { PhysicsEngine } from './math/physics-engine'
 import { Point } from './math/point'
 import { Renderer } from './math/renderer'
 import { canvasCoordinates, canvasQuadrants } from './math/utils'
 import { Vector } from './math/vector'
+
+const ballVelocityValue = {
+  moveRight: [{ x: 100, y: -100 }, { x: 100, y: 100 }],
+  moveLeft: [{ x: -100, y: -100 }, { x: -100, y: 100 }],
+} satisfies Record<string, [Contracts.Coordinate, Contracts.Coordinate]>
 
 /**
  * @throws Will throw {@link ContextMissingError} if context is null, or {@link DivideByZeroError} if `x` is zero when
@@ -19,19 +24,21 @@ import { Vector } from './math/vector'
  *   console.error(error)
  * }
  */
-export function start(context: OffscreenCanvasRenderingContext2D): void {
-  const { bottom, top } = canvasCoordinates(context.canvas)
-  const quadrants = canvasQuadrants(context.canvas)
-
-  const randomCoordinate = Vector.randomize(
-    new Vector(quadrants.half.left.start),
-    new Vector(quadrants.half.left.end),
-  )
-
+export function start(context: OffscreenCanvasRenderingContext2D, _gameLevel?: GameLevel): void {
   const renderer = new Renderer(context)
   const engine = new PhysicsEngine(renderer)
 
-  engine.addPoint(new Point(Points.Ball, randomCoordinate))
+  const { bottom, top } = canvasCoordinates(renderer.context.canvas)
+  const quadrants = canvasQuadrants(renderer.context.canvas)
+
+  // TODO: adjust ball velocity based on game level
+  const ball = new Point(
+    Points.Ball,
+    // Randomize the ball's position in the left half of the canvas.
+    Vector.randomize(quadrants.half.left.start, quadrants.half.left.end),
+  ).setVelocity(Vector.randomize(...ballVelocityValue.moveRight))
+
+  engine.addPoint(ball)
 
   engine.addLine(new Line(Walls.Top, top.left, top.right))
   engine.addLine(new Line(Walls.Right, top.right, bottom.right))
