@@ -50,7 +50,9 @@ describe('renderer', () => {
     it('should throw an error if context is null', () => {
       vi.spyOn(offscreenCanvasMock, 'getContext').mockReturnValueOnce(null)
 
-      expect(() => { const _ = new Renderer(offscreenCanvasMock.getContext('2d')) }).toThrowError(ContextMissingError)
+      expect(() => {
+        const _ = new Renderer(offscreenCanvasMock.getContext('2d'))
+      }).toThrowError(ContextMissingError)
     })
 
     it('should set context', () => {
