@@ -9,7 +9,7 @@ inputs:
   cache:
     required: false
     description: Cache key
-    default: ''
+    default: pnpm
 
 runs:
   using: composite
