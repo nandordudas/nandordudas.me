@@ -15,6 +15,7 @@ concurrency:
 
 env:
   NODE_OPTIONS: --max-old-space-size=6144
+  COMMIT_SHA: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
 
 jobs:
   lint:
@@ -61,7 +62,7 @@ jobs:
 
       - name: Test
         if: github.event_name == 'pull_request'
-        run: pnpm run --filter website test --coverage --changed ${{ github.event.pull_request.head.sha }}
+        run: pnpm run --filter website test --coverage --changed ${{ env.COMMIT_SHA }}
 
       - name: Test
         if: github.event_name == 'push'
