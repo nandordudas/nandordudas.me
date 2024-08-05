@@ -60,9 +60,11 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
+      # TODO: fix changed filter
       - name: Test
         if: github.event_name == 'pull_request'
-        run: pnpm run --filter website test --coverage --changed ${{ env.COMMIT_SHA }}
+        run: pnpm run --filter website test --coverage
+        # run: pnpm run --filter website test --coverage --changed ${{ env.COMMIT_SHA }}
 
       - name: Test
         if: github.event_name == 'push'
