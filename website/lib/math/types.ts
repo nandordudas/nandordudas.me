@@ -1,25 +1,31 @@
-export interface CoordinateContract {
-  x: number
-  y: number
-}
+declare global {
+  // eslint-disable-next-line ts/no-namespace
+  namespace Contracts {
+    interface Coordinate {
+      readonly x: number
+      readonly y: number
+    }
 
-export interface LineContract {
-  start: CoordinateContract
-  end: CoordinateContract
-  length: number
-}
+    interface Line {
+      readonly start: Coordinate
+      readonly end: Coordinate
+      readonly length: number
+    }
 
-export interface BodyContract {
-  position: CoordinateContract
-  velocity: CoordinateContract
-  acceleration: CoordinateContract
-  mass: number
-}
+    interface Body {
+      readonly id: string
+      readonly mass: number
+      position: Coordinate
+      velocity: Coordinate
+      acceleration: Coordinate
+    }
 
-export interface PhysicsEngineContract<T extends BodyContract = BodyContract> {
-  gravity: number
-  friction: number
-  bodies: T[]
-  addBody: <U extends T>(body: U) => U
-  update: FrameRequestCallback
+    interface PhysicsEngine {
+      readonly gravity: number
+      readonly friction: number
+      bodies: Body[]
+      addBody: <T extends Body>(body: T) => T
+      update: FrameRequestCallback
+    }
+  }
 }

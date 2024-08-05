@@ -32,6 +32,7 @@
     "@nuxt/ui": "^2.18.3",
     "@nuxtjs/i18n": "^8.3.3",
     "@nuxtjs/seo": "2.0.0-rc.16",
+    "@vitest/coverage-v8": "^2.0.5",
     "@vue/test-utils": "^2.4.6",
     "@vueuse/core": "^10.11.0",
     "@vueuse/nuxt": "^10.11.0",

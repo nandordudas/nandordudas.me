@@ -1,8 +1,6 @@
-import type { BodyContract } from './types'
-
 import { Vector } from './vector'
 
-export class Point implements BodyContract {
+export class Point implements Contracts.Body {
   /**
    * @default Vector.zero()
    */
@@ -19,6 +17,7 @@ export class Point implements BodyContract {
   #isForceApplied: boolean = false
 
   constructor(
+    public readonly id: string,
     public position: Vector,
     /**
      * @default 1.0

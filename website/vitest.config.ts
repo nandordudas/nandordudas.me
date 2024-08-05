@@ -7,13 +7,18 @@ export default defineVitestConfig({
     reporters: [
       'verbose',
     ],
-    // setupFiles: './vitest-setup.ts',
     clearMocks: true,
     fakeTimers: {
+      // INFO: https://vitest.dev/config/#faketimers-shouldclearnativetimers
       shouldClearNativeTimers: true,
       toFake: [
         'requestAnimationFrame',
         'cancelAnimationFrame',
+      ],
+    },
+    coverage: {
+      include: [
+        '**/lib/**/*',
       ],
     },
   },
