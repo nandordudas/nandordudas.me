@@ -8,7 +8,9 @@ describe('errors', () => {
       expect(error instanceof Error).toBeTruthy()
       expect(error.name).toBe('DivideByZeroError')
       expect(error.message).toBe('Cannot divide by zero')
-      expect(() => { throw error }).toThrowError(DivideByZeroError)
+      expect(() => {
+        throw error
+      }).toThrowError(DivideByZeroError)
     })
   })
 
@@ -19,7 +21,9 @@ describe('errors', () => {
       expect(error instanceof Error).toBeTruthy()
       expect(error.name).toBe('ContextMissingError')
       expect(error.message).toBe('Context missing')
-      expect(() => { throw error }).toThrowError(ContextMissingError)
+      expect(() => {
+        throw error
+      }).toThrowError(ContextMissingError)
     })
   })
 })
