@@ -47,6 +47,7 @@ describe('vector', () => {
       spyMathRandom.mockReturnValue(0.5)
 
       expect(Vector.randomize(v0, v1)).toEqual({ x: 2, y: 2 })
+      expect(Vector.randomize({ x: 1, y: 1 }, { x: 3, y: 3 })).toEqual({ x: 2, y: 2 })
       expect(spyMathRandom).toHaveBeenCalledTimes(2)
       expect(spyRandom).toHaveBeenCalledWith(1, 3)
     })

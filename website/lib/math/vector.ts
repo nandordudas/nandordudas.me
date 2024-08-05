@@ -20,7 +20,7 @@ export class Vector implements Contracts.Coordinate {
     return v1.x * v2.x + v1.y * v2.y
   }
 
-  public static randomize(from: Vector, to: Vector): Vector {
+  public static randomize(from: Contracts.Coordinate, to: Contracts.Coordinate): Vector {
     return new Vector(random(from.x, to.x), random(from.y, to.y))
   }
 

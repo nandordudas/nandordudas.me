@@ -4,7 +4,10 @@ export function random(min: number, max: number): number {
 
 export function noop() { }
 
-export function canvasQuadrants(canvas: OffscreenCanvas) {
+export function canvasQuadrants(
+  canvas: OffscreenCanvas,
+  tolerance: Contracts.Coordinate = { x: 10, y: 10 },
+) {
   const { width, height } = canvas
   const canvasCenter = { x: width / 2, y: height / 2 }
 
@@ -12,33 +15,33 @@ export function canvasQuadrants(canvas: OffscreenCanvas) {
     quarter: {
       top: {
         left: {
-          start: { x: 0, y: 0 },
-          end: { x: canvasCenter.x, y: canvasCenter.y },
+          start: tolerance,
+          end: { x: canvasCenter.x + tolerance.x, y: canvasCenter.y - tolerance.y },
         },
         right: {
-          start: { x: canvasCenter.x, y: 0 },
-          end: { x: canvas.width, y: canvasCenter.y },
+          start: { x: canvasCenter.x - tolerance.x, y: tolerance.y },
+          end: { x: canvas.width - tolerance.x, y: canvasCenter.y - tolerance.y },
         },
       },
       bottom: {
         left: {
-          start: { x: 0, y: canvasCenter.y },
-          end: { x: canvasCenter.x, y: canvas.height },
+          start: { x: tolerance, y: canvasCenter.y + tolerance.y },
+          end: { x: canvasCenter.x - tolerance.x, y: canvas.height - tolerance.y },
         },
         right: {
-          start: { x: canvasCenter.x, y: canvasCenter.y },
-          end: { x: width, y: height },
+          start: { x: canvasCenter.x + tolerance.x, y: canvasCenter.y + tolerance.y },
+          end: { x: width - tolerance.x, y: height - tolerance.y },
         },
       },
     },
     half: {
       right: {
-        start: { x: canvasCenter.x, y: 0 },
-        end: { x: width, y: height },
+        start: { x: canvasCenter.x + tolerance.x, y: tolerance },
+        end: { x: width - tolerance.x, y: height - tolerance.y },
       },
       left: {
-        start: { x: 0, y: 0 },
-        end: { x: canvasCenter.x, y: height },
+        start: tolerance,
+        end: { x: canvasCenter.x - tolerance.x, y: height - tolerance.y },
       },
     },
   }
@@ -46,15 +49,18 @@ export function canvasQuadrants(canvas: OffscreenCanvas) {
   return quadrants
 }
 
-export function canvasCoordinates(canvas: OffscreenCanvas) {
+export function canvasCoordinates(
+  canvas: OffscreenCanvas,
+  tolerance: Contracts.Coordinate = { x: 10, y: -0.5 },
+) {
   const coordinates = {
     top: {
-      left: { x: 0, y: 0 },
-      right: { x: canvas.width, y: 0 },
+      left: tolerance,
+      right: { x: canvas.width - tolerance.x, y: tolerance.y },
     },
     bottom: {
-      left: { x: 0, y: canvas.height },
-      right: { x: canvas.width, y: canvas.height },
+      left: { x: tolerance.x, y: canvas.height - tolerance.y },
+      right: { x: canvas.width - tolerance.x, y: canvas.height - tolerance.y },
     },
   }
 

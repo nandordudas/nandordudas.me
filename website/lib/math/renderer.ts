@@ -1,7 +1,7 @@
 import type { Line } from './line'
 import type { Point } from './point'
 
-import { TAU } from './constants'
+import { Colors, LineWidth, TAU } from './constants'
 import { ContextMissingError } from './errors'
 
 export class Renderer {
@@ -21,6 +21,10 @@ export class Renderer {
   constructor(public context: OffscreenCanvasRenderingContext2D) {
     if (context === null)
       throw new ContextMissingError()
+
+    context.lineWidth = LineWidth.Thin
+    context.fillStyle = Colors.Tomato
+    context.strokeStyle = Colors.Tomato
   }
 
   public clear(): void {
