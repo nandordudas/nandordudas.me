@@ -56,5 +56,15 @@ describe('point', () => {
 
       expect(point1.velocity).toEqual({ x: 1, y: 1.5 })
     })
+
+    it('should set velocity', () => {
+      const point = new Point(idMock, new Vector(2, 3))
+
+      expect(point.velocity).toEqual({ x: 0, y: 0 })
+
+      point.setVelocity(new Vector(4, 6))
+
+      expect(point.velocity).toEqual({ x: 4, y: 6 })
+    })
   })
 })

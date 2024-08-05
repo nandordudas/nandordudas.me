@@ -25,3 +25,9 @@ export const enum LineWidth {
   Thick = 2,
   ExtraThick = 4,
 }
+
+export const enum GameLevel {
+  Easy = 'easy',
+  Medium = 'medium',
+  Hard = 'hard',
+}

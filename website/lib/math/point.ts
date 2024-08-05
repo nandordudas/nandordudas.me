@@ -26,6 +26,15 @@ export class Point implements Contracts.Body {
   ) { }
 
   /**
+   * @modifies This point instance, `velocity` will be updated.
+   */
+  public setVelocity(velocity: Vector): this {
+    this.velocity = velocity
+
+    return this
+  }
+
+  /**
    * @modifies This point instance, `acceleration` and `#isForceApplied will be updated.
    */
   public applyForce(force: Vector): void {

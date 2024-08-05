@@ -49,18 +49,29 @@ export function canvasQuadrants(
   return quadrants
 }
 
+/**
+ * Tolerance values are adjusted to account for canvas line width.
+ * @example
+ * const renderer = new Renderer(context)
+ * const { bottom, top } = canvasCoordinates(renderer.context.canvas)
+ */
 export function canvasCoordinates(
   canvas: OffscreenCanvas,
-  tolerance: Contracts.Coordinate = { x: 10, y: -0.5 },
+  tolerance: Contracts.Coordinate = { x: 10, y: 0 },
 ) {
+  const lineWidthAdjustment = (canvas.getContext('2d')?.lineWidth ?? 1) / 2
+
+  const x = tolerance.x + lineWidthAdjustment
+  const y = tolerance.y - lineWidthAdjustment
+
   const coordinates = {
     top: {
-      left: tolerance,
-      right: { x: canvas.width - tolerance.x, y: tolerance.y },
+      left: { x, y },
+      right: { x: canvas.width - x, y },
     },
     bottom: {
-      left: { x: tolerance.x, y: canvas.height - tolerance.y },
-      right: { x: canvas.width - tolerance.x, y: canvas.height - tolerance.y },
+      left: { x, y: canvas.height - y },
+      right: { x: canvas.width - x, y: canvas.height - y },
     },
   }
 
