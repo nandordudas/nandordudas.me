@@ -1,8 +1,8 @@
-import type { BodyContract, LineContract } from './types'
-
 import { Vector } from './vector'
 
-export class Line implements LineContract, BodyContract {
+export class Line implements Contracts.Line, Contracts.Body {
+  public readonly id: string
+
   /**
    * @default Vector.zero()
    */
@@ -23,12 +23,20 @@ export class Line implements LineContract, BodyContract {
    */
   public readonly mass: number = Infinity
 
+  public readonly start: Vector
+  public readonly end: Vector
+
   public get length(): number {
     return this.end.subtract(this.start).magnitude()
   }
 
   constructor(
-    public readonly start: Vector,
-    public readonly end: Vector,
-  ) { }
+    id: string,
+    start: Vector | Contracts.Coordinate,
+    end: Vector | Contracts.Coordinate,
+  ) {
+    this.id = id
+    this.start = start instanceof Vector ? start : new Vector(start)
+    this.end = end instanceof Vector ? end : new Vector(end)
+  }
 }

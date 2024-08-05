@@ -25,3 +25,5 @@ logs
 
 # Custom certificates, etc.
 tmp
+
+coverage

@@ -1,9 +1,8 @@
 import type { Line } from './line'
 import type { Point } from './point'
 import type { Renderer } from './renderer'
-import type { BodyContract, PhysicsEngineContract } from './types'
 
-export class PhysicsEngine implements PhysicsEngineContract {
+export class PhysicsEngine implements Contracts.PhysicsEngine {
   /**
    * @default 0.0
    */
@@ -27,7 +26,7 @@ export class PhysicsEngine implements PhysicsEngineContract {
   /**
    * @default []
    */
-  public bodies: BodyContract[] = []
+  public bodies: Contracts.Body[] = []
 
   constructor(public renderer: Renderer) { }
 
@@ -42,7 +41,7 @@ export class PhysicsEngine implements PhysicsEngineContract {
   /**
    * @modifies This physics engine instance, `bodies`.
    */
-  public addBody<T extends BodyContract>(body: T): T {
+  public addBody<T extends Contracts.Body>(body: T): T {
     this.bodies.push(body)
 
     return body
@@ -64,6 +63,7 @@ export class PhysicsEngine implements PhysicsEngineContract {
 
   public update: FrameRequestCallback = (deltaTime) => {
     for (const point of this.points) {
+      // TODO: check force before create collision detection
       const force = point.velocity.multiply(-1 * this.friction * this.gravity)
 
       point.applyForce(force)

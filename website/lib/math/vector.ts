@@ -1,12 +1,10 @@
-import type { CoordinateContract } from './types'
-
 import { DivideByZeroError } from './errors'
 import { random } from './utils'
 
 /**
  * This class is immutable, meaning its methods always return new instances.
  */
-export class Vector implements CoordinateContract {
+export class Vector implements Contracts.Coordinate {
   public x: number
   public y: number
 
@@ -14,11 +12,11 @@ export class Vector implements CoordinateContract {
     return new Vector(0, 0)
   }
 
-  public static distance(v1: Vector, v2: CoordinateContract): number {
+  public static distance(v1: Vector, v2: Contracts.Coordinate): number {
     return v1.subtract(v2).length
   }
 
-  public static dot(v1: CoordinateContract, v2: CoordinateContract): number {
+  public static dot(v1: Contracts.Coordinate, v2: Contracts.Coordinate): number {
     return v1.x * v2.x + v1.y * v2.y
   }
 
@@ -45,8 +43,8 @@ export class Vector implements CoordinateContract {
   }
 
   constructor(x: number, y: number)
-  constructor(coords: CoordinateContract)
-  constructor(xOrCoords: number | CoordinateContract, y?: number) {
+  constructor(coords: Contracts.Coordinate)
+  constructor(xOrCoords: number | Contracts.Coordinate, y?: number) {
     if (typeof xOrCoords === 'number') {
       this.x = xOrCoords
       this.y = y!
@@ -61,11 +59,11 @@ export class Vector implements CoordinateContract {
     return `${this.constructor.name}(${this.x}, ${this.y})`
   }
 
-  public add(v: CoordinateContract): Vector {
+  public add(v: Contracts.Coordinate): Vector {
     return new Vector(this.x + v.x, this.y + v.y)
   }
 
-  public subtract(v: CoordinateContract): Vector {
+  public subtract(v: Contracts.Coordinate): Vector {
     return this.add({ x: -v.x, y: -v.y })
   }
 
