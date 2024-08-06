@@ -12,10 +12,13 @@ declare global {
       readonly length: number
     }
 
-    interface Body {
+    interface Positioned {
+      position: Coordinate
+    }
+
+    interface Body extends Positioned {
       readonly id: string
       readonly mass: number
-      position: Coordinate
       velocity: Coordinate
       acceleration: Coordinate
     }

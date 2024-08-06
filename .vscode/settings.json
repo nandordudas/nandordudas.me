@@ -123,17 +123,17 @@
     "unstub",
     "vitesse",
     "vueuse"
-  ],
-  "workbench.editor.customLabels.patterns": {
-    "**/layouts/**": "#${filename}",
-    // "**/pages/index.vue": "> asd", /* INFO: doesn't work */
-    "**/pages/**/index.vue": "> /${dirname}",
-    "**/pages/**": "/${filename} >",
-    "**/pages/**/[[]*[]].vue": "[...${extname(1)}",
-    "**/pages/articles/[[]slug[]].vue": "${filename}",
-    "**/app.vue": "<app />",
-    "**/content/**/**.md": "/${dirname}/${extname(1)}",
-    "**/components/**/*.vue": "<${filename} />",
-    "**/server/**": "${extname(1)} /${dirname}/${filename}.${extname(2)}"
-  }
+  ]
+  // "workbench.editor.customLabels.patterns": {
+  //   "**/layouts/**": "#${filename}",
+  //   // "**/pages/index.vue": "> asd", /* INFO: doesn't work */
+  //   "**/pages/**/index.vue": "> /${dirname}",
+  //   "**/pages/**": "/${filename} >",
+  //   "**/pages/**/[[]*[]].vue": "[...${extname(1)}",
+  //   "**/pages/articles/[[]slug[]].vue": "${filename}",
+  //   "**/app.vue": "<app />",
+  //   "**/content/**/**.md": "/${dirname}/${extname(1)}",
+  //   "**/components/**/*.vue": "<${filename} />",
+  //   "**/server/**": "${extname(1)} /${dirname}/${filename}.${extname(2)}"
+  // }
 }

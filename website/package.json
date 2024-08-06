@@ -37,6 +37,7 @@
     "@vueuse/core": "^10.11.0",
     "@vueuse/nuxt": "^10.11.0",
     "change-case": "^5.4.4",
+    "debug": "^4.3.6",
     "eslint": "^9.8.0",
     "eslint-plugin-format": "^0.1.2",
     "happy-dom": "^14.12.3",

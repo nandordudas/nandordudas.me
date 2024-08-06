@@ -17,7 +17,10 @@ export class Vector implements Coordinate {
     return v1.subtract(v2).magnitude()
   }
 
-  constructor(public x: number, public y: number) {}
+  constructor(
+    public x: number,
+    public y: number,
+  ) {}
 
   public add(v: Coordinate): Vector {
     return new Vector(this.x + v.x, this.y + v.y)
