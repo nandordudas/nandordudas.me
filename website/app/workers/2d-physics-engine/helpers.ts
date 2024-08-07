@@ -13,3 +13,7 @@ export function sendMessage(type: string, data?: any, transfer?: Transferable[])
   else
     postMessage({ type, data })
 }
+
+export function clamp(value: number, min: number, max: number) {
+  return Math.min(Math.max(value, min), max)
+}

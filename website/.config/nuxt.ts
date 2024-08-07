@@ -1,5 +1,7 @@
 import { httpsServerFiles } from '../lib/server.utils'
 
+const { pathname: dpeRoot } = new URL('../app/workers/2d-physics-engine/', import.meta.url)
+
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   compatibilityDate: '2024-07-10',
@@ -8,6 +10,13 @@ export default defineNuxtConfig({
   },
   devServer: {
     https: httpsServerFiles(),
+  },
+  vite: {
+    resolve: {
+      alias: {
+        '2dpe/': dpeRoot,
+      },
+    },
   },
   app: {
     head: {

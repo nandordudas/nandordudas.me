@@ -111,6 +111,7 @@
   ],
   "eslint.runtime": "node",
   "cSpell.words": [
+    "AABB",
     "antfu",
     "bumpp",
     "dedupe",

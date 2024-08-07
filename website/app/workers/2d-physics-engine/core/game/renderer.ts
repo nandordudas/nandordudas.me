@@ -12,11 +12,16 @@ export class Renderer {
     this.#setupContext()
   }
 
-  drawRect({ position, width, height }: Rectangular): void {
+  drawRect({ position, width, height }: Rectangular, round = true): void {
     const context = this.context!
 
     context.beginPath()
-    context.rect(position.x, position.y, width, height)
+
+    if (round)
+      context.roundRect(position.x, position.y, width, height, 4)
+    else
+      context.rect(position.x, position.y, width, height)
+
     context.fill()
   }
 

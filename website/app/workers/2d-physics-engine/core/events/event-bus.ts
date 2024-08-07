@@ -1,8 +1,8 @@
-import mitt, { type Emitter, type EventType } from 'mitt'
+import mitt, { type Emitter } from 'mitt'
 
 let emitter = null
 
-export function EventBus<Events extends Record<EventType, unknown>>() {
+export function EventBus<Events extends GenericObject>() {
   emitter ??= mitt<Events>()
 
   return emitter as Emitter<Events>
