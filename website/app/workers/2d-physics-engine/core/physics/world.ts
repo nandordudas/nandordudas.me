@@ -1,12 +1,29 @@
 import type { Body } from './body'
-import type { Vector2D } from './vector-2d'
+
+import { Vector2D } from './vector-2d'
 
 export class World<T extends Body = Body> {
-  bodies: T[] | null = null
-  readonly gravity: Vector2D | null = null
+  bodies: T[] = []
+  readonly gravity: Vector2D = Vector2D.zero()
 
   updatePositions(_deltaTime: number): void { }
-  addBody(_body: T): void { }
-  removeBody(_body: T): void { }
-  clear() { }
+
+  addBody(body: T): this {
+    this.bodies.push(body)
+
+    return this
+  }
+
+  addBodies(bodies: T[]): void {
+    for (const body of bodies)
+      this.bodies.push(body)
+  }
+
+  removeBody(body: T): void {
+    this.bodies = this.bodies.filter(item => item !== body)
+  }
+
+  clear() {
+    this.bodies = []
+  }
 }

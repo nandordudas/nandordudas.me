@@ -4,7 +4,7 @@ import type { CollisionResolver } from '../collisions/collision-resolver'
 
 export class PhysicsEngine {
   constructor(
-    public readonly world: World | null = null,
+    public readonly world: World,
     public readonly collisionDetector: CollisionDetector | null = null,
     public readonly collisionResolver: CollisionResolver | null = null,
   ) { }

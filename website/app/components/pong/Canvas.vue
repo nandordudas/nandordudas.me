@@ -9,6 +9,7 @@ const canvas = ref<HTMLCanvasElement | null>(null)
 
 const state = shallowReactive({
   isWorkerReady: false,
+  score: -1,
 })
 
 const worker = new EngineWorker() // 1. create worker
@@ -37,13 +38,11 @@ worker.addEventListener('error', (event) => { // 2. set worker error handler
 })
 
 worker.addEventListener('message', (event) => { // 3. set worker message handler
-  debug('incoming message', event)
-
   if (event.data.type === 'pong') // 5. pong and connection established
     state.isWorkerReady = true
 
   if (event.data.type === 'gameInit')
-    debug('game init', event.data.data)
+    state.score = event.data.data.score
 })
 
 watch(() => state.isWorkerReady, (isReady) => {
@@ -54,7 +53,6 @@ watch(() => state.isWorkerReady, (isReady) => {
 }, { once: true })
 
 onMounted(() => {
-  debug('mounted')
   sendMessage('ping') // 4. ping worker
 })
 
@@ -75,7 +73,7 @@ function sendMessage(type: string, data?: any, transfer?: Transferable[]): void 
     height="450"
   />
 
-  <UButton class="mt-4" @click="sendMessage('start')">
+  <UButton class="mt-4" :disabled="state.score < 0 " @click="sendMessage('start')">
     Start
   </UButton>
 
@@ -90,6 +88,4 @@ function sendMessage(type: string, data?: any, transfer?: Transferable[]): void 
       <USkeleton class="h-4 w-[200px]" />
     </div>
   </div>
-
-  <code class="flex mt-4">{{ state }}</code>
 </template>
