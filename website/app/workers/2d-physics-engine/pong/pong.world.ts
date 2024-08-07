@@ -1,3 +1,3 @@
-import { World } from '../core/physics/world'
+import { World } from '2dpe/core/physics/world'
 
 export class PongWorld extends World { }

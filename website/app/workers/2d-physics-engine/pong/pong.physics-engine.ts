@@ -1,3 +1,3 @@
-import { PhysicsEngine } from '../core/physics/physics-engine'
+import { PhysicsEngine } from '2dpe/core/physics/physics-engine'
 
 export class PongPhysicsEngine extends PhysicsEngine { }

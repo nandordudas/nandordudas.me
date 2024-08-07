@@ -1,4 +1,4 @@
-import type { Body } from '../physics/body'
+import type { Body } from '2dpe/core/physics/body'
 
 export class CollisionDetector<T extends Body = Body> {
   detectCollisions(_bodies: T[]) { }

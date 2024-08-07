@@ -8,15 +8,13 @@ export class World<T extends Body = Body> {
 
   updatePositions(_deltaTime: number): void { }
 
-  addBody(body: T): this {
+  addBody(body: T): void {
     this.bodies.push(body)
-
-    return this
   }
 
   addBodies(bodies: T[]): void {
     for (const body of bodies)
-      this.bodies.push(body)
+      this.addBody(body)
   }
 
   removeBody(body: T): void {

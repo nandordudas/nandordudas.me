@@ -1,4 +1,5 @@
-import type { Renderer } from '../game/renderer'
+import type { Renderer } from '2dpe/core/game/renderer'
+import type { Body } from '2dpe/core/physics/body'
 
 import { Shape } from './shape'
 
@@ -10,7 +11,7 @@ export class Line extends Shape {
     super()
   }
 
-  override display(renderer: Renderer): void {
+  override display(renderer: Renderer, _body: Body): void {
     renderer.drawLine({
       start: this.start,
       end: this.end,

@@ -39,14 +39,21 @@ export class Vector2D implements Coordinates2D {
     public readonly y: number,
   ) { }
 
-  add(_vector: Vector2D): Vector2D { return new Vector2D(0, 0) }
+  add(vector: Vector2D): Vector2D {
+    return new Vector2D(this.x + vector.x, this.y + vector.y)
+  }
+
   subtract(_vector: Vector2D): Vector2D { return new Vector2D(0, 0) }
   multiply(_vector: Vector2D): Vector2D { return new Vector2D(0, 0) }
   divide(_vector: Vector2D): Vector2D { return new Vector2D(0, 0) }
   /*  */
   addScalar(_scalar: number): Vector2D { return new Vector2D(0, 0) }
   subtractScalar(_scalar: number): Vector2D { return new Vector2D(0, 0) }
-  multiplyScalar(_scalar: number): Vector2D { return new Vector2D(0, 0) }
+
+  multiplyScalar(scalar: number): Vector2D {
+    return new Vector2D(this.x * scalar, this.y * scalar)
+  }
+
   divideScalar(_scalar: number): Vector2D { return new Vector2D(0, 0) }
   /*  */
   magnitudeSquared(): number { return 0 }

@@ -1,3 +1,3 @@
-import { Renderer } from '../core/game/renderer'
+import { Renderer } from '2dpe/core/game/renderer'
 
 export class PongRenderer extends Renderer { }

@@ -1,6 +1,6 @@
 import type { Emitter, Handler } from 'mitt'
 
-export class InputHandler<Events extends Record<string, unknown>> {
+export class InputHandler<Events extends GenericObject> {
   constructor(public readonly eventBus: Emitter<Events>) { }
 
   bindInput<Key extends keyof Events>(type: Key, handler: Handler<Events[Key]>): void {

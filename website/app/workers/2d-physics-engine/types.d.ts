@@ -1,6 +1,7 @@
 declare global {
   import type { Debugger } from 'debug'
 
+  // INFO: Temporary used, it will be removed in the future.
   declare const debug: Debugger
 
   interface Coordinates2D {
@@ -28,6 +29,8 @@ declare global {
      action: string
      key: string
    }
+
+    type GenericObject<T = unknown> = Record<string | symbol, T>
 }
 
 export {}

@@ -1,9 +1,11 @@
 import type { Renderer } from './renderer'
-import type { InputHandler } from '../input/input-handler'
-import type { PhysicsEngine } from '../physics/physics-engine'
+import type { InputHandler } from '2dpe/core/input/input-handler'
+import type { PhysicsEngine } from '2dpe/core/physics/physics-engine'
 
-// TODO: set default game state
-export class Game<T extends Record<string, unknown>, Events extends Record<string, unknown>> {
+export class Game<
+  T extends GenericObject<any>,
+  Events extends GenericObject,
+> {
   state: T | null = null
 
   constructor(
@@ -20,10 +22,11 @@ export class Game<T extends Record<string, unknown>, Events extends Record<strin
     this.renderer.render(this.loop)
   }
 
-  loop = (_deltaTime: number): void => {
-    this.physicsEngine.world.bodies.forEach((body) => {
-      body.shape.display(this.renderer)
-    })
+  loop = (deltaTime: number): void => {
+    for (const body of this.physicsEngine.world.bodies)
+      body.shape.display(this.renderer, body)
+
+    this.physicsEngine.update(deltaTime)
   }
 
   run(): void { }

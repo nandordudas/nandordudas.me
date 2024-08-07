@@ -1,21 +1,30 @@
-import type { Rectangle } from '../../core/shapes/rectangle'
+import type { Rectangle } from '2dpe/core/shapes/rectangle'
 
-import { Body } from '../../core/physics/body'
-import { Vector2D } from '../../core/physics/vector-2d'
+import { Direction } from '2dpe/constants'
+import { Body } from '2dpe/core/physics/body'
+import { Vector2D } from '2dpe/core/physics/vector-2d'
+import { clamp } from '2dpe/helpers'
 
 export class Paddle extends Body {
+  direction: Direction = Direction.Stop
+  speed: number = 0
+  canvasHeight: number = 450
+
   constructor(
     public override position: Vector2D,
-    public override readonly shape: Rectangle,
+    public override shape: Rectangle,
     public override readonly mass: number,
     public override readonly friction: number = 1.0,
   ) {
     super(position, shape, mass, friction)
   }
 
-  move(deltaTime: number): void {
-    this.velocity = this.velocity.add(this.acceleration.multiplyScalar(deltaTime))
-    this.position = this.position.add(this.velocity.multiplyScalar(deltaTime))
-    this.acceleration = Vector2D.zero()
+  override move(deltaTime: number): void {
+    this.velocity = Vector2D.create(0, this.direction * this.speed)
+
+    const displacement = this.velocity.multiplyScalar(deltaTime)
+    const newY = clamp(this.position.y + displacement.y, 0, this.canvasHeight - this.shape.height)
+
+    this.position = Vector2D.create(this.position.x, newY)
   }
 }
