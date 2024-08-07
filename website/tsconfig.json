@@ -13,5 +13,8 @@
     "types": [
       "vitest/globals"
     ]
-  }
+  },
+  "include": [
+    "./app/workers/2d-physics-engine/*"
+  ]
 }
