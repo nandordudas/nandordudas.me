@@ -1,6 +1,7 @@
 import type { Shape } from './core/shapes/shape'
 import type { EventType } from 'mitt'
 
+import { Direction } from './constants'
 import { EventBus } from './core/events/event-bus'
 import { InputHandler } from './core/input/input-handler'
 import { Vector2D } from './core/physics/vector-2d'
@@ -79,9 +80,9 @@ eventBus.on('setup', (offscreenCanvas) => {
   // Order matters.
   world.addBodies([leftPaddle, rightPaddle, ball])
 
-  inputHandler.bindInput('moveUp', () => game?.movePaddle(rightPaddle))
-  inputHandler.bindInput('moveDown', () => game?.movePaddle(rightPaddle))
-  inputHandler.bindInput('stop', () => game?.movePaddle(rightPaddle))
+  inputHandler.bindInput('moveUp', () => game?.movePaddle(rightPaddle, Direction.Up))
+  inputHandler.bindInput('moveDown', () => game?.movePaddle(rightPaddle, Direction.Down))
+  inputHandler.bindInput('stop', () => game?.movePaddle(rightPaddle, Direction.Stop))
 
   game = new PongGame(
     new PongRenderer(offscreenCanvas),
