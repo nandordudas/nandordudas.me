@@ -1,11 +1,12 @@
-import type { EventBus } from '../events/event-bus'
+import type { Emitter, Handler } from 'mitt'
 
-export class InputHandler {
-  bindings: InputBinding[] = []
+export class InputHandler<Events extends Record<string, unknown>> {
+  constructor(public readonly eventBus: Emitter<Events>) { }
 
-  constructor(public readonly eventBus: EventBus) { }
+  bindInput<Key extends keyof Events>(type: Key, handler: Handler<Events[Key]>): void {
+    this.eventBus.on(type, handler)
+  }
 
   handleInput(_event: Event): void { }
-  bindInput(_action: string, _key: string): void { }
   unbindInput(_action: string): void { }
 }

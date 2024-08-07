@@ -2,7 +2,8 @@ import type { Renderer } from './renderer'
 import type { InputHandler } from '../input/input-handler'
 import type { PhysicsEngine } from '../physics/physics-engine'
 
-export class Game<T extends Record<string, any>> {
+// TODO: set default game state
+export class Game<T extends Record<string, unknown>, Events extends Record<string, unknown>> {
   state: T | null = null
 
   #rafId: number | null = null
@@ -10,17 +11,25 @@ export class Game<T extends Record<string, any>> {
 
   constructor(
     public renderer: Renderer,
-    public inputHandler: InputHandler,
+    public inputHandler: InputHandler<Events>,
     public physicsEngine: PhysicsEngine,
   ) { }
 
-  start(): void { }
+  start(): void {
+    // eslint-disable-next-line no-console
+    console.log('Starting game')
+  }
+
   updateRendering(_state: T): void { }
   loop(_deltaTime: number): void { }
   run(): void { }
   pause(): void { }
   stop(): void { }
   reset(): void { }
+
   saveState(): T { return this.state! }
-  loadState(_state: T): void { }
+
+  loadState(value: T): void {
+    this.state = value
+  }
 }

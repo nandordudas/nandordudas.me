@@ -1,6 +1,10 @@
 import { Shape } from './shape'
 
 export class Rectangle extends Shape {
-  readonly width: number = 0
-  readonly height: number = 0
+  constructor(
+    public readonly width: number = 0,
+    public readonly height: number = 0,
+  ) {
+    super()
+  }
 }
