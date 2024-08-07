@@ -1,6 +1,9 @@
-export class EventBus {
-  on(_key: string, _callback: () => void): void { }
-  emit(_key: string): void { }
-  off(): void { }
-  once(): void { }
+import mitt, { type Emitter, type EventType } from 'mitt'
+
+let emitter = null
+
+export function EventBus<Events extends Record<EventType, unknown>>() {
+  emitter ??= mitt<Events>()
+
+  return emitter as Emitter<Events>
 }

@@ -1,11 +1,11 @@
 export class Vector2D implements Coordinates2D {
-  static normal(): Vector2D { return Vector2D.zero() }
-  static zero(): Vector2D { return Vector2D.zero() }
+  static normal(): Vector2D { return new Vector2D(0, 0) }
+  static zero(): Vector2D { return new Vector2D(0, 0) }
   static distance(): number { return 0 }
   static dotProduct(): number { return 0 }
   static crossProduct(): number { return 0 }
-  static randomize(): Vector2D { return Vector2D.zero() }
-  static random(_x: number, _y: number): Vector2D { return Vector2D.zero() }
+  static randomize(): Vector2D { return new Vector2D(0, 0) }
+  static random(_x: number, _y: number): Vector2D { return new Vector2D(0, 0) }
   /*  */
   static create(x: number, y: number): Vector2D
   static create(coordinates: Coordinates2D): Vector2D
@@ -31,7 +31,7 @@ export class Vector2D implements Coordinates2D {
   }
 
   get length() { return 0 }
-  get unit() { return Vector2D.zero() }
+  get unit() { return new Vector2D(0, 0) }
   get isZero() { return false }
 
   private constructor(
@@ -39,23 +39,23 @@ export class Vector2D implements Coordinates2D {
     public readonly y: number,
   ) { }
 
-  add(_vector: Vector2D): Vector2D { return Vector2D.zero() }
-  subtract(_vector: Vector2D): Vector2D { return Vector2D.zero() }
-  multiply(_vector: Vector2D): Vector2D { return Vector2D.zero() }
-  divide(_vector: Vector2D): Vector2D { return Vector2D.zero() }
+  add(_vector: Vector2D): Vector2D { return new Vector2D(0, 0) }
+  subtract(_vector: Vector2D): Vector2D { return new Vector2D(0, 0) }
+  multiply(_vector: Vector2D): Vector2D { return new Vector2D(0, 0) }
+  divide(_vector: Vector2D): Vector2D { return new Vector2D(0, 0) }
   /*  */
-  addScalar(_scalar: number): Vector2D { return Vector2D.zero() }
-  subtractScalar(_scalar: number): Vector2D { return Vector2D.zero() }
-  multiplyScalar(_scalar: number): Vector2D { return Vector2D.zero() }
-  divideScalar(_scalar: number): Vector2D { return Vector2D.zero() }
+  addScalar(_scalar: number): Vector2D { return new Vector2D(0, 0) }
+  subtractScalar(_scalar: number): Vector2D { return new Vector2D(0, 0) }
+  multiplyScalar(_scalar: number): Vector2D { return new Vector2D(0, 0) }
+  divideScalar(_scalar: number): Vector2D { return new Vector2D(0, 0) }
   /*  */
   magnitudeSquared(): number { return 0 }
   magnitude(): number { return 0 }
   slope(): number { return 0 }
   angle(): number { return 0 }
   /*  */
-  normalize(): Vector2D { return Vector2D.zero() }
-  clone(): Vector2D { return Vector2D.zero() }
+  normalize(): Vector2D { return new Vector2D(0, 0) }
+  clone(): Vector2D { return new Vector2D(0, 0) }
   /*  */
   toString(): string { return '' }
   toArray(): Point2D { return [0, 0] }

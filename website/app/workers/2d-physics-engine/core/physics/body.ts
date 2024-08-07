@@ -4,7 +4,7 @@ import { Vector2D } from './vector-2d'
 
 export class Body {
   velocity: Vector2D = Vector2D.zero()
-  readonly acceleration: Vector2D = Vector2D.zero()
+  acceleration: Vector2D = Vector2D.zero()
   readonly inverseMass: number
 
   constructor(

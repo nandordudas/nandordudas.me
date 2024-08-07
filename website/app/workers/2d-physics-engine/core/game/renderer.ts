@@ -1,9 +1,9 @@
 export class Renderer {
   get context(): OffscreenCanvasRenderingContext2D | null {
-    return this.canvas.getContext('2d', { alpha: false })
+    return this.offscreenCanvas.getContext('2d', { alpha: false })
   }
 
-  constructor(readonly canvas: OffscreenCanvas) {
+  constructor(readonly offscreenCanvas: OffscreenCanvas) {
     this.#setupContext()
   }
 

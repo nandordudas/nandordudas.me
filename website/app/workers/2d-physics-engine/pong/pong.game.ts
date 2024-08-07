@@ -2,8 +2,8 @@ import type { Paddle } from './bodies/paddle'
 
 import { Game } from '../core/game/game'
 
-export interface PongGameState { }
-
-export class PongGame extends Game<PongGameState> {
-  movePaddle(_paddle: Paddle): void { }
+export class PongGame<T extends Record<string, any>, Events extends Record<string, unknown>> extends Game<T, Events> {
+  movePaddle(paddle: Paddle): void {
+    debug('movePaddle', paddle)
+  }
 }
