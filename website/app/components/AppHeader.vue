@@ -3,7 +3,7 @@ defineOptions({
   inheritAttrs: false,
 })
 
-const navigation = injectStrict(NavigationKey, ref([]))
+// const navigation = injectStrict(NavigationKey, ref([]))
 const { metaSymbol } = useShortcuts()
 
 const links = [
@@ -40,7 +40,8 @@ const nuxtSiteConfig = useSiteConfig()
     </template>
 
     <template #panel>
-      <UNavigationTree :links="mapContentNavigation(navigation)" default-open />
+      <!-- FIX: something is wrong -->
+      <!-- <UNavigationTree :links="mapContentNavigation(navigation)" default-open /> -->
     </template>
   </UHeader>
 </template>
