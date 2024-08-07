@@ -1,10 +1,13 @@
+import type { Shape } from './core/shapes/shape'
 import type { EventType } from 'mitt'
 
 import { EventBus } from './core/events/event-bus'
 import { InputHandler } from './core/input/input-handler'
 import { Vector2D } from './core/physics/vector-2d'
+import { Circle } from './core/shapes/circle'
 import { Rectangle } from './core/shapes/rectangle'
 import { sendMessage } from './helpers'
+import { Ball } from './pong/bodies/ball'
 import { Paddle } from './pong/bodies/paddle'
 import { PongCollisionDetector } from './pong/pong.collision-detector'
 import { PongCollisionResolver } from './pong/pong.collision-resolver'
@@ -14,9 +17,11 @@ import { PongRenderer } from './pong/pong.renderer'
 import { PongWorld } from './pong/pong.world'
 
 const PADDLE_MASS = 100
-const PADDLE_HEIGHT = 100
-const PADDLE_WIDTH = 10
+const PADDLE_HEIGHT = 200
+const PADDLE_WIDTH = 4
 const PADDLE_PADDING = 10
+const BALL_MASS = 1
+const BALL_RADIUS = 4
 
 interface PongGameState {
   score: number
@@ -49,26 +54,34 @@ eventBus.on('start', () => game?.start())
 const world = new PongWorld()
 const inputHandler = new InputHandler(eventBus)
 
-inputHandler.bindInput('moveDown', () => debug('move down'))
-inputHandler.bindInput('stop', () => debug('stop'))
-
-const paddleShape = new Rectangle(PADDLE_WIDTH, PADDLE_HEIGHT)
-
 eventBus.on('setup', (offscreenCanvas) => {
   eventBus.off('setup')
 
   const { width, height } = offscreenCanvas
   const paddleStart = (height - PADDLE_HEIGHT) / 2
 
-  const leftPaddle = new Paddle(Vector2D.fromArray([PADDLE_PADDING, paddleStart]), paddleShape, PADDLE_MASS)
-  const rightPaddle = new Paddle(Vector2D.fromArray([width - PADDLE_PADDING, paddleStart]), paddleShape, PADDLE_MASS)
+  const positions = {
+    leftPaddle: Vector2D.create(PADDLE_PADDING, paddleStart),
+    rightPaddle: Vector2D.create(width - PADDLE_PADDING - PADDLE_WIDTH / 2, paddleStart),
+    ball: Vector2D.create(100, 100),
+  } as const satisfies Record<string, Coordinates2D>
 
-  world.addBody(leftPaddle)
-  world.addBody(rightPaddle)
+  const shapes = {
+    leftPaddle: new Rectangle(PADDLE_WIDTH, PADDLE_HEIGHT, positions.leftPaddle),
+    rightPaddle: new Rectangle(PADDLE_WIDTH, PADDLE_HEIGHT, positions.rightPaddle),
+    ball: new Circle(positions.ball, BALL_RADIUS),
+  } as const satisfies Record<string, Shape>
 
-  inputHandler.bindInput('moveUp', () => game?.movePaddle(leftPaddle))
-  inputHandler.bindInput('moveDown', () => game?.movePaddle(leftPaddle))
-  inputHandler.bindInput('stop', () => game?.movePaddle(leftPaddle))
+  const ball = new Ball(positions.ball, shapes.ball, BALL_MASS)
+  const leftPaddle = new Paddle(positions.leftPaddle, shapes.leftPaddle, PADDLE_MASS)
+  const rightPaddle = new Paddle(positions.rightPaddle, shapes.rightPaddle, PADDLE_MASS)
+
+  // Order matters.
+  world.addBodies([leftPaddle, rightPaddle, ball])
+
+  inputHandler.bindInput('moveUp', () => game?.movePaddle(rightPaddle))
+  inputHandler.bindInput('moveDown', () => game?.movePaddle(rightPaddle))
+  inputHandler.bindInput('stop', () => game?.movePaddle(rightPaddle))
 
   game = new PongGame(
     new PongRenderer(offscreenCanvas),
@@ -80,8 +93,8 @@ eventBus.on('setup', (offscreenCanvas) => {
     ),
   )
 
+  game.updateRendering(gameState)
   sendMessage('gameInit', gameState)
-  debug('game', game)
 })
 
 export function messageEventHandler({ data }: MessageEvent<Events>): void {

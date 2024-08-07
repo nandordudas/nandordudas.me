@@ -6,9 +6,6 @@ import type { PhysicsEngine } from '../physics/physics-engine'
 export class Game<T extends Record<string, unknown>, Events extends Record<string, unknown>> {
   state: T | null = null
 
-  #rafId: number | null = null
-  #lastTimestamp: number | null = null
-
   constructor(
     public renderer: Renderer,
     public inputHandler: InputHandler<Events>,
@@ -16,12 +13,19 @@ export class Game<T extends Record<string, unknown>, Events extends Record<strin
   ) { }
 
   start(): void {
-    // eslint-disable-next-line no-console
-    console.log('Starting game')
+    debug('Starting game')
   }
 
-  updateRendering(_state: T): void { }
-  loop(_deltaTime: number): void { }
+  updateRendering(_state: T): void {
+    this.renderer.render(this.loop)
+  }
+
+  loop = (_deltaTime: number): void => {
+    this.physicsEngine.world.bodies.forEach((body) => {
+      body.shape.display(this.renderer)
+    })
+  }
+
   run(): void { }
   pause(): void { }
   stop(): void { }
