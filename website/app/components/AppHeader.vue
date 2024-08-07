@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import type { HeaderLink } from '@nuxt/ui-pro/types'
-
 defineOptions({
   inheritAttrs: false,
 })
@@ -8,11 +6,13 @@ defineOptions({
 const navigation = injectStrict(NavigationKey, ref([]))
 const { metaSymbol } = useShortcuts()
 
-const links: HeaderLink[] = [
+const links = [
   { label: 'Home', to: '/' },
   { label: 'Articles', to: '/articles' },
   { label: 'About', to: '/about' },
 ]
+
+const nuxtSiteConfig = useSiteConfig()
 </script>
 
 <template>
@@ -21,7 +21,7 @@ const links: HeaderLink[] = [
       <UAvatar alt="Picture of" icon="i-heroicons-user" src="/images/profile.png" class="sm:w-10 sm:h-10" />
 
       <span class="italic font-mono font-thin">
-        {{ $nuxtSiteConfig.name }}
+        {{ nuxtSiteConfig.name }}
       </span>
     </template>
 

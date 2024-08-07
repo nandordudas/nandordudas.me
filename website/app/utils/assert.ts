@@ -1,4 +1,4 @@
-import type { NuxtError } from '#app'
+import type { NuxtError } from 'nuxt/app'
 
 export function assert(condition: boolean, statusMessage: string, options: Partial<NuxtError> = {}): asserts condition {
   if (!condition)

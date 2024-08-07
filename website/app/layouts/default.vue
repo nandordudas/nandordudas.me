@@ -11,7 +11,7 @@ useHead({
   htmlAttrs: head.value.htmlAttrs,
   link: head.value.link,
   meta: head.value.meta,
-  title: route.meta.title,
+  title: route.meta.title ?? '',
 })
 </script>
 
