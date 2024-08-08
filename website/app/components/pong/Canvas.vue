@@ -1,24 +1,28 @@
 <script setup lang="ts">
+import EngineWorker from '2dpe/worker?worker'
 import createDebug from 'debug'
 
-import EngineWorker from '~/workers/2d-physics-engine/worker?worker'
-
 const debug = createDebug('page:canvas')
+const worker = new EngineWorker() // 1. create worker
 
 const canvas = ref<HTMLCanvasElement | null>(null)
 
 const state = shallowReactive({
+  /**
+   * Only show the canvas when the worker is ready, until that a placeholder is
+   * shown
+   */
   isWorkerReady: false,
   score: -1,
 })
 
-const worker = new EngineWorker() // 1. create worker
-
 const { down, up } = useMagicKeys({
   passive: false,
+  // Prevent page from scrolling
   onEventFired: event => event.preventDefault(),
 })
 
+// TODO: refactor this into a better way
 const directionMap = {
   '-1': 'moveUp',
   '1': 'moveDown',
@@ -26,11 +30,11 @@ const directionMap = {
 } as const
 
 watchEffect(() => {
-  const mappedKeyStrokes = [down?.value ? 1 : 0, up?.value ? -1 : 0]
-  const result = mappedKeyStrokes.map(Number).reduce((acc, current) => acc + current, 0).toString()
-  const direction = directionMap[result as keyof typeof directionMap]
+  const mappedKeyStrokes = [down?.value ? 1 : 0, up?.value ? -1 : 0].map(Number)
+  const directionKey = mappedKeyStrokes.reduce((acc, current) => acc + current, 0).toString()
 
-  sendMessage(direction)
+  // Sending paddle direction to worker, keys can be hold.
+  sendMessage(directionMap[directionKey as keyof typeof directionMap])
 })
 
 worker.addEventListener('error', (event) => { // 2. set worker error handler
@@ -38,10 +42,10 @@ worker.addEventListener('error', (event) => { // 2. set worker error handler
 })
 
 worker.addEventListener('message', (event) => { // 3. set worker message handler
-  if (event.data.type === 'pong') // 5. pong and connection established
+  if (event.data.type === 'pong') // 5. worker connection established
     state.isWorkerReady = true
 
-  if (event.data.type === 'gameInit')
+  if (event.data.type === 'gameInit') // 6. game has setup
     state.score = event.data.data.score
 })
 
@@ -71,7 +75,7 @@ function sendMessage(type: string, data?: any, transfer?: Transferable[]): void 
     class="bg-slate-950 rounded-md ring-1 ring-gray-300 dark:ring-gray-700 w-[800px] h-[450px]"
     width="800"
     height="450"
-  />
+  /><!-- Canvas width and height must set by attribute and style for scaling -->
 
   <UButton class="mt-4" :disabled="state.score < 0 " @click="sendMessage('start')">
     Start
