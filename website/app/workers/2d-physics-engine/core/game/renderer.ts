@@ -1,3 +1,16 @@
+/**
+ * List of used methods for {@link https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D|CanvasRenderingContext2D}
+ * - {@link https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/clearRect|clearRect()}
+ * - {@link https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/scale|scale()}
+ * - {@link https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/beginPath|beginPath()}
+ * - {@link https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/lineTo|lineTo()}
+ * - {@link https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/moveTo|moveTo()}
+ * - {@link https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/arc|arc()}
+ * - {@link https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/rect|rect()}
+ * - {@link https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/roundedRect|roundedRect()}
+ * - {@link https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/fill|fill()}
+ * - {@link https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/stroke|stroke()}
+ */
 export class Renderer {
   /**
    * @readonly
