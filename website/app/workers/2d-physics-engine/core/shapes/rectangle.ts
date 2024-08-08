@@ -5,7 +5,14 @@ import { Shape } from './shape'
 
 export class Rectangle extends Shape {
   constructor(
+    /**
+     * @readonly
+     */
     public readonly width: number = 0,
+
+    /**
+     * @readonly
+     */
     public readonly height: number = 0,
   ) {
     super()
@@ -16,6 +23,6 @@ export class Rectangle extends Shape {
       height: this.height,
       position: body.position,
       width: this.width,
-    })
+    }, { isRounded: true })
   }
 }

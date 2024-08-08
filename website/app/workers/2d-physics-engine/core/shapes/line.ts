@@ -5,7 +5,14 @@ import { Shape } from './shape'
 
 export class Line extends Shape {
   constructor(
+    /**
+     * @readonly
+     */
     public readonly start: Coordinates2D,
+
+    /**
+     * @readonly
+     */
     public readonly end: Coordinates2D,
   ) {
     super()

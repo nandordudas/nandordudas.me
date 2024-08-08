@@ -15,7 +15,7 @@ export class Game<
   ) { }
 
   start(): void {
-    debug('Starting game')
+    debug('game started')
   }
 
   updateRendering(_state: T): void {
@@ -38,5 +38,7 @@ export class Game<
 
   loadState(value: T): void {
     this.state = value
+
+    debug('state loaded', value)
   }
 }

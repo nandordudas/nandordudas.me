@@ -6,8 +6,20 @@ import { Body } from '2dpe/core/physics/body'
 export class Wall extends Body {
   constructor(
     public override position: Vector2D,
+
+    /**
+     * @readonly
+     */
     public override readonly shape: Rectangle,
+
+    /**
+     * @readonly
+     */
     public override readonly mass: number,
+
+    /**
+     * @readonly
+     */
     public override readonly friction: number = 1.0,
   ) {
     super(position, shape, mass, friction)

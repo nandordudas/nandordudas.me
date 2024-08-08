@@ -35,7 +35,14 @@ export class Vector2D implements Coordinates2D {
   get isZero() { return false }
 
   private constructor(
+    /**
+     * @readonly
+     */
     public readonly x: number,
+
+    /**
+     * @readonly
+     */
     public readonly y: number,
   ) { }
 

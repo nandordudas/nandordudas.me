@@ -1,4 +1,8 @@
 export class Renderer {
+  /**
+   * @readonly
+   * @default 2 * Math.PI
+   */
   static readonly TAU = 2 * Math.PI
 
   #rafId: number | null = null
@@ -8,16 +12,24 @@ export class Renderer {
     return this.offscreenCanvas.getContext('2d', { alpha: true })
   }
 
-  constructor(readonly offscreenCanvas: OffscreenCanvas) {
+  constructor(
+    /**
+     * @readonly
+     */
+    readonly offscreenCanvas: OffscreenCanvas,
+  ) {
     this.#setupContext()
   }
 
-  drawRect({ position, width, height }: Rectangular, round = true): void {
+  drawRect(
+    { position, width, height }: Rectangular,
+    { isRounded }: { isRounded?: boolean } = {},
+  ): void {
     const context = this.context!
 
     context.beginPath()
 
-    if (round)
+    if (isRounded)
       context.roundRect(position.x, position.y, width, height, 4)
     else
       context.rect(position.x, position.y, width, height)
@@ -45,8 +57,7 @@ export class Renderer {
   render(callback: FrameRequestCallback): void {
     const animate: FrameRequestCallback = (timestamp) => {
       if (this.#lastTimestamp !== null) {
-        // 0.0168 ~ 60fps
-        const deltaTime = (timestamp - this.#lastTimestamp) / 1_000
+        const deltaTime = (timestamp - this.#lastTimestamp) / 1_000 // 60fps ~> 1 / 60
 
         this.clearCanvas()
         callback(deltaTime)

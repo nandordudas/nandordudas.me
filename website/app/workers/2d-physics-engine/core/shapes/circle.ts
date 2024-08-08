@@ -4,7 +4,12 @@ import type { Body } from '2dpe/core/physics/body'
 import { Shape } from './shape'
 
 export class Circle extends Shape {
-  constructor(public readonly radius: number = 0) {
+  constructor(
+    /**
+     * @readonly
+     */
+    public readonly radius: number = 0,
+  ) {
     super()
   }
 

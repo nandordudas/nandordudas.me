@@ -4,6 +4,10 @@ import { Vector2D } from './vector-2d'
 
 export class World<T extends Body = Body> {
   bodies: T[] = []
+
+  /**
+   * @readonly
+   */
   readonly gravity: Vector2D = Vector2D.zero()
 
   updatePositions(_deltaTime: number): void { }

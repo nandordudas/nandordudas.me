@@ -8,8 +8,20 @@ export class Ball extends Body {
 
   constructor(
     public override position: Vector2D,
+
+    /**
+     * @readonly
+     */
     public override readonly shape: Circle,
+
+    /**
+     * @readonly
+     */
     public override readonly mass: number,
+
+    /**
+     * @readonly
+     */
     public override readonly friction: number = 1.0,
   ) {
     super(position, shape, mass, friction)

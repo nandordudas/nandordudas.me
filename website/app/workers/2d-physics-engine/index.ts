@@ -16,14 +16,7 @@ import { PongPhysicsEngine } from './pong/pong.physics-engine'
 import { PongRenderer } from './pong/pong.renderer'
 import { PongWorld } from './pong/pong.world'
 
-const PADDLE_MASS = 100
-const PADDLE_HEIGHT = 200
-const PADDLE_WIDTH = 4
-const PADDLE_PADDING = 10
-/*  */
-const BALL_MASS = 1
-const BALL_RADIUS = 4
-
+// #region Types
 interface PongGameState {
   score: number
 }
@@ -38,40 +31,58 @@ interface Events extends GenericObject {
   moveDown: void
   stop: void
 }
+// #endregion
 
+// #region Constants
+const PADDLE_MASS = 100
+const PADDLE_HEIGHT = 200
+const PADDLE_WIDTH = 4
+const PADDLE_PADDING = 10
+/*  */
+const BALL_MASS = 1
+const BALL_RADIUS = 4
+// #endregion
+
+// #region Variables
 let game: PongGame<PongGameState, Events> | null = null
 
 const gameState: PongGameState = {
   score: 0,
 }
 
+/**
+ * @readonly
+ */
 const shapes = {
   leftPaddle: new Rectangle(PADDLE_WIDTH, PADDLE_HEIGHT),
   rightPaddle: new Rectangle(PADDLE_WIDTH, PADDLE_HEIGHT),
   ball: new Circle(BALL_RADIUS),
-} as const satisfies GenericObject<Shape>
+} as const satisfies Readonly<GenericObject<Shape>>
 
 const eventBus = EventBus<Events>()
-
-eventBus.on('error', event => debug('error in worker', event))
-eventBus.on('ping', () => sendMessage('pong'))
-eventBus.on('loadState', state => debug(state))
-eventBus.on('start', () => game?.start())
-
 const world = new PongWorld()
 const inputHandler = new InputHandler(eventBus)
+// #endregion
 
+// #region Event handlers
+eventBus.on('error', event => debug('error in worker', event))
+eventBus.on('ping', () => sendMessage('pong'))
+eventBus.on('loadState', state => game?.loadState(state))
+eventBus.on('start', () => game?.start())
 eventBus.on('setup', (offscreenCanvas) => {
   // Dispose event listener, same as once.
   eventBus.off('setup')
 
   const paddleStart = (offscreenCanvas.height - PADDLE_HEIGHT) / 2
 
+  /**
+   * @readonly
+   */
   const positions = {
     leftPaddle: Vector2D.create(PADDLE_PADDING, paddleStart),
-    rightPaddle: Vector2D.create(offscreenCanvas.width - PADDLE_PADDING - PADDLE_WIDTH / 2, paddleStart),
+    rightPaddle: Vector2D.create(offscreenCanvas.width - PADDLE_PADDING - PADDLE_WIDTH, paddleStart),
     ball: Vector2D.create(100, 100),
-  } as const satisfies GenericObject<Coordinates2D>
+  } as const satisfies Readonly<GenericObject<Vector2D>>
 
   const ball = new Ball(positions.ball, shapes.ball, BALL_MASS)
   const leftPaddle = new Paddle(positions.leftPaddle, shapes.leftPaddle, PADDLE_MASS)
@@ -97,11 +108,20 @@ eventBus.on('setup', (offscreenCanvas) => {
   game.updateRendering(gameState)
   sendMessage('gameInit', gameState)
 })
+// #endregion
 
+/**
+ * @example
+ * addEventListener('message', messageEventHandler)
+ */
 export function messageEventHandler({ data }: MessageEvent<Events>): void {
   eventBus.emit(data.type as keyof Events, data.data)
 }
 
+/**
+ * @example
+ * addEventListener('error', errorHandler)
+ */
 export function errorHandler(event: ErrorEvent): void {
   eventBus.emit('error', event)
 }

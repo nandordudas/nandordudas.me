@@ -1,9 +1,18 @@
-import type { Vector2D } from '../physics/vector-2d'
+import type { Vector2D } from '2dpe/core/physics/vector-2d'
 
-// Axis-Aligned Bounding Box
+/**
+ * Axis-Aligned Bounding Box
+ */
 export class AABB {
   constructor(
+    /**
+     * @readonly
+     */
     public readonly min: Vector2D,
+
+    /**
+     * @readonly
+     */
     public readonly max: Vector2D,
   ) { }
 

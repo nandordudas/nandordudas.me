@@ -4,8 +4,19 @@ import type { CollisionResolver } from '2dpe/core/collisions/collision-resolver'
 
 export class PhysicsEngine {
   constructor(
+    /**
+     * @readonly
+     */
     public readonly world: World,
+
+    /**
+     * @readonly
+     */
     public readonly collisionDetector: CollisionDetector | null = null,
+
+    /**
+     * @readonly
+     */
     public readonly collisionResolver: CollisionResolver | null = null,
   ) { }
 
