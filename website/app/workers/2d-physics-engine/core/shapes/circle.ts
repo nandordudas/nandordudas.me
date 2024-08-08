@@ -13,6 +13,10 @@ export class Circle extends Shape {
     super()
   }
 
+  /**
+   * Draws the circle
+   * @override
+   */
   override display(renderer: Renderer, body: Body): void {
     renderer.drawPoint({
       position: body.position,

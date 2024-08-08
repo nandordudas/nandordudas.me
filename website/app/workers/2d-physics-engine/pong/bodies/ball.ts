@@ -10,16 +10,19 @@ export class Ball extends Body {
     public override position: Vector2D,
 
     /**
+     * @override
      * @readonly
      */
     public override readonly shape: Circle,
 
     /**
+     * @override
      * @readonly
      */
     public override readonly mass: number,
 
     /**
+     * @override
      * @readonly
      */
     public override readonly friction: number = 1.0,
@@ -27,6 +30,10 @@ export class Ball extends Body {
     super(position, shape, mass, friction)
   }
 
+  /**
+   * Moves the ball in the given delta time with the current velocity
+   * @override
+   */
   override move(deltaTime: number): void {
     const displacement = this.velocity.multiplyScalar(deltaTime)
 

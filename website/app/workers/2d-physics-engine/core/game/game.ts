@@ -18,10 +18,17 @@ export class Game<
     debug('game started')
   }
 
+  /**
+   * Update the rendering, starts the game loop
+   */
   updateRendering(_state: T): void {
     this.renderer.render(this.loop)
   }
 
+  /**
+   * - Loop through all bodies and display them
+   * - Update the physics engine
+   */
   loop = (deltaTime: number): void => {
     for (const body of this.physicsEngine.world.bodies)
       body.shape.display(this.renderer, body)
@@ -36,6 +43,9 @@ export class Game<
 
   saveState(): T { return this.state! }
 
+  /**
+   * Override the game state.
+   */
   loadState(value: T): void {
     this.state = value
 

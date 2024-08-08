@@ -18,6 +18,10 @@ export class Rectangle extends Shape {
     super()
   }
 
+  /**
+   * Draws the rectangle
+   * @override
+   */
   override display(renderer: Renderer, body: Body): void {
     renderer.drawRect({
       height: this.height,

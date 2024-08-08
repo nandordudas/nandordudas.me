@@ -18,6 +18,10 @@ export class Line extends Shape {
     super()
   }
 
+  /**
+   * Draws the line
+   * @override
+   */
   override display(renderer: Renderer, _body: Body): void {
     renderer.drawLine({
       start: this.start,

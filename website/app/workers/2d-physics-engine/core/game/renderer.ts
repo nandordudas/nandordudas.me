@@ -54,6 +54,11 @@ export class Renderer {
     context.fill()
   }
 
+  /**
+   * - Call the callback with the delta time
+   * - Clear the canvas before the next frame
+   * - Set the last timestamp and request animation frame
+   */
   render(callback: FrameRequestCallback): void {
     const animate: FrameRequestCallback = (timestamp) => {
       if (this.#lastTimestamp !== null) {

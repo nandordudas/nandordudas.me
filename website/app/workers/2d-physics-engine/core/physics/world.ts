@@ -16,6 +16,9 @@ export class World<T extends Body = Body> {
     this.bodies.push(body)
   }
 
+  /**
+   * Calls `addBody` for each body
+   */
   addBodies(bodies: T[]): void {
     for (const body of bodies)
       this.addBody(body)

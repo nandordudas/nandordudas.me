@@ -11,15 +11,24 @@ export class Paddle extends Body {
   canvasHeight: number = 450
 
   constructor(
+    /**
+     * @override
+     */
     public override position: Vector2D,
+
+    /**
+     * @override
+     */
     public override shape: Rectangle,
 
     /**
+     * @override
      * @readonly
      */
     public override readonly mass: number,
 
     /**
+     * @override
      * @readonly
      */
     public override readonly friction: number = 1.0,
@@ -27,6 +36,11 @@ export class Paddle extends Body {
     super(position, shape, mass, friction)
   }
 
+  /**
+   * Moves the paddle in the given delta time with the current velocity, between
+   * 0 and the canvas height
+   * @override
+   */
   override move(deltaTime: number): void {
     this.velocity = Vector2D.create(0, this.direction * this.speed)
 

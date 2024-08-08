@@ -8,16 +8,19 @@ export class Wall extends Body {
     public override position: Vector2D,
 
     /**
+     * @override
      * @readonly
      */
     public override readonly shape: Rectangle,
 
     /**
+     * @override
      * @readonly
      */
     public override readonly mass: number,
 
     /**
+     * @override
      * @readonly
      */
     public override readonly friction: number = 1.0,

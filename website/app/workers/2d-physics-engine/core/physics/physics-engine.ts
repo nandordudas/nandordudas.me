@@ -20,6 +20,9 @@ export class PhysicsEngine {
     public readonly collisionResolver: CollisionResolver | null = null,
   ) { }
 
+  /**
+   * Loop through all bodies and update their position, calls the `move` method
+   */
   update(deltaTime: number): void {
     for (const body of this.world.bodies)
       body.move(deltaTime)
