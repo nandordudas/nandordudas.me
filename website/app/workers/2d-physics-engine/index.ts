@@ -112,6 +112,7 @@ eventBus.on('setup', (offscreenCanvas) => {
 
 /**
  * {@link https://developer.mozilla.org/en-US/docs/Web/API/Worker/error_event|Worker: message event}
+ *
  * @example
  * addEventListener('message', messageEventHandler)
  */
@@ -121,6 +122,7 @@ export function messageEventHandler({ data }: MessageEvent<Events>): void {
 
 /**
  * {@link https://developer.mozilla.org/en-US/docs/Web/API/Worker/message_event|Worker: error event}
+ *
  * @example
  * addEventListener('error', errorHandler)
  */
