@@ -16,15 +16,8 @@ declare global {
     : unknown
 
   interface Coordinates2D {
-    /**
-     * @readonly
-     */
-    readonly x: number
-
-    /**
-     * @readonly
-     */
-    readonly y: number
+    x: number
+    y: number
   }
 
   type Point2D = [number, number]

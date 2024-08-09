@@ -36,8 +36,8 @@ export class Vector2DBase implements Vector2DCoordinateWithUtilityContract {
   }
 
   constructor(
-    public readonly x: number,
-    public readonly y: number,
+    public x: number,
+    public y: number,
   ) { }
 
   isInstanceOf<T extends Vector2DContract>(type: Constructor<T>): boolean {
