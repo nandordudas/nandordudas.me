@@ -18,20 +18,23 @@ export class Vector2DBasic extends Vector2DBase implements Vector2DBasicContract
 
   add<T extends Vector2DBasicContract>(scalarOrVector2D: ScalarOrVector2D): T {
     const other = extractVector2DBasic(scalarOrVector2D)
+    const Ctor = this.constructor as Constructor<T>
 
-    return new (this.constructor as Constructor<T>)(this.x + other.x, this.y + other.y)
+    return new Ctor(this.x + other.x, this.y + other.y)
   }
 
   subtract<T extends Vector2DBasicContract>(scalarOrVector2D: ScalarOrVector2D): T {
     const other = extractVector2DBasic(scalarOrVector2D)
+    const Ctor = this.constructor as Constructor<T>
 
-    return new (this.constructor as Constructor<T>)(this.x - other.x, this.y - other.y)
+    return new Ctor(this.x - other.x, this.y - other.y)
   }
 
   multiply<T extends Vector2DBasicContract>(scalarOrVector2D: ScalarOrVector2D): T {
     const other = extractVector2DBasic(scalarOrVector2D)
+    const Ctor = this.constructor as Constructor<T>
 
-    return new (this.constructor as Constructor<T>)(this.x * other.x, this.y * other.y)
+    return new Ctor(this.x * other.x, this.y * other.y)
   }
 
   divide<T extends Vector2DBasicContract>(scalarOrVector2D: ScalarOrVector2D): T {
@@ -40,7 +43,9 @@ export class Vector2DBasic extends Vector2DBase implements Vector2DBasicContract
     if (other.isOnAxis())
       throw new TypeError('Division by a collinear vector is not allowed')
 
-    return new (this.constructor as Constructor<T>)(this.x / other.x, this.y / other.y)
+    const Ctor = this.constructor as Constructor<T>
+
+    return new Ctor(this.x / other.x, this.y / other.y)
   }
 
   isEquals<T extends Vector2DBasicContract>(other: T): boolean {

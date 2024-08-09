@@ -15,7 +15,9 @@ export class Vector2DTransformation extends Vector2DTrigonometric implements Vec
     if (magnitude > max)
       return this.multiply(max / magnitude as Scalar)
 
-    return new (this.constructor as Constructor<T>)(this.x, this.y)
+    const Ctor = this.constructor as Constructor<T>
+
+    return new Ctor(this.x, this.y)
   }
 
   lerp<T extends Vector2DContract>(other: T, t: Scalar): Vector2DContract {
