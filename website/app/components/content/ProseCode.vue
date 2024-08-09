@@ -51,7 +51,8 @@ const { ui } = useUI('content.prose.code', undefined, config, undefined, true)
   --twoslash-docs-font: inherit;
   --twoslash-code-font: 'Victor Mono', monospace;
   --twoslash-underline-color: #8888;
-  --twoslash-border-color: rgb(var(--color-gray-700) / 1); /*  */
+  --twoslash-border-color: rgb(var(--color-gray-700) / 1);
+  /*  */
   --twoslash-cursor-color: rgb(var(--color-primary-DEFAULT) / 1);
   --twoslash-matched-color: rgb(var(--color-primary-DEFAULT) / 1);
 }
@@ -110,9 +111,7 @@ html:not(.dark) {
         background-color: var(--highlighted-error-color);
 
         &:hover {
-          background-color: lch(
-            from var(--highlighted-error-color) calc(l - 15) c h
-          );
+          background-color: lch(from var(--highlighted-error-color) calc(l - 15) c h);
         }
       }
 
@@ -120,9 +119,7 @@ html:not(.dark) {
         background-color: var(--highlighted-warning-color);
 
         &:hover {
-          background-color: lch(
-            from var(--highlighted-warning-color) calc(l - 15) c h
-          );
+          background-color: lch(from var(--highlighted-warning-color) calc(l - 15) c h);
         }
       }
     }
@@ -143,7 +140,8 @@ html:not(.dark) {
           content: counter(line-num);
           color: var(--counter-color);
           display: inline-block;
-          width: 3ch; /* if(counter(line-num) > 9, 2ch, ...) */
+          width: 3ch;
+          /* if(counter(line-num) > 9, 2ch, ...) */
           text-align: right;
           margin-right: 1rem;
         }
