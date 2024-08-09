@@ -1,10 +1,6 @@
-export class Renderer {
-  /**
-   * @readonly
-   * @default 2 * Math.PI
-   */
-  static readonly TAU = 2 * Math.PI
+import { TAU } from '2dpe/constants'
 
+export class Renderer {
   #rafId: number | null = null
   #lastTimestamp: number | null = null
 
@@ -50,7 +46,7 @@ export class Renderer {
     const context = this.context!
 
     context.beginPath()
-    context.arc(position.x, position.y, radius, 0, Renderer.TAU)
+    context.arc(position.x, position.y, radius, 0, TAU)
     context.fill()
   }
 

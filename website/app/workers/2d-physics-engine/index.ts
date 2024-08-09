@@ -69,18 +69,18 @@ eventBus.on('error', event => debug('error in worker', event))
 eventBus.on('ping', () => sendMessage('pong'))
 eventBus.on('loadState', state => game?.loadState(state))
 eventBus.on('start', () => game?.start())
-eventBus.on('setup', (offscreenCanvas) => {
-  // Dispose event listener, same as once.
+eventBus.on('setup', (canvas) => {
+  // Dispose listeners for single-use event handling.
   eventBus.off('setup')
 
-  const paddleStart = (offscreenCanvas.height - PADDLE_HEIGHT) / 2
+  const paddleStart = (canvas.height - PADDLE_HEIGHT) / 2
 
   /**
    * @readonly
    */
   const positions = {
     leftPaddle: Vector2D.create(PADDLE_PADDING, paddleStart),
-    rightPaddle: Vector2D.create(offscreenCanvas.width - PADDLE_PADDING - PADDLE_WIDTH, paddleStart),
+    rightPaddle: Vector2D.create(canvas.width - PADDLE_PADDING - PADDLE_WIDTH, paddleStart),
     ball: Vector2D.create(100, 100),
   } as const satisfies Readonly<GenericObject<Vector2D>>
 
@@ -88,15 +88,18 @@ eventBus.on('setup', (offscreenCanvas) => {
   const leftPaddle = new Paddle(positions.leftPaddle, shapes.leftPaddle, PADDLE_MASS)
   const rightPaddle = new Paddle(positions.rightPaddle, shapes.rightPaddle, PADDLE_MASS)
 
-  // Order matters, items ordered last will be drawn on top.
+  // Last in, first drawn.
   world.addBodies([leftPaddle, rightPaddle, ball])
 
-  inputHandler.bindInput('moveUp', () => game?.movePaddle(rightPaddle, Direction.Up))
-  inputHandler.bindInput('moveDown', () => game?.movePaddle(rightPaddle, Direction.Down))
-  inputHandler.bindInput('stop', () => game?.movePaddle(rightPaddle, Direction.Stop))
+  // Control the paddle's movement.
+  const paddle = rightPaddle
+
+  inputHandler.bindInput('moveUp', () => game?.movePaddle({ paddle, direction: Direction.Up }))
+  inputHandler.bindInput('moveDown', () => game?.movePaddle({ paddle, direction: Direction.Down }))
+  inputHandler.bindInput('stop', () => game?.movePaddle({ paddle, direction: Direction.Stop }))
 
   game = new PongGame(
-    new PongRenderer(offscreenCanvas),
+    new PongRenderer(canvas),
     inputHandler,
     new PongPhysicsEngine(
       world,

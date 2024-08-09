@@ -44,7 +44,7 @@ export class Paddle extends Body {
   override move(deltaTime: number): void {
     this.velocity = Vector2D.create(0, this.direction * this.speed)
 
-    const displacement = this.velocity.multiplyScalar(deltaTime)
+    const displacement = this.velocity.multiply(deltaTime as Scalar)
     const newY = clamp(this.position.y + displacement.y, 0, this.canvasHeight - this.shape.height)
 
     this.position = Vector2D.create(this.position.x, newY)

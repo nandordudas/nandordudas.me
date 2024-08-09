@@ -1,5 +1,7 @@
 import createDebug from 'debug'
 
+import { DEGREES_PER_RADIAN } from './constants'
+
 createDebug.enable('worker:*')
 
 const debug = createDebug('worker:2d-physics-engine')
@@ -30,4 +32,24 @@ export function clamp(value: number, min: number, max: number) {
     return max
 
   return value
+}
+
+export function randomBetween(min: number, max: number): number {
+  return Math.floor(Math.random() * (max - min + 1) + min)
+}
+
+export function radianToDegree(radian: Radians): Degree {
+  return radian * DEGREES_PER_RADIAN as Degree
+}
+
+export function degreeToRadian(degree: Degree): Radians {
+  return degree / DEGREES_PER_RADIAN as Radians
+}
+
+export function isPoint2D(coordinates: Coordinates2D | Point2D): coordinates is Point2D {
+  return Array.isArray(coordinates) && coordinates.filter(Number.isFinite).length === 2
+}
+
+export function isScalar(value: unknown): value is Scalar {
+  return typeof value === 'number' && !Number.isNaN(value)
 }

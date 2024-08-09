@@ -35,7 +35,7 @@ export class Ball extends Body {
    * @override
    */
   override move(deltaTime: number): void {
-    const displacement = this.velocity.multiplyScalar(deltaTime)
+    const displacement = this.velocity.add(this.acceleration).multiply(deltaTime as Scalar)
 
     this.position = this.position.add(displacement)
   }

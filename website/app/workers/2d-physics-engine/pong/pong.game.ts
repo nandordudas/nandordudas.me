@@ -7,7 +7,7 @@ export class PongGame<
   T extends GenericObject<any>,
   Events extends GenericObject,
 > extends Game<T, Events> {
-  movePaddle(paddle: Paddle, direction: Direction): void {
+  movePaddle({ paddle, direction }: { paddle: Paddle, direction: Direction }): void {
     paddle.direction = direction
     paddle.speed = 100
     // TODO: make this configurable, it doesn't seems to work

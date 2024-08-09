@@ -24,10 +24,16 @@ export class PhysicsEngine {
    * Loop through all bodies and update their position, calls the `move` method
    */
   update(deltaTime: number): void {
+    this.applyForces(deltaTime)
+
     for (const body of this.world.bodies)
       body.move(deltaTime)
   }
 
-  applyForces(_deltaTime: number): void { }
+  applyForces(deltaTime: number): void {
+    for (const body of this.world.bodies)
+      body.applyGravity(this.world.gravity.multiply(deltaTime as Scalar))
+  }
+
   resolveCollisions(): void { }
 }

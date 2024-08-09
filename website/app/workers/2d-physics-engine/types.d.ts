@@ -7,6 +7,14 @@ declare global {
    */
   declare const debug: Debugger
 
+  type Brand<T, B> = T & { __brand: B }
+
+  type Constructor<T> = new (...args: any[]) => T
+
+  type Intersection<T extends any[]> = T extends [infer First, ...infer Rest]
+    ? First & Intersection<Rest>
+    : unknown
+
   interface Coordinates2D {
     /**
      * @readonly
@@ -19,10 +27,7 @@ declare global {
     readonly y: number
   }
 
-  /**
-   * @readonly
-   */
-  type Point2D = readonly [number, number]
+  type Point2D = [number, number]
 
   interface CoordinatesRange {
     start: Coordinates2D
@@ -44,6 +49,10 @@ declare global {
   }
 
   type GenericObject<T = unknown> = Record<string | symbol, T>
+
+  type Scalar = Brand<number, 'scalar'>
+  type Radians = Brand<number, 'radians'>
+  type Degree = Brand<number, 'degree'>
 }
 
 export { }
