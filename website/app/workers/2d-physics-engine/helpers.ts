@@ -1,6 +1,7 @@
 import createDebug from 'debug'
 
 import { DEGREES_PER_RADIAN } from './constants'
+import { Vector2D } from './core/physics/vector-2d'
 
 createDebug.enable('worker:*')
 
@@ -52,4 +53,15 @@ export function isPoint2D(coordinates: Coordinates2D | Point2D): coordinates is 
 
 export function isScalar(value: unknown): value is Scalar {
   return typeof value === 'number' && !Number.isNaN(value)
+}
+
+export function scalar(input: number): Scalar {
+  return input as Scalar
+}
+
+export function extractVector2DBasic(scalarOrVector2D: ScalarOrVector2D): Vector2D {
+  if (isScalar(scalarOrVector2D))
+    return Vector2D.create(scalarOrVector2D, scalarOrVector2D)
+
+  return Vector2D.create(scalarOrVector2D.x, scalarOrVector2D.y)
 }

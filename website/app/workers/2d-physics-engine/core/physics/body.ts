@@ -1,14 +1,13 @@
-import type { Vector2D } from './vector-2d'
 import type { Shape } from '2dpe/core/shapes/shape'
 
-import { Vector2DBasic } from './vector-2d/vector-2d-basic'
+import { Vector2D } from './vector-2d'
 
 /**
  * @abstract
  */
 export abstract class Body {
-  velocity: Vector2DBasic = Vector2DBasic.zero
-  acceleration: Vector2DBasic = Vector2DBasic.zero
+  velocity: Vector2D = Vector2D.zero()
+  acceleration: Vector2D = Vector2D.zero()
 
   /**
    * @readonly

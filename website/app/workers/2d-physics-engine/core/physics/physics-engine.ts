@@ -2,6 +2,8 @@ import type { World } from './world'
 import type { CollisionDetector } from '2dpe/core/collisions/collision-detector'
 import type { CollisionResolver } from '2dpe/core/collisions/collision-resolver'
 
+import { scalar } from '2dpe/helpers'
+
 export class PhysicsEngine {
   constructor(
     /**
@@ -32,7 +34,7 @@ export class PhysicsEngine {
 
   applyForces(deltaTime: number): void {
     for (const body of this.world.bodies)
-      body.applyGravity(this.world.gravity.multiply(deltaTime as Scalar))
+      body.applyGravity(this.world.gravity.multiply(scalar(deltaTime)))
   }
 
   resolveCollisions(): void { }

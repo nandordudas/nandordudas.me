@@ -1,9 +1,9 @@
 import type { Body } from './body'
-import type { Vector2D } from './vector-2d'
 
 import { REAL_WORLD_GRAVITY } from '2dpe/constants'
+import { scalar } from '2dpe/helpers'
 
-import { Vector2DBasic } from './vector-2d/vector-2d-basic'
+import { Vector2D } from './vector-2d'
 
 export class World<T extends Body = Body> {
   bodies: T[] = []
@@ -11,14 +11,14 @@ export class World<T extends Body = Body> {
   /**
    * @readonly
    */
-  readonly gravity: Vector2DBasic = Vector2DBasic.zero
+  readonly gravity: Vector2D = Vector2D.zero()
 
   updatePositions(_deltaTime: number): void { }
 
   addBody(body: T): void {
     this.bodies.push(body)
 
-    REAL_WORLD_GRAVITY.add<Vector2D>(1 as Scalar)
+    REAL_WORLD_GRAVITY.add(scalar(1))
   }
 
   /**

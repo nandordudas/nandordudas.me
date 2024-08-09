@@ -22,6 +22,8 @@ declare global {
 
   type Point2D = [number, number]
 
+  type ScalarOrVector2D = Scalar | Coordinates2D
+
   interface CoordinatesRange {
     start: Coordinates2D
     end: Coordinates2D
