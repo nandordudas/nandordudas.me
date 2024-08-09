@@ -27,8 +27,6 @@ export class World<T extends Body = Body> {
   addBodies(bodies: T[]): void {
     for (const body of bodies)
       this.addBody(body)
-
-    // World.realWorldGravity
   }
 
   removeBody(body: T): void {

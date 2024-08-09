@@ -1,8 +1,7 @@
 import type { Vector2DBasicContract, Vector2DContract, Vector2DCoordinateWithUtilityContract } from './types'
 
+import { Vector2D } from '2dpe/core/physics/vector-2d'
 import { isPoint2D } from '2dpe/helpers'
-
-import { Vector2D } from '../vector-2d'
 
 import { Vector2DBasic } from './vector-2d-basic'
 
