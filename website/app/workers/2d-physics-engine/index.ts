@@ -5,10 +5,12 @@ import { EventBus } from './core/events/event-bus'
 import { InputHandler } from './core/input/input-handler'
 import { Vector2D } from './core/physics/vector-2d'
 import { Circle } from './core/shapes/circle'
+import { Line } from './core/shapes/line'
 import { Rectangle } from './core/shapes/rectangle'
 import { sendMessage } from './helpers'
 import { Ball } from './pong/bodies/ball'
 import { Paddle } from './pong/bodies/paddle'
+import { Wall } from './pong/bodies/wall'
 import { PongCollisionDetector } from './pong/pong.collision-detector'
 import { PongCollisionResolver } from './pong/pong.collision-resolver'
 import { PongGame } from './pong/pong.game'
@@ -41,6 +43,8 @@ const PADDLE_PADDING = 10
 /*  */
 const BALL_MASS = 1
 const BALL_RADIUS = 4
+/*  */
+const WALL_MASS = 10_000
 // #endregion
 
 // #region Variables
@@ -87,9 +91,19 @@ eventBus.on('setup', (canvas) => {
   const ball = new Ball(positions.ball, shapes.ball, BALL_MASS)
   const leftPaddle = new Paddle(positions.leftPaddle, shapes.leftPaddle, PADDLE_MASS)
   const rightPaddle = new Paddle(positions.rightPaddle, shapes.rightPaddle, PADDLE_MASS)
+  const topWall = new Wall(
+    Vector2D.create(0, 0),
+    new Line(Vector2D.create(0, 0), Vector2D.create(canvas.width, 0)),
+    WALL_MASS,
+  )
+  const bottomWall = new Wall(
+    Vector2D.create(0, canvas.height),
+    new Line(Vector2D.create(0, canvas.height), Vector2D.create(canvas.width, canvas.height)),
+    WALL_MASS,
+  )
 
   // Last in, first drawn.
-  world.addBodies([leftPaddle, rightPaddle, ball])
+  world.addBodies([topWall, bottomWall, leftPaddle, rightPaddle, ball])
 
   // Control the paddle's movement.
   const paddle = rightPaddle

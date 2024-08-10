@@ -1,5 +1,5 @@
 import type { Vector2D } from '2dpe/core/physics/vector-2d'
-import type { Rectangle } from '2dpe/core/shapes/rectangle'
+import type { Line } from '2dpe/core/shapes/line'
 
 import { Body } from '2dpe/core/physics/body'
 
@@ -11,7 +11,7 @@ export class Wall extends Body {
      * @override
      * @readonly
      */
-    public override readonly shape: Rectangle,
+    public override readonly shape: Line,
 
     /**
      * @override
@@ -29,6 +29,10 @@ export class Wall extends Body {
   }
 
   override move(_deltaTime: number): void {
-    // throw new Error('Method not implemented.')
+    // Wall is static
+  }
+
+  unit(): Vector2D {
+    return this.shape.end.subtract(this.shape.start)
   }
 }

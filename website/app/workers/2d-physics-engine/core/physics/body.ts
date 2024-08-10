@@ -1,5 +1,7 @@
 import type { Shape } from '2dpe/core/shapes/shape'
 
+import { scalar } from '2dpe/helpers'
+
 import { Vector2D } from './vector-2d'
 
 /**
@@ -40,10 +42,19 @@ export abstract class Body {
    */
   abstract move(deltaTime: number): void
 
-  isInstanceOf = <T extends Body>(type: new (...args: any[]) => T): boolean => this instanceof type
+  isInstanceOf<T extends Body>(type: Constructor<T>): boolean {
+    return this instanceof type
+  }
 
   applyGravity(gravity: Vector2D): void {
     this.acceleration = this.acceleration.add(gravity)
+  }
+
+  updatePosition(deltaTime: number): void {
+    const damping = 0.99
+
+    this.position = this.position.add(this.velocity.multiply(scalar(deltaTime)))
+    this.velocity = this.velocity.multiply(scalar(damping ** deltaTime))
   }
 
   onMove(): void { }

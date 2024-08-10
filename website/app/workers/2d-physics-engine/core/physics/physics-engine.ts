@@ -14,12 +14,12 @@ export class PhysicsEngine {
     /**
      * @readonly
      */
-    public readonly collisionDetector: CollisionDetector | null = null,
+    public readonly collisionDetector: CollisionDetector,
 
     /**
      * @readonly
      */
-    public readonly collisionResolver: CollisionResolver | null = null,
+    public readonly collisionResolver: CollisionResolver,
   ) { }
 
   /**
@@ -28,8 +28,12 @@ export class PhysicsEngine {
   update(deltaTime: number): void {
     this.applyForces(deltaTime)
 
-    for (const body of this.world.bodies)
-      body.move(deltaTime)
+    // TODO: check resolveCollisions method below, check move method necessary
+    // for (const body of this.world.bodies)
+    //   body.move(deltaTime)
+
+    this.collisionDetector.detectCollisions(this.world.bodies)
+    this.resolveCollisions(deltaTime)
   }
 
   applyForces(deltaTime: number): void {
@@ -37,5 +41,12 @@ export class PhysicsEngine {
       body.applyGravity(this.world.gravity.multiply(scalar(deltaTime)))
   }
 
-  resolveCollisions(): void { }
+  resolveCollisions(deltaTime: number): void {
+    for (const collision of this.collisionDetector.collisions)
+      this.collisionResolver.resolve(collision)
+
+    // TODO: specify which bodies to update in children classes
+    for (const body of this.world.bodies)
+      body.updatePosition(deltaTime)
+  }
 }

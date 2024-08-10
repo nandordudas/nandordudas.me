@@ -1,8 +1,14 @@
+import { extractVector2DBasic } from '2dpe/helpers'
+
 export class Vector2D implements Coordinates2D {
   static normal(): Vector2D { return new Vector2D(0, 0) }
   static zero(): Vector2D { return new Vector2D(0, 0) }
   static distance(): number { return 0 }
-  static dotProduct(): number { return 0 }
+
+  static dot(v1: Vector2D, v2: Vector2D): Scalar {
+    return v1.x * v2.x + v1.y * v2.y as Scalar
+  }
+
   static crossProduct(): number { return 0 }
   static randomize(): Vector2D { return new Vector2D(0, 0) }
   static random(_x: number, _y: number): Vector2D { return new Vector2D(0, 0) }
@@ -31,7 +37,10 @@ export class Vector2D implements Coordinates2D {
     return Array.isArray(coordinates) && coordinates.filter(Number.isFinite).length === 2
   }
 
-  get length() { return 0 }
+  get length(): Scalar {
+    return Math.hypot(this.x, this.y) as Scalar
+  }
+
   get unit() { return new Vector2D(0, 0) }
   get isZero() { return false }
 
@@ -46,6 +55,10 @@ export class Vector2D implements Coordinates2D {
      */
     public readonly y: number,
   ) { }
+
+  negate(): Vector2D {
+    return new Vector2D(-this.x, -this.y)
+  }
 
   add(scalarOrVector2D: ScalarOrVector2D): Vector2D {
     const other = extractVector2DBasic(scalarOrVector2D)
@@ -108,15 +121,4 @@ export class Vector2D implements Coordinates2D {
   invertY(): this { return this }
   invert(): this { return this }
   rotate(): this { return this }
-}
-
-function extractVector2DBasic(scalarOrVector2D: ScalarOrVector2D): Vector2D {
-  if (isScalar(scalarOrVector2D))
-    return Vector2D.create(scalarOrVector2D, scalarOrVector2D)
-
-  return Vector2D.create(scalarOrVector2D.x, scalarOrVector2D.y)
-}
-
-function isScalar(value: unknown): value is Scalar {
-  return typeof value === 'number' && !Number.isNaN(value)
 }

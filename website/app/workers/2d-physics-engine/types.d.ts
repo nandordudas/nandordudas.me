@@ -1,4 +1,6 @@
 declare global {
+  import type { Body } from './core/physics/body'
+  import type { Vector2D } from './core/physics/vector-2d'
   import type { Debugger } from 'debug'
 
   /**
@@ -48,6 +50,14 @@ declare global {
   type Scalar = Brand<number, 'scalar'>
   type Radians = Brand<number, 'radians'>
   type Degree = Brand<number, 'degree'>
+
+  interface Collision {
+    bodyA: Body
+    bodyB: Body
+    normal: Vector2D
+    depth: number
+    contactPoint: Vector2D
+  }
 }
 
 export { }

@@ -1,7 +1,12 @@
+import type { Body } from './core/physics/body'
+
 import createDebug from 'debug'
 
 import { DEGREES_PER_RADIAN } from './constants'
 import { Vector2D } from './core/physics/vector-2d'
+import { Ball } from './pong/bodies/ball'
+import { Paddle } from './pong/bodies/paddle'
+import { Wall } from './pong/bodies/wall'
 
 createDebug.enable('worker:*')
 
@@ -64,4 +69,16 @@ export function extractVector2DBasic(scalarOrVector2D: ScalarOrVector2D): Vector
     return Vector2D.create(scalarOrVector2D, scalarOrVector2D)
 
   return Vector2D.create(scalarOrVector2D.x, scalarOrVector2D.y)
+}
+
+export function isBall(value: Body): value is Ball {
+  return value.isInstanceOf(Ball)
+}
+
+export function isWall(value: Body): value is Wall {
+  return value.isInstanceOf(Wall)
+}
+
+export function isPaddle(value: Body): value is Paddle {
+  return value.isInstanceOf(Paddle)
 }
