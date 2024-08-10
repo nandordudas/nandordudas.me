@@ -10,9 +10,18 @@
     "npm": ">=10.5.0"
   },
   "scripts": {
+    "postinstall": "npx simple-git-hooks",
     "release": "bumpp -r"
   },
   "devDependencies": {
-    "bumpp": "^9.4.2"
+    "bumpp": "^9.4.2",
+    "lint-staged": "^15.2.8",
+    "simple-git-hooks": "^2.11.1"
+  },
+  "simple-git-hooks": {
+    "pre-commit": "pnpm lint-staged"
+  },
+  "lint-staged": {
+    "*": "pnpm run --filter website lint --fix"
   }
 }
