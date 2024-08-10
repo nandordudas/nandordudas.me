@@ -1,7 +1,6 @@
 import type { Ball } from './bodies/ball'
 import type { Paddle } from './bodies/paddle'
 import type { Wall } from './bodies/wall'
-import type { Body } from '2dpe/core/physics/body'
 
 import { CollisionResolver } from '2dpe/core/collisions/collision-resolver'
 import { Vector2D } from '2dpe/core/physics/vector-2d'

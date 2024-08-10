@@ -5,7 +5,7 @@ import type { Body } from '2dpe/core/physics/body'
 
 import { CollisionDetector } from '2dpe/core/collisions/collision-detector'
 import { Vector2D } from '2dpe/core/physics/vector-2d'
-import { isBall, isPaddle, isWall } from '2dpe/helpers'
+import { isBall, isWall } from '2dpe/helpers'
 
 export class PongCollisionDetector extends CollisionDetector {
   override detectCollisions(bodies: Body[]): void {
