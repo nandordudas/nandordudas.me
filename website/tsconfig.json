@@ -2,21 +2,8 @@
   // https://nuxt.com/docs/guide/concepts/typescript
   "extends": "./.nuxt/tsconfig.json",
   "compilerOptions": {
-    "paths": {
-      "2dpe/*": [
-        "./app/workers/2d-physics-engine/*"
-      ],
-      "2dpe": [
-        "./app/workers/2d-physics-engine/index.ts"
-      ]
-    },
     "types": [
       "vitest/globals"
     ]
-  },
-  "include": [
-    "./app/workers/2d-physics-engine/*",
-    "./app/workers/2d-physics-engine/core/physics/vector-2d/*",
-    "./app/workers/2d-physics-engine/core/shapes/*"
-  ]
+  }
 }
