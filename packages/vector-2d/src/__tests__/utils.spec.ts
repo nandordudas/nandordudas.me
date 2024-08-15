@@ -162,18 +162,18 @@ describe('utils', () => {
     })
 
     it('should return a random integer between min and max when asFloat is false', () => {
-      const result = randomBetween(0, 10, false)
+      const result = randomBetween(0, 10, 'integer')
       expect(result).toBeGreaterThanOrEqual(0)
       expect(result).toBeLessThanOrEqual(10)
       expect(Number.isInteger(result)).toBe(true)
     })
 
     it('should throw an error when min is greater than max', () => {
-      expect(() => randomBetween(10, 0)).toThrow('Min must be less than or equal to max')
+      expect(() => randomBetween(10, 0)).toThrow('Min must be less than max')
     })
 
     it('should throw an error when min is equal to max', () => {
-      expect(() => randomBetween(10, 10)).toThrow('Min and max cannot be equal')
+      expect(() => randomBetween(10, 10)).toThrow('Min must be less than max')
     })
   })
 })

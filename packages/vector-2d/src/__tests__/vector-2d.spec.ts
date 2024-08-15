@@ -1279,7 +1279,7 @@ describe('vector 2d', () => {
         const vector = Vector2D.create(0, 0)
         const min = { x: 1, y: 1 }
         const max = { x: 10, y: 10 }
-        vector.randomize(min, max, false)
+        vector.randomize(min, max, 'integer')
         expect(Number.isInteger(vector.x)).toBe(true)
         expect(Number.isInteger(vector.y)).toBe(true)
       })
@@ -1289,7 +1289,7 @@ describe('vector 2d', () => {
         const vector = Vector2D.create(0, 0)
         const min = { x: 1, y: 1 }
         const max = { x: 10, y: 10 }
-        vector.randomize(min, max, true)
+        vector.randomize(min, max, 'float')
         expect(vector.x).not.toBe(Math.floor(vector.x))
         expect(vector.y).not.toBe(Math.floor(vector.y))
       })
