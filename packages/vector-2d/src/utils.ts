@@ -8,12 +8,18 @@ export function isArray2D(coordinates: unknown): coordinates is Array2D {
   return Array.isArray(coordinates) && coordinates.filter(isNumber).length === 2
 }
 
-// eslint-disable-next-line complexity
+export function isObject(value: unknown): value is object {
+  return typeof value === 'object' && value !== null
+}
+
+export function hasProperty<T extends object, K extends PropertyKey>(obj: T, prop: K): obj is T & Record<K, unknown> {
+  return prop in obj
+}
+
 export function isCoordinates2D(value: unknown): value is Coordinates2D {
-  return typeof value === 'object'
-    && value !== null
-    && 'x' in value
-    && 'y' in value
+  return isObject(value)
+    && hasProperty(value, 'x')
+    && hasProperty(value, 'y')
     && isNumber(value.x)
     && isNumber(value.y)
 }
@@ -56,11 +62,8 @@ const numberKeys = new Map<number, MapKey>()
 
 function createWeakMapKey(numberOrCoordinates2D: NumberOrCoordinates): MapKey {
   if (isNumber(numberOrCoordinates2D)) {
-    if (!numberKeys.has(numberOrCoordinates2D)) {
-      // TODO: cache size check, lru cache maybe
-
+    if (!numberKeys.has(numberOrCoordinates2D))
       numberKeys.set(numberOrCoordinates2D, { numberOrCoordinates2D })
-    }
 
     return numberKeys.get(numberOrCoordinates2D)!
   }
