@@ -1,0 +1,18 @@
+{
+  "extends": "@total-typescript/tsconfig/bundler/no-dom/library-monorepo",
+  "compilerOptions": {
+    "experimentalDecorators": true,
+    "types": [
+      "@total-typescript/ts-reset",
+      "vitest/globals"
+    ],
+    "importHelpers": true
+  },
+  "include": [
+    "src/**/*"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist"
+  ]
+}

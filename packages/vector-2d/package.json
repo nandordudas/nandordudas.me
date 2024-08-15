@@ -1,0 +1,38 @@
+{
+  "name": "@workspace/vector-2d",
+  "type": "module",
+  "version": "0.0.1",
+  "packageManager": "pnpm@9.7.0",
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      }
+    }
+  },
+  "main": "dist/index.js",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "*.d.ts",
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup --splitting --sourcemap --dts --format esm --target node16",
+    "lint": "eslint",
+    "test": "vitest --globals",
+    "typecheck": "tsc --noEmit --moduleResolution bundler --module ESNext"
+  },
+  "devDependencies": {
+    "@total-typescript/ts-reset": "catalog:",
+    "@total-typescript/tsconfig": "catalog:",
+    "eslint-plugin-vitest": "^0.5.4",
+    "reflect-metadata": "^0.2.2",
+    "tslib": "^2.6.3",
+    "tsup": "catalog:",
+    "typescript": "catalog:",
+    "vitest": "catalog:"
+  }
+}
