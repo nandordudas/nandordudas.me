@@ -111,19 +111,21 @@
   ],
   "eslint.runtime": "node",
   "cSpell.words": [
-    "AABB",
+    "aabb",
     "antfu",
     "bumpp",
     "dedupe",
-    "Dudás",
+    "dudás",
     "lerp",
-    "Nándor",
-    "Nuxt",
+    "nándor",
+    "nuxt",
     "nuxtjs",
     "shiki",
+    "tsup",
     "twemoji",
     "unstub",
     "vitesse",
+    "vitest",
     "vueuse"
   ]
 }
