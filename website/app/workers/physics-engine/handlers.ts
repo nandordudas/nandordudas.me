@@ -14,9 +14,14 @@ const debug = createDebug('worker:2d-physics-engine')
 globalThis.debug = debug
 
 let game: Game | null = null
+let scale = 1
+
+physicsEngineEvents.on('scale', (value) => {
+  scale = value
+})
 
 physicsEngineEvents.on('setup', (offscreenCanvas) => {
-  game = createGame({ offscreenCanvas, scale: 1 })
+  game = createGame({ offscreenCanvas, scale })
 })
 
 physicsEngineEvents.on('start', () => {

@@ -9,6 +9,7 @@ export const physicsEngineEvents = createEventBus<{
   ping: void
   setup: OffscreenCanvas
   start: void
+  scale: number
 }>()
 
 physicsEngineEvents.on('error', event => debug('error in worker', event))

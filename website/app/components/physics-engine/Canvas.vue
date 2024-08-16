@@ -43,8 +43,11 @@ worker.addEventListener('error', (event) => { // 2. set worker error handler
 })
 
 worker.addEventListener('message', (event) => { // 3. set worker message handler
-  if (event.data.type === 'pong') // 5. worker connection established
+  if (event.data.type === 'pong') { // 5. worker connection established
+    sendMessage('scale', window.devicePixelRatio)
+
     state.isWorkerReady = true
+  }
 
   if (event.data.type === 'gameInit') // 6. game has setup
     state.score = event.data.data.score
