@@ -3,6 +3,7 @@ import type { Array2D, CoordinateKey, Coordinates, Coordinates2D, NumberOrCoordi
 /**
  * Checks if the value is a number. Is a type guard function.
  *
+ * @todo Extract to a separate package.
  * @param {unknown} value The value to check.
  * @returns {boolean} If the value is a number, `false` otherwise.
  * @example
@@ -33,6 +34,7 @@ export function isArray2D(coordinates: unknown): coordinates is Array2D {
 /**
  * Checks if the value is an object. Is a type guard function.
  *
+ * @todo Extract to a separate package.
  * @param {unknown} value The value to check.
  * @returns {boolean} If the value is an object, `false` otherwise.
  * @example
@@ -48,6 +50,7 @@ export function isObject(value: unknown): value is object {
 /**
  * Checks if the object has a property. Is a type guard function.
  *
+ * @todo Extract to a separate package.
  * @template T The object type.
  * @template K The property key type.
  * @param {T} obj The object to check.
@@ -64,6 +67,7 @@ export function hasProperty<T extends object, K extends PropertyKey>(obj: T, pro
 /**
  * Checks if the object has a property with a specific type. Is a type guard function.
  *
+ * @todo Extract to a separate package.
  * @template T The object type.
  * @template K The property key type.
  * @template V The property value type.
@@ -171,6 +175,7 @@ function createWeakMapKey(numberOrCoordinates2D: NumberOrCoordinates): MapKey {
 /**
  * Clamps a value between a minimum and maximum value.
  *
+ * @todo Extract to a separate package.
  * @param {number} value The value to clamp.
  * @param {number} min The minimum value.
  * @param {number} max The maximum value.
@@ -191,6 +196,7 @@ export function clamp(value: number, min: number, max: number): number {
 /**
  * Checks if the value is defined.
  *
+ * @todo Extract to a separate package.
  * @template T The value type.
  * @param {T | null | undefined} value The value to check.
  * @returns {value is T} If the value is defined, `false` otherwise.
@@ -220,6 +226,7 @@ export function isCoordinateKey(key: string): key is CoordinateKey {
 /**
  * Generates a random number between the minimum and maximum values.
  *
+ * @todo Extract to a separate package.
  * @param {number} min The minimum value.
  * @param {number} max The maximum value.
  * @param asFloat If the result should be a float.

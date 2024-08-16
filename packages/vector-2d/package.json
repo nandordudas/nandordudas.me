@@ -28,8 +28,8 @@
   "devDependencies": {
     "@total-typescript/ts-reset": "catalog:",
     "@total-typescript/tsconfig": "catalog:",
+    "@vitest/ui": "catalog:",
     "eslint-plugin-vitest": "^0.5.4",
-    "reflect-metadata": "^0.2.2",
     "tslib": "^2.6.3",
     "tsup": "catalog:",
     "typescript": "catalog:",

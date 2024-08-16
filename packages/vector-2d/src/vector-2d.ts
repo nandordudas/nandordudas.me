@@ -1,7 +1,6 @@
-import { clamp, isNumber, randomBetween } from '../utils'
+import type { Array2D, Coordinates2D, RotationDirection } from './types'
 
-type RotationDirection = 'clockwise' | 'counterclockwise'
-interface Coordinates2D { x: number, y: number }
+import { clamp, isNumber, randomBetween } from './utils'
 
 /**
  * A 2D vector class representing a vector in 2D space.
@@ -348,12 +347,12 @@ export class Vector2D {
    *
    * @private
    * @param {RotationDirection} direction The direction to rotate.
-   * @returns {[number, number]} The new coordinates after
+   * @returns {Array2D} The new coordinates after
    * @example
    * this.#calculateNewCoordinates('clockwise') // [this.y, -this.x]
    * this.#calculateNewCoordinates('counterclockwise') // [-this.y, this.x]
    */
-  #calculateNewCoordinates(direction: RotationDirection): [number, number] {
+  #calculateNewCoordinates(direction: RotationDirection): Array2D {
     return direction === 'clockwise' ? [this.y, -this.x] : [-this.y, this.x]
   }
 

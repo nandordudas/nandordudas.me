@@ -5,6 +5,7 @@ packages:
 catalog:
   '@total-typescript/ts-reset': ^0.5.1
   '@total-typescript/tsconfig': ^1.0.4
+  '@vitest/ui': ^2.0.5
   nuxt: ^3.12.4
   tsup: ^8.2.4
   typescript: ^5.5.4
