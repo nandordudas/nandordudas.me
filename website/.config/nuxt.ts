@@ -1,7 +1,5 @@
 import { httpsServerFiles } from '../lib/server.utils'
 
-const { pathname: dpeRoot } = new URL('../app/workers/2d-physics-engine/', import.meta.url)
-
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   compatibilityDate: '2024-07-10',
@@ -10,13 +8,6 @@ export default defineNuxtConfig({
   },
   devServer: {
     https: httpsServerFiles(),
-  },
-  vite: {
-    resolve: {
-      alias: {
-        '2dpe/': dpeRoot,
-      },
-    },
   },
   app: {
     head: {
@@ -91,12 +82,3 @@ export default defineNuxtConfig({
     throws: false,
   },
 })
-
-// // INFO: check https://regexp.dev/guide/usage#createregexp
-// const VALID_URL_REGEX = /^(?=[a-z0-9-]+$)[a-z0-9-]+$/i // ReDOS ✅
-
-// const hasInvalidTag = tags.some(tag => !VALID_URL_REGEX.test(kebabCase(tag)))
-
-// // TODO: move tag validation to Nitro config and catch invalid tags during Nitro preparation
-// if (hasInvalidTag)
-//   throw createError({ message: 'Invalid tag', statusCode: 400 })
