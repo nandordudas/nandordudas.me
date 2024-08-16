@@ -10,6 +10,14 @@
         "types": "./dist/index.d.ts",
         "default": "./dist/index.js"
       }
+    },
+    "./vector-2d": {
+      "types": "./dist/vector-2d.d.ts",
+      "import": "./dist/vector-2d.js"
+    },
+    "./utils": {
+      "types": "./dist/utils.d.ts",
+      "import": "./dist/utils.js"
     }
   },
   "main": "dist/index.js",
@@ -20,8 +28,9 @@
     "dist"
   ],
   "scripts": {
-    "build": "tsup --splitting --sourcemap --dts --format esm --target node16",
+    "build": "tsup",
     "lint": "eslint",
+    "postinstall": "pnpm run build",
     "test": "vitest --globals",
     "typecheck": "tsc --noEmit --moduleResolution bundler --module ESNext"
   },
