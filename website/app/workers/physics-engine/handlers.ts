@@ -4,6 +4,8 @@ import createDebug from 'debug'
 
 import { type Events, physicsEngineEvents } from './events'
 
+import { createGame } from '~~/lib/physics-engine'
+
 createDebug.enable('worker:*')
 
 const debug = createDebug('worker:2d-physics-engine')
@@ -13,9 +15,7 @@ globalThis.debug = debug
 
 let game: Game | null = null
 
-physicsEngineEvents.on('setup', async (offscreenCanvas) => {
-  const { createGame } = await import('~~/lib/physics-engine')
-
+physicsEngineEvents.on('setup', (offscreenCanvas) => {
   game = createGame({ offscreenCanvas, scale: 1 })
 })
 
