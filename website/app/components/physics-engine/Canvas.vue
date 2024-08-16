@@ -31,7 +31,7 @@ const directionMap = {
 } as const
 
 watchEffect(() => {
-    const mappedKeyStrokes = [down?.value ? 1 : 0, up?.value ? -1 : 0].map(Number)
+  const mappedKeyStrokes = [down?.value ? 1 : 0, up?.value ? -1 : 0].map(Number)
   const directionKey = mappedKeyStrokes.reduce((acc, current) => acc + current, 0).toString()
 
   // Sending paddle direction to worker, keys can be hold.

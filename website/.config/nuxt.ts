@@ -45,7 +45,7 @@ export default defineNuxtConfig({
     defaultLocale: 'en',
     langDir: 'locales/',
     locales: [
-      { code: 'en', iso: 'en-US', file: 'en-US.yaml', isCatchallLocale: true, name: 'English' },
+      { code: 'en', language: 'en-US', file: 'en-US.yaml', isCatchallLocale: true, name: 'English' },
     ],
     lazy: true,
     strategy: 'no_prefix',
