@@ -14,6 +14,12 @@ import { World } from './world'
 
 interface SetupParams {
   offscreenCanvas: OffscreenCanvas
+  /**
+   * Original = 1
+   * Half = 0.5
+   * Double = 2
+   * Triple = 3
+   */
   scale: OffscreenCanvasScale
 }
 

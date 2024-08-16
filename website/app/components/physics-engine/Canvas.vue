@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import createDebug from 'debug'
 
-import EngineWorker from '../../workers/physics-engine/worker?worker'
+import EngineWorker from '~/workers/physics-engine/worker?worker'
 
 const debug = createDebug('page:canvas')
 const worker = new EngineWorker() // 1. create worker
@@ -78,7 +78,7 @@ function sendMessage(type: string, data?: any, transfer?: Transferable[]): void 
     height="450"
   /><!-- Canvas width and height must set by attribute and style for scaling -->
 
-  <UButton class="mt-4" :disabled="state.score < 0 " @click="sendMessage('start')">
+  <UButton class="mt-4" :disabled="!state.isWorkerReady" @click="sendMessage('start')">
     Start
   </UButton>
 

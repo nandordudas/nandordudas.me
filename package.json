@@ -12,7 +12,7 @@
   "scripts": {
     "postinstall": "npx simple-git-hooks",
     "release": "bumpp -r",
-    "test": "pnpm run --recursive test --coverage"
+    "test": "pnpm run --filter vector test --coverage"
   },
   "devDependencies": {
     "bumpp": "^9.5.1",
@@ -23,6 +23,6 @@
     "pre-commit": "pnpm lint-staged"
   },
   "lint-staged": {
-    "*": "pnpm run --filter website lint --fix"
+    "*": "pnpm run --recursive lint --fix"
   }
 }
