@@ -2,6 +2,7 @@ import type { OffscreenCanvasScale } from './constants'
 import type { Renderer } from './renderer'
 
 import { Ball } from './body.ball'
+import { Net } from './body.net'
 import { Paddle } from './body.paddle'
 import { Wall } from './body.wall'
 import { PaddleMovement } from './paddle-movement'
@@ -30,6 +31,13 @@ const paddleHeight = 200
 
 export function setup(params: SetupParams): { renderer: Renderer, world: World } {
   const renderer = new ShapeRenderer(params.offscreenCanvas, params.scale)
+
+  const net = new Net({
+    shape: new Line({
+      start: Vector2D.create(renderer.offscreenCanvas.width / 2, 0),
+      end: Vector2D.create(renderer.offscreenCanvas.width / 2, renderer.offscreenCanvas.height),
+    }),
+  })
 
   const topWall = new Wall({
     shape: new Line({
@@ -77,6 +85,7 @@ export function setup(params: SetupParams): { renderer: Renderer, world: World }
 
   const world = new World()
 
+  world.addBody(net)
   world.addBody(topWall)
   world.addBody(bottomWall)
   world.addBody(leftPaddle)

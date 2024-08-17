@@ -662,7 +662,7 @@ export class Vector2D {
     if (this.#cachedMagnitude !== null)
       return this.#cachedMagnitude
 
-    this.#cachedMagnitude = Math.sqrt(this.magnitudeSquared())
+    this.#cachedMagnitude = Math.hypot(this.x, this.y)
 
     return this.#cachedMagnitude
   }

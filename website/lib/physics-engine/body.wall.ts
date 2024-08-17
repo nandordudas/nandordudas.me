@@ -1,3 +1,5 @@
+import type { Vector2D } from './vector-2d'
+
 import { Body, type BodyConstructorProps } from './body'
 import { BodyMass } from './constants'
 import { Line } from './shape.line'
@@ -14,5 +16,9 @@ export class Wall extends Body implements WallConstructorProps {
   constructor(props: WallConstructorProps) {
     super(props)
     Object.assign(this, props)
+  }
+
+  unit(): Vector2D {
+    return this.shape.end.clone().subtract(this.shape.start)
   }
 }

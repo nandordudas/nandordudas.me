@@ -15,6 +15,7 @@ export interface BodyConstructorProps {
 }
 
 export class Body implements BodyConstructorProps {
+  inert: boolean = false
   /**
    * @default Vector2D.zero
    */
@@ -45,7 +46,7 @@ export class Body implements BodyConstructorProps {
     Object.assign(this, props)
   }
 
-  isInstanceOf<T extends Body>(type: Constructor<T>): boolean {
+  isInstanceOf<T extends Body>(type: Constructor<T>): this is T {
     return this instanceof type
   }
 

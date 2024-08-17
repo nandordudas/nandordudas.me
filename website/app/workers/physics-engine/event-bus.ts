@@ -1,6 +1,6 @@
 import mitt, { type Emitter, type EventType } from 'mitt'
 
-let emitter = null
+let emitter: Emitter<any> | null = null
 
 export function createEventBus<Events extends Record<EventType, unknown>>() {
   emitter ??= mitt<Events>()

@@ -23,19 +23,15 @@ const { down, up } = useMagicKeys({
   onEventFired: event => event.preventDefault(),
 })
 
-// TODO: refactor this into a better way
-const directionMap = {
-  '-1': 'moveUp',
-  '1': 'moveDown',
-  '0': 'stop',
-} as const
+const direction = computed(() => (down?.value ? 1 : 0) - (up?.value ? 1 : 0))
 
 watchEffect(() => {
-  const mappedKeyStrokes = [down?.value ? 1 : 0, up?.value ? -1 : 0].map(Number)
-  const directionKey = mappedKeyStrokes.reduce((acc, current) => acc + current, 0).toString()
-
-  // Sending paddle direction to worker, keys can be hold.
-  sendMessage(directionMap[directionKey as keyof typeof directionMap])
+  if (direction.value === 1)
+    sendMessage('moveDown')
+  else if (direction.value === -1)
+    sendMessage('moveUp')
+  else
+    sendMessage('stop')
 })
 
 worker.addEventListener('error', (event) => { // 2. set worker error handler
@@ -43,11 +39,8 @@ worker.addEventListener('error', (event) => { // 2. set worker error handler
 })
 
 worker.addEventListener('message', (event) => { // 3. set worker message handler
-  if (event.data.type === 'pong') { // 5. worker connection established
-    sendMessage('scale', window.devicePixelRatio)
-
+  if (event.data.type === 'pong') // 5. worker connection established
     state.isWorkerReady = true
-  }
 
   if (event.data.type === 'gameInit') // 6. game has setup
     state.score = event.data.data.score
@@ -62,6 +55,7 @@ watch(() => state.isWorkerReady, (isReady) => {
 
 onMounted(() => {
   sendMessage('ping') // 4. ping worker
+  sendMessage('scale', window.devicePixelRatio)
 })
 
 function sendMessage(type: string, data?: any, transfer?: Transferable[]): void {
