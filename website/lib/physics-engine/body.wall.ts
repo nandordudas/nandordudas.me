@@ -19,6 +19,6 @@ export class Wall extends Body implements WallConstructorProps {
   }
 
   unit(): Vector2D {
-    return this.shape.end.clone().subtract(this.shape.start)
+    return this.shape.end.subtract(this.shape.start)
   }
 }

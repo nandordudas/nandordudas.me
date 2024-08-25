@@ -1,4 +1,5 @@
-import { errorHandler, messageEventHandler } from './handlers'
+// import { errorHandler, messageEventHandler } from './handlers'
+import * as physicsEngine from './physics-engine'
 
-addEventListener('error', errorHandler)
-addEventListener('message', messageEventHandler)
+addEventListener('error', physicsEngine.errorHandler)
+addEventListener('message', physicsEngine.messageEventHandler)

@@ -3,7 +3,7 @@ import createDebug from 'debug'
 
 import GameWorker from '~/workers/game/game.worker?worker'
 
-createDebug.enable('page:*')
+// createDebug.enable('page:*')
 
 const debug = createDebug('page:game')
 

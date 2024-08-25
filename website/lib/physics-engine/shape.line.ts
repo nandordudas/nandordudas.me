@@ -31,4 +31,14 @@ export class Line extends Shape implements LineConstructorProps {
     // Reset the line dash
     renderer.context.setLineDash([0, 0])
   }
+
+  normal(): Vector2D {
+    // Calculate the direction vector
+    const direction = this.end.subtract(this.start)
+
+    // Rotate by 90 degrees to get the normal
+    // For a 2D vector (x, y), the perpendicular vector is (-y, x) or (y, -x)
+    // We'll use (-y, x) here, which gives a normal pointing to the "left" of the line
+    return Vector2D.create(-direction.y, direction.x).normalize()
+  }
 }

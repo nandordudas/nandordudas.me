@@ -113,9 +113,12 @@
   "cSpell.words": [
     "aabb",
     "antfu",
+    "Birpc",
     "bumpp",
+    "Congruential",
     "dedupe",
     "dudás",
+    "Fira",
     "lerp",
     "nándor",
     "nuxt",
@@ -123,9 +126,11 @@
     "shiki",
     "tsup",
     "twemoji",
+    "unref",
     "unstub",
     "vitesse",
     "vitest",
     "vueuse"
-  ]
+  ],
+  "arrayIndexInlay.enabled": true
 }

@@ -9,20 +9,20 @@ import type { Collision } from './collision'
  * contact points and penetration depths between colliding bodies.
  */
 export abstract class CollisionDetector<T extends Body = Body> {
-  private _collisions: Collision[] = []
+  #collisions: Collision[] = []
 
   get collisions(): Collision[] {
-    return this._collisions
+    return this.#collisions
   }
 
   abstract detectCollisions(bodies: T[]): void
   protected abstract checkCollision(bodyA: T, bodyB: T): void
 
   addCollision(collision: Collision): void {
-    this._collisions.push(collision)
+    this.#collisions.push(collision)
   }
 
   resetCollisions(): void {
-    this._collisions = []
+    this.#collisions = []
   }
 }

@@ -324,33 +324,29 @@ describe('vector 2d', () => {
 
     describe('add', () => {
       it('should add two positive vectors correctly', () => {
-        const v1 = Vector2D.create(1, 2)
         const v2 = { x: 3, y: 4 }
-        v1.add(v2)
+        const v1 = Vector2D.create(1, 2).add(v2)
         expect(v1.x).toBe(4)
         expect(v1.y).toBe(6)
       })
 
       it('should add a positive and a negative vector correctly', () => {
-        const v1 = Vector2D.create(1, 2)
         const v2 = { x: -3, y: -4 }
-        v1.add(v2)
+        const v1 = Vector2D.create(1, 2).add(v2)
         expect(v1.x).toBe(-2)
         expect(v1.y).toBe(-2)
       })
 
       it('should add two negative vectors correctly', () => {
-        const v1 = Vector2D.create(-1, -2)
         const v2 = { x: -3, y: -4 }
-        v1.add(v2)
+        const v1 = Vector2D.create(-1, -2).add(v2)
         expect(v1.x).toBe(-4)
         expect(v1.y).toBe(-6)
       })
 
       it('should add a vector to a zero vector correctly', () => {
-        const v1 = Vector2D.create(0, 0)
         const v2 = { x: 3, y: 4 }
-        v1.add(v2)
+        const v1 = Vector2D.create(0, 0).add(v2)
         expect(v1.x).toBe(3)
         expect(v1.y).toBe(4)
       })
@@ -364,9 +360,8 @@ describe('vector 2d', () => {
       })
 
       it('should add vectors with floating-point values correctly', () => {
-        const v1 = Vector2D.create(1.5, 2.5)
         const v2 = { x: 3.5, y: 4.5 }
-        v1.add(v2)
+        const v1 = Vector2D.create(1.5, 2.5).add(v2)
         expect(v1.x).toBe(5)
         expect(v1.y).toBe(7)
       })
@@ -374,32 +369,28 @@ describe('vector 2d', () => {
 
     describe('subtract', () => {
       it('should subtract two positive vectors correctly', () => {
-        const v1 = Vector2D.create(5, 7)
         const v2 = { x: 3, y: 2 }
-        v1.subtract(v2)
+        const v1 = Vector2D.create(5, 7).subtract(v2)
         expect(v1.x).toBe(2)
         expect(v1.y).toBe(5)
       })
 
       it('should subtract a positive vector from a negative vector correctly', () => {
-        const v1 = Vector2D.create(-5, -7)
         const v2 = { x: 3, y: 2 }
-        v1.subtract(v2)
+        const v1 = Vector2D.create(-5, -7).subtract(v2)
         expect(v1.x).toBe(-8)
         expect(v1.y).toBe(-9)
       })
 
       it('should subtract two negative vectors correctly', () => {
-        const v1 = Vector2D.create(-5, -7)
         const v2 = { x: -3, y: -2 }
-        v1.subtract(v2)
+        const v1 = Vector2D.create(-5, -7).subtract(v2)
         expect(v1.x).toBe(-2)
         expect(v1.y).toBe(-5)
       })
 
       it('should subtract a vector from itself resulting in a zero vector', () => {
-        const v1 = Vector2D.create(5, 7)
-        v1.subtract({ x: 5, y: 7 })
+        const v1 = Vector2D.create(5, 7).subtract({ x: 5, y: 7 })
         expect(v1.x).toBe(0)
         expect(v1.y).toBe(0)
       })
@@ -413,9 +404,8 @@ describe('vector 2d', () => {
       })
 
       it('should subtract vectors with floating-point values correctly', () => {
-        const v1 = Vector2D.create(5.5, 7.7)
         const v2 = { x: 3.3, y: 2.2 }
-        v1.subtract(v2)
+        const v1 = Vector2D.create(5.5, 7.7).subtract(v2)
         expect(v1.x).toBeCloseTo(2.2)
         expect(v1.y).toBeCloseTo(5.5)
       })
@@ -423,33 +413,29 @@ describe('vector 2d', () => {
 
     describe('multiply', () => {
       it('should multiply two vectors with positive values correctly', () => {
-        const vector1 = Vector2D.create(2, 3)
         const vector2 = { x: 4, y: 5 }
-        vector1.multiply(vector2)
+        const vector1 = Vector2D.create(2, 3).multiply(vector2)
         expect(vector1.x).toBe(8)
         expect(vector1.y).toBe(15)
       })
 
       it('should multiply two vectors with negative values correctly', () => {
-        const vector1 = Vector2D.create(-2, -3)
         const vector2 = { x: -4, y: -5 }
-        vector1.multiply(vector2)
+        const vector1 = Vector2D.create(-2, -3).multiply(vector2)
         expect(vector1.x).toBe(8)
         expect(vector1.y).toBe(15)
       })
 
       it('should multiply vectors with mixed positive and negative values correctly', () => {
-        const vector1 = Vector2D.create(2, -3)
         const vector2 = { x: -4, y: 5 }
-        vector1.multiply(vector2)
+        const vector1 = Vector2D.create(2, -3).multiply(vector2)
         expect(vector1.x).toBe(-8)
         expect(vector1.y).toBe(-15)
       })
 
       it('should handle multiplication with zero values correctly', () => {
-        const vector1 = Vector2D.create(2, 3)
         const vector2 = { x: 0, y: 5 }
-        vector1.multiply(vector2)
+        const vector1 = Vector2D.create(2, 3).multiply(vector2)
         expect(vector1.x).toBe(0)
         expect(vector1.y).toBe(15)
       })
@@ -707,17 +693,15 @@ describe('vector 2d', () => {
       })
 
       it('should interpolate correctly with t=1', () => {
-        const v = Vector2D.create(1, 1)
         const w = Vector2D.create(3, 3)
-        v.lerpTo(w, 1)
+        const v = Vector2D.create(1, 1).lerpTo(w, 1)
         expect(v.x).toBe(3)
         expect(v.y).toBe(3)
       })
 
       it('should interpolate correctly with t=0.5', () => {
-        const v = Vector2D.create(1, 1)
         const w = Vector2D.create(3, 3)
-        v.lerpTo(w, 0.5)
+        const v = Vector2D.create(1, 1).lerpTo(w, 0.5)
         expect(v.x).toBe(2)
         expect(v.y).toBe(2)
       })
@@ -848,22 +832,19 @@ describe('vector 2d', () => {
 
     describe('invert', () => {
       it('should invert the vector on both axes', () => {
-        const vector = Vector2D.create(3, 4)
-        vector.invert()
+        const vector = Vector2D.create(3, 4).invert()
         expect(vector.x).toBe(-3)
         expect(vector.y).toBe(-4)
       })
 
       it('should invert the vector on the x axis', () => {
-        const vector = Vector2D.create(3, 4)
-        vector.invert('x')
+        const vector = Vector2D.create(3, 4).invert('x')
         expect(vector.x).toBe(-3)
         expect(vector.y).toBe(4)
       })
 
       it('should invert the vector on the y axis', () => {
-        const vector = Vector2D.create(3, 4)
-        vector.invert('y')
+        const vector = Vector2D.create(3, 4).invert('y')
         expect(vector.x).toBe(3)
         expect(vector.y).toBe(-4)
       })
@@ -876,15 +857,13 @@ describe('vector 2d', () => {
 
     describe('swap', () => {
       it('should correctly swap positive x and y values', () => {
-        const vector = Vector2D.create(3, 4)
-        vector.swap()
+        const vector = Vector2D.create(3, 4).swap()
         expect(vector.x).toBe(4)
         expect(vector.y).toBe(3)
       })
 
       it('should correctly swap negative x and y values', () => {
-        const vector = Vector2D.create(-3, -4)
-        vector.swap()
+        const vector = Vector2D.create(-3, -4).swap()
         expect(vector.x).toBe(-4)
         expect(vector.y).toBe(-3)
       })
@@ -897,15 +876,13 @@ describe('vector 2d', () => {
       })
 
       it('should correctly swap mixed positive and negative values', () => {
-        const vector = Vector2D.create(3, -4)
-        vector.swap()
+        const vector = Vector2D.create(3, -4).swap()
         expect(vector.x).toBe(-4)
         expect(vector.y).toBe(3)
       })
 
       it('should correctly swap floating-point values', () => {
-        const vector = Vector2D.create(3.5, 4.5)
-        vector.swap()
+        const vector = Vector2D.create(3.5, 4.5).swap()
         expect(vector.x).toBe(4.5)
         expect(vector.y).toBe(3.5)
       })
@@ -920,22 +897,19 @@ describe('vector 2d', () => {
       })
 
       it('should rotate the vector by π/2 radians (90 degrees)', () => {
-        const vector = Vector2D.create(1, 0)
-        vector.rotate(Math.PI / 2)
+        const vector = Vector2D.create(1, 0).rotate(Math.PI / 2)
         expect(vector.x).toBeCloseTo(0)
         expect(vector.y).toBeCloseTo(1)
       })
 
       it('should rotate the vector by π radians (180 degrees)', () => {
-        const vector = Vector2D.create(1, 0)
-        vector.rotate(Math.PI)
+        const vector = Vector2D.create(1, 0).rotate(Math.PI)
         expect(vector.x).toBeCloseTo(-1)
         expect(vector.y).toBeCloseTo(0)
       })
 
       it('should rotate the vector by 3π/2 radians (270 degrees)', () => {
-        const vector = Vector2D.create(1, 0)
-        vector.rotate(3 * Math.PI / 2)
+        const vector = Vector2D.create(1, 0).rotate(3 * Math.PI / 2)
         expect(vector.x).toBeCloseTo(0)
         expect(vector.y).toBeCloseTo(-1)
       })
@@ -948,8 +922,7 @@ describe('vector 2d', () => {
       })
 
       it('should rotate the vector by a negative angle', () => {
-        const vector = Vector2D.create(1, 0)
-        vector.rotate(-Math.PI / 2)
+        const vector = Vector2D.create(1, 0).rotate(-Math.PI / 2)
         expect(vector.x).toBeCloseTo(0)
         expect(vector.y).toBeCloseTo(-1)
       })
@@ -1264,10 +1237,9 @@ describe('vector 2d', () => {
 
       it('should randomize within the specified range', () => {
         mathRandomSpy.mockReturnValue(0.5)
-        const vector = Vector2D.create(0, 0)
         const min = { x: 1, y: 1 }
         const max = { x: 10, y: 10 }
-        vector.randomize(min, max)
+        const vector = Vector2D.create(0, 0).randomize(min, max)
         expect(vector.x).toBeGreaterThanOrEqual(min.x)
         expect(vector.x).toBeLessThanOrEqual(max.x)
         expect(vector.y).toBeGreaterThanOrEqual(min.y)
@@ -1286,10 +1258,9 @@ describe('vector 2d', () => {
 
       it('should randomize with float values when asFloat is true', () => {
         mathRandomSpy.mockReturnValue(0.5)
-        const vector = Vector2D.create(0, 0)
         const min = { x: 1, y: 1 }
         const max = { x: 10, y: 10 }
-        vector.randomize(min, max, 'float')
+        const vector = Vector2D.create(0, 0).randomize(min, max, 'float')
         expect(vector.x).not.toBe(Math.floor(vector.x))
         expect(vector.y).not.toBe(Math.floor(vector.y))
       })
@@ -1337,17 +1308,15 @@ describe('vector 2d', () => {
 
     describe('reflectInPlace', () => {
       it('should reflect the vector in place with a normalized vector', () => {
-        const vector = Vector2D.create(1, 2)
         const normal = Vector2D.create(0, 1).normalize()
-        vector.reflectInPlace(normal)
+        const vector = Vector2D.create(1, 2).reflectInPlace(normal)
         expect(vector.x).toBe(-1)
         expect(vector.y).toBe(2)
       })
 
       it('should reflect the vector in place with a non-normalized vector', () => {
-        const vector = Vector2D.create(1, 2)
         const normal = Vector2D.create(0, 2)
-        vector.reflectInPlace(normal)
+        const vector = Vector2D.create(1, 2).reflectInPlace(normal)
         expect(vector.x).toBe(-1)
         expect(vector.y).toBe(2)
       })
@@ -1359,9 +1328,8 @@ describe('vector 2d', () => {
       })
 
       it('should reflect the vector in place with orthogonal vectors', () => {
-        const vector = Vector2D.create(1, 0)
         const normal = Vector2D.create(0, 1)
-        vector.reflectInPlace(normal)
+        const vector = Vector2D.create(1, 0).reflectInPlace(normal)
         expect(vector.x).toBe(-1)
         expect(vector.y).toBe(0)
       })

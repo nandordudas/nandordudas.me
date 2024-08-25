@@ -3,8 +3,6 @@ import type { CollisionDetector } from './collision-detector'
 import type { CollisionResolver } from './collision-resolver'
 import type { World } from './world'
 
-import { Vector2D } from './vector-2d'
-
 interface PhysicsEngineConstructorProps<T extends Body = Body> {
   world: World<T> | null
   collisionDetector: CollisionDetector<T> | null
@@ -27,13 +25,16 @@ export class PhysicsEngine<T extends Body = Body> implements PhysicsEngineConstr
       body.updatePosition(deltaTime)
 
     this.collisionDetector!.detectCollisions(this.world!.bodies)
-
-    for (const collision of this.collisionDetector!.collisions)
-      this.collisionResolver!.resolve(collision)
+    this.resolveCollisions()
   }
 
   applyForces(deltaTime: number): void {
     for (const body of this.world!.bodies)
-      body.applyGravity(this.world!.gravity.clone().multiply(Vector2D.create(deltaTime, deltaTime)))
+      body.applyGravity(this.world!.gravity.multiplyScalar(deltaTime))
+  }
+
+  resolveCollisions(): void {
+    for (const collision of this.collisionDetector!.collisions)
+      this.collisionResolver!.resolve(collision)
   }
 }

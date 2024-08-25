@@ -1,7 +1,9 @@
 <script setup lang="ts">
-import createDebug from 'debug'
+const debug = useDebugger('page:physics-engine')
 
-createDebug.enable('page:*')
+onMounted(() => {
+  debug('has mounted')
+})
 </script>
 
 <template>
@@ -9,7 +11,8 @@ createDebug.enable('page:*')
     <UPageBody>
       <UPage class="grid place-items-center">
         <ClientOnly>
-          <PhysicsEngineCanvas />
+          <!-- CanvasWrapper.client.vue could be another way -->
+          <PhysicsEngineCanvasWrapper />
         </ClientOnly>
       </UPage>
     </UPageBody>

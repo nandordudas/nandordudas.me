@@ -15,6 +15,7 @@ export default <Partial<Config>> {
       },
       fontFamily: {
         sans: ['Inter', ...defaultTheme.fontFamily.sans],
+        mono: ['JetBrains Mono', 'Fira Code', ...defaultTheme.fontFamily.mono],
       },
     },
   },

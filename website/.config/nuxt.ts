@@ -44,6 +44,13 @@ export default defineNuxtConfig({
       localeDetector: './lib/locale-detector.ts',
     },
   },
+  fonts: {
+    families: [
+      { name: 'Fira Code', provider: 'google' },
+      { name: 'JetBrains Mono', provider: 'google' },
+      { name: 'Inter', provider: 'google' },
+    ],
+  },
   content: {
     defaultLocale: 'en',
     highlight: {

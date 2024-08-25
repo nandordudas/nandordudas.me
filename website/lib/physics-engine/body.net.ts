@@ -4,7 +4,7 @@ import { Line } from './shape.line'
 interface NetConstructorProps extends BodyConstructorProps { }
 
 export class Net extends Body implements NetConstructorProps {
-  override inert: boolean = true
+  override isInert: boolean = true
   override readonly shape: Line = new Line()
 
   constructor(props: NetConstructorProps) {

@@ -1,4 +1,4 @@
-import type { Array2D, Coordinates2D, RotationDirection } from './types'
+import type { Coordinates2D, RotationDirection } from './types'
 
 import { clamp, isNumber, randomBetween } from './utils'
 
@@ -15,6 +15,15 @@ import { clamp, isNumber, randomBetween } from './utils'
  * Vector2D.isZero(vector) // false
  */
 export class Vector2D {
+  /**
+   * @private
+   * @static
+   * @readonly
+   * @property The value of PI.
+   * @default Math.PI
+   */
+  static readonly TAU = Math.PI * 2
+
   /**
    * @private
    * @static
@@ -61,7 +70,7 @@ export class Vector2D {
    * Vector2D.zero() // Vector2D { x: 0, y: 0 }
    */
   static zero(): Vector2D {
-    return new Vector2D(Vector2D.#constructorKey, 0, 0).clone()
+    return Vector2D.create(0, 0)
   }
 
   /**
@@ -74,7 +83,7 @@ export class Vector2D {
    * Vector2D.unit() // Vector2D { x: 1, y: 1 }
    */
   static unit(): Vector2D {
-    return new Vector2D(Vector2D.#constructorKey, 1, 1).clone()
+    return Vector2D.create(1, 1)
   }
 
   /**
@@ -85,11 +94,15 @@ export class Vector2D {
    * @param {number} x The x-coordinate of the vector.
    * @param {number} y The y-coordinate of the vector.
    * @returns {Vector2D} The newly created `Vector2D` instance.
+   * @throws {TypeError} Will throw when the coordinates are invalid.
    * @example
    * Vector2D.create(1, 2) // Vector2D { x: 1, y: 2 }
    * Vector2D.create(3, 4) // Vector2D { x: 3, y: 4 }
    */
   static create(x: number, y: number): Vector2D {
+    if (!isNumber(x) || !isNumber(y))
+      throw new TypeError(`Invalid coordinates: ${x}, ${y}`)
+
     if (this.#pool.length > 0) {
       const instance = this.#pool.pop()!
 
@@ -153,7 +166,7 @@ export class Vector2D {
     const x = clamp(v.x, min, max)
     const y = clamp(v.y, min, max)
 
-    return new Vector2D(Vector2D.#constructorKey, x, y)
+    return Vector2D.create(x, y)
   }
 
   /**
@@ -187,16 +200,7 @@ export class Vector2D {
    * Vector2D.unit().isZero() // false
    */
   static isZero(coordinates: Vector2D): boolean {
-    if (this.#instances.has(coordinates)) {
-      return this.#instances.get(coordinates)!.x === 0
-        && this.#instances.get(coordinates)!.y === 0
-    }
-
-    const result = coordinates.x === 0 && coordinates.y === 0
-
-    Vector2D.#instances.set(coordinates, { x: coordinates.x, y: coordinates.y })
-
-    return result
+    return coordinates.x === 0 && coordinates.y === 0
   }
 
   /**
@@ -247,8 +251,6 @@ export class Vector2D {
    */
   set x(value: number) {
     this.#instance.x = value
-
-    this.#invalidateCache()
   }
 
   /**
@@ -262,33 +264,6 @@ export class Vector2D {
    */
   set y(value: number) {
     this.#instance.y = value
-
-    this.#invalidateCache()
-  }
-
-  /**
-   * @private
-   * @property The cached magnitude of the vector.
-   */
-  #cachedMagnitude: number | null = null
-
-  /**
-   * @private
-   * @property The cached magnitude squared of the vector.
-   */
-  #cachedMagnitudeSquared: number | null = null
-
-  /**
-   * Clears the cache of the vector's magnitude and magnitude squared.
-   *
-   * @private
-   * @returns {void}
-   * @example
-   * this.#invalidateCache() // Clears the cached magnitude and magnitude squared.
-   */
-  #invalidateCache(): void {
-    this.#cachedMagnitude = null
-    this.#cachedMagnitudeSquared = null
   }
 
   /**
@@ -340,20 +315,6 @@ export class Vector2D {
   #validateDirection(direction: RotationDirection): void {
     if (direction !== 'clockwise' && direction !== 'counterclockwise')
       throw new RangeError('Invalid direction for operation.')
-  }
-
-  /**
-   * Calculates the new coordinates after rotation.
-   *
-   * @private
-   * @param {RotationDirection} direction The direction to rotate.
-   * @returns {Array2D} The new coordinates after
-   * @example
-   * this.#calculateNewCoordinates('clockwise') // [this.y, -this.x]
-   * this.#calculateNewCoordinates('counterclockwise') // [-this.y, this.x]
-   */
-  #calculateNewCoordinates(direction: RotationDirection): Array2D {
-    return direction === 'clockwise' ? [this.y, -this.x] : [-this.y, this.x]
   }
 
   /**
@@ -419,19 +380,29 @@ export class Vector2D {
    *
    * @public
    * @param {Coordinates2D} other The vector to add to the current vector.
-   * @returns {this} The modified vector after addition.
+   * @returns {Vector2D} The new vector after addition.
    * @example
    * const vector = Vector2D.create(1, 2)
    * vector.add({ x: 2, y: 4 }) // Vector2D { x: 3, y: 6 }
    * vector.add({ x: 2, y: 0 }) // Vector2D { x: 5, y: 6 }
    */
-  add(other: Coordinates2D): this {
-    this.x += other.x
-    this.y += other.y
+  add(other: Coordinates2D): Vector2D {
+    return Vector2D.create(this.x + other.x, this.y + other.y)
+  }
 
-    this.#invalidateCache()
-
-    return this
+  /**
+   * Adds a scalar to the current vector.
+   *
+   * @public
+   * @param {number} scalar The scalar to add to the current vector.
+   * @returns {Vector2D} The new vector after addition.
+   * @example
+   * const vector = Vector2D.create(1, 2)
+   * vector.addScalar(2) // Vector2D { x: 3, y: 4 }
+   * vector.addScalar(-1) // Vector2D { x: 0, y: 1 }
+   */
+  addScalar(scalar: number): Vector2D {
+    return Vector2D.create(this.x + scalar, this.y + scalar)
   }
 
   /**
@@ -439,19 +410,29 @@ export class Vector2D {
    *
    * @public
    * @param {Coordinates2D} other The vector to subtract from the current vector.
-   * @returns {this} The modified vector after subtraction.
+   * @returns {Vector2D} The new vector after subtraction.
    * @example
    * const vector = Vector2D.create(1, 2)
    * vector.subtract({ x: 2, y: 4 }) // Vector2D { x: -1, y: -2 }
    * vector.subtract({ x: 2, y: 0 }) // Vector2D { x: -1, y: 2 }
    */
-  subtract(other: Coordinates2D): this {
-    this.x -= other.x
-    this.y -= other.y
+  subtract(other: Coordinates2D): Vector2D {
+    return Vector2D.create(this.x - other.x, this.y - other.y)
+  }
 
-    this.#invalidateCache()
-
-    return this
+  /**
+   * Subtracts a scalar from the current vector.
+   *
+   * @public
+   * @param {number} scalar The scalar to subtract from the current vector.
+   * @returns {Vector2D} The new vector after subtraction.
+   * @example
+   * const vector = Vector2D.create(1, 2)
+   * vector.subtractScalar(2) // Vector2D { x: -1, y: 0 }
+   * vector.subtractScalar(-1) // Vector2D { x: 2, y: 3 }
+   */
+  subtractScalar(scalar: number): Vector2D {
+    return Vector2D.create(this.x - scalar, this.y - scalar)
   }
 
   /**
@@ -465,13 +446,23 @@ export class Vector2D {
    * vector.multiply({ x: 2, y: 4 }) // Vector2D { x: 2, y: 8 }
    * vector.multiply({ x: 2, y: 0 }) // Vector2D { x: 2, y: 0 }
    */
-  multiply(other: Coordinates2D): this {
-    this.x *= other.x
-    this.y *= other.y
+  multiply(other: Coordinates2D): Vector2D {
+    return Vector2D.create(this.x * other.x, this.y * other.y)
+  }
 
-    this.#invalidateCache()
-
-    return this
+  /**
+   * Multiplies the current vector by a scalar.
+   *
+   * @public
+   * @param {number} scalar The scalar to multiply with the current vector.
+   * @returns {Vector2D} The new vector after multiplication.
+   * @example
+   * const vector = Vector2D.create(1, 2)
+   * vector.multiplyScalar(2) // Vector2D { x: 2, y: 4 }
+   * vector.multiplyScalar(0) // Vector2D { x: 0, y: 0 }
+   */
+  multiplyScalar(scalar: number): Vector2D {
+    return Vector2D.create(this.x * scalar, this.y * scalar)
   }
 
   /**
@@ -484,7 +475,7 @@ export class Vector2D {
    *
    * @public
    * @param {Vector2D} other The vector to divide with the current vector.
-   * @returns {this} The modified vector after division.
+   * @returns {Vector2D} The new vector after division.
    * @throws {RangeError} Will throw when `other.x` or `other.y` is zero.
    * @example
    * const vector = Vector2D.create(1, 2)
@@ -493,16 +484,41 @@ export class Vector2D {
    * vector.divide({ x: 0, y: 4 }) // throws RangeError
    * vector.divide({ x: 0, y: 0 }) // throws RangeError
    */
-  divide(other: Vector2D): this {
+  divide(other: Vector2D): Vector2D {
     if (other.isOnAxes())
       throw new RangeError('Cannot divide by zero.')
 
-    this.x = other.x === 0 ? 0 : this.x / other.x
-    this.y = other.y === 0 ? 0 : this.y / other.y
+    const newX = other.x === 0 ? 0 : this.x / other.x
+    const newY = other.y === 0 ? 0 : this.y / other.y
 
-    this.#invalidateCache()
+    return Vector2D.create(newX, newY)
+  }
 
-    return this
+  /**
+   * Divides the current vector by a scalar.
+   *
+   * - If `scalar` is non-zero, `this.x` is set to `this.x / scalar`.
+   * - If `scalar` is zero, `this.x` is set to `0`.
+   * - If `scalar` is non-zero, `this.y` is set to `this.y / scalar`.
+   * - If `scalar` is zero, `this.y` is set to `0`.
+   *
+   * @public
+   * @param {number} scalar The scalar to divide with the current vector.
+   * @returns {Vector2D} The new vector after division.
+   * @throws {RangeError} Will throw when `scalar` is zero.
+   * @example
+   * const vector = Vector2D.create(1, 2)
+   * vector.divideScalar(2) // Vector2D { x: 0.5, y: 1 }
+   * vector.divideScalar(0) // throws RangeError
+   */
+  divideScalar(scalar: number): Vector2D {
+    if (scalar === 0)
+      throw new RangeError('Cannot divide by zero.')
+
+    const newX = scalar === 0 ? 0 : this.x / scalar
+    const newY = scalar === 0 ? 0 : this.y / scalar
+
+    return Vector2D.create(newX, newY)
   }
 
   /**
@@ -579,7 +595,7 @@ export class Vector2D {
   isPerpendicularTo(other: Coordinates2D, threshold = Number.EPSILON): boolean {
     const otherVector = Vector2D.create(other.x, other.y)
 
-    if (Vector2D.isZero(this) || Vector2D.isZero(otherVector))
+    if (this.isZero() || otherVector.isZero())
       return false
 
     const dotProduct = Vector2D.dotProduct(this, other)
@@ -621,14 +637,14 @@ export class Vector2D {
    * vector.lerpTo({ x: 3, y: 4 }, 1) // Vector2D { x: 3, y: 4 }
    * vector.lerpTo({ x: 3, y: 4 }, -1) // throws RangeError
    */
-  lerpTo(other: Coordinates2D, t: number): this {
+  lerpTo(other: Coordinates2D, t: number): Vector2D {
     if (t < 0 || t > 1)
       throw new RangeError('t must be between 0 and 1')
 
-    this.x = this.x * (1 - t) + other.x * t
-    this.y = this.y * (1 - t) + other.y * t
+    const newX = this.x * (1 - t) + other.x * t
+    const newY = this.y * (1 - t) + other.y * t
 
-    return this
+    return Vector2D.create(newX, newY)
   }
 
   /**
@@ -641,12 +657,7 @@ export class Vector2D {
    * vector.magnitudeSquared() // 25
    */
   magnitudeSquared(): number {
-    if (this.#cachedMagnitudeSquared !== null)
-      return this.#cachedMagnitudeSquared
-
-    this.#cachedMagnitudeSquared = this.x * this.x + this.y * this.y
-
-    return this.#cachedMagnitudeSquared
+    return this.x * this.x + this.y * this.y
   }
 
   /**
@@ -659,12 +670,7 @@ export class Vector2D {
    * vector.magnitude() // 5
    */
   magnitude(): number {
-    if (this.#cachedMagnitude !== null)
-      return this.#cachedMagnitude
-
-    this.#cachedMagnitude = Math.hypot(this.x, this.y)
-
-    return this.#cachedMagnitude
+    return Math.hypot(this.x, this.y)
   }
 
   /**
@@ -672,19 +678,18 @@ export class Vector2D {
    *
    * @public
    * @returns {Vector2D} New vector after normalization.
-   * @throws {TypeError} Will throw when the vector is zero.
    * @example
    * const vector = Vector2D.create(1, 2)
    * vector.normalize() // Vector2D { x: 0.4472135954999579, y: 0.8944271909999159 }
-   * Vector2D.zero().normalize() // throws TypeError
+   * Vector2D.zero().normalize() // Vector2D { x: 0, y: 0 }
    */
   normalize(): Vector2D {
     if (this.isZero())
-      throw new TypeError('Cannot normalize zero vector.')
+      return Vector2D.zero()
 
     const magnitude = this.magnitude()
 
-    return new Vector2D(Vector2D.#constructorKey, this.x / magnitude, this.y / magnitude)
+    return Vector2D.create(this.x / magnitude, this.y / magnitude)
   }
 
   /**
@@ -701,35 +706,29 @@ export class Vector2D {
    * vector.invert('y') // Vector2D { x: 1, y: -2 }
    * vector.invert('z') // throws RangeError
    */
-  invert(axis?: keyof Coordinates2D): this {
-    if (axis === undefined) {
-      this.x *= -1
-      this.y *= -1
+  invert(axis?: keyof Coordinates2D): Vector2D {
+    if (axis === undefined)
+      return Vector2D.create(-this.x, -this.y)
 
-      return this
-    }
+    this.#validateAxis(axis)
 
-    if (axis !== 'x' && axis !== 'y')
-      throw new RangeError('Invalid axis for operation.')
-
-    this[axis] *= -1
-
-    return this
+    return Vector2D.create(
+      axis === 'x' ? -this.x : this.x,
+      axis === 'y' ? -this.y : this.y,
+    )
   }
 
   /**
    * Swaps the `x` and `y` values.
    *
    * @public
-   * @returns {this} The modified vector after swapping the `x` and `y` values.
+   * @returns {Vector2D} New vector after swapping the `x` and `y` values.
    * @example
    * const vector = Vector2D.create(1, 2)
    * vector.swap() // Vector2D { x: 2, y: 1 }
    */
-  swap(): this {
-    [this.x, this.y] = [this.y, this.x]
-
-    return this
+  swap(): Vector2D {
+    return Vector2D.create(this.y, this.x)
   }
 
   /**
@@ -737,7 +736,7 @@ export class Vector2D {
    *
    * @public
    * @param {number} angleInRadians
-   * @returns {this} The modified vector after rotating in the specified direction.
+   * @returns {Vector2D} New vector after rotation.
    * @example
    * const vector = Vector2D.create(1, 2)
    * vector.rotate(Math.PI / 2) // Vector2D { x: -2, y: 1 }
@@ -745,17 +744,14 @@ export class Vector2D {
    * vector.rotate(Math.PI / 2) // Vector2D { x: 2, y: -1 }
    * vector.rotate(Math.PI / 2) // Vector2D { x: 1, y: 2 }
    */
-  rotate(angleInRadians: number): this {
+  rotate(angleInRadians: number): Vector2D {
     const cosAngle = Math.cos(angleInRadians)
     const sinAngle = Math.sin(angleInRadians)
 
     const newX = this.x * cosAngle - this.y * sinAngle
     const newY = this.x * sinAngle + this.y * cosAngle
 
-    this.x = newX
-    this.y = newY
-
-    return this
+    return Vector2D.create(newX, newY)
   }
 
   /**
@@ -763,7 +759,7 @@ export class Vector2D {
    *
    * @public
    * @param {Coordinates2D} direction Defaults to `counterclockwise`.
-   * @returns {this} The modified vector after rotating in the specified direction by 90°.
+   * @returns {Vector2D} The modified vector after rotating in the specified direction by 90°.
    * @throws {RangeError} Will throw when input is not a rotation direction.
    * @throws {TypeError} Will throw when the vector is zero.
    * @example
@@ -773,20 +769,15 @@ export class Vector2D {
    * vector.normal('diagonal') // throws RangeError
    * Vector2D.zero().normal() // throws TypeError
    */
-  normal(direction: RotationDirection = 'counterclockwise'): this {
+  normal(direction: RotationDirection = 'counterclockwise'): Vector2D {
     if (this.isZero())
       throw new TypeError('Cannot create normal vector from zero vector.')
 
     this.#validateDirection(direction)
 
-    const [newX, newY] = this.#calculateNewCoordinates(direction)
+    const [newX, newY] = direction === 'clockwise' ? [this.y, -this.x] : [-this.y, this.x]
 
-    this.x = newX
-    this.y = newY
-
-    this.#invalidateCache()
-
-    return this
+    return Vector2D.create(newX, newY)
   }
 
   /**
@@ -805,78 +796,65 @@ export class Vector2D {
    * vector.angleTo({ x: 1, y: 1 }, 'z') // throws RangeError
    */
   angleTo(vector: Coordinates2D, axis: keyof Coordinates2D = 'x'): number {
-    if (axis !== 'x' && axis !== 'y')
-      throw new RangeError('Invalid axis for operation.')
+    this.#validateAxis(axis)
 
     const angle = axis === 'x'
       ? Math.atan2(vector.y, vector.x) - Math.atan2(this.y, this.x)
       : Math.atan2(vector.x, vector.y) - Math.atan2(this.x, this.y)
 
-    return (angle + 2 * Math.PI) % (2 * Math.PI)
+    return (angle + Vector2D.TAU) % Vector2D.TAU
   }
 
   /**
    * Rounds the `x` and `y` values.
    *
    * @public
-   * @returns {this} The modified vector after rounding the `x` and `y` values.
+   * @returns {Vector2D} New vector after rounding the `x` and `y` values.
    * @example
    * const vector = Vector2D.create(1.5, 2.5)
    * vector.round() // Vector2D { x: 2, y: 3 }
    */
-  round(): this {
-    this.x = Math.round(this.x)
-    this.y = Math.round(this.y)
-
-    return this
+  round(): Vector2D {
+    return Vector2D.create(Math.round(this.x), Math.round(this.y))
   }
 
   /**
    * Floors the `x` and `y` values.
    *
    * @public
-   * @returns {this} The modified vector after flooring the `x` and `y` values.
+   * @returns {Vector2D} New vector after flooring the `x` and `y` values.
    * @example
    * const vector = Vector2D.create(1.5, 2.5)
    * vector.floor() // Vector2D { x: 1, y: 2 }
    */
-  floor(): this {
-    this.x = Math.floor(this.x)
-    this.y = Math.floor(this.y)
-
-    return this
+  floor(): Vector2D {
+    return Vector2D.create(Math.floor(this.x), Math.floor(this.y))
   }
 
   /**
    * Ceils the `x` and `y` values.
    *
    * @public
-   * @returns {this} The modified vector after ceilling the `x` and `y` values.
+   * @returns {Vector2D} New vector after ceilling the `x` and `y` values.
    * @example
    * const vector = Vector2D.create(1.5, 2.5)
    * vector.ceil() // Vector2D { x: 2, y: 3 }
    */
-  ceil(): this {
-    this.x = Math.ceil(this.x)
-    this.y = Math.ceil(this.y)
-
-    return this
+  ceil(): Vector2D {
+    return Vector2D.create(Math.ceil(this.x), Math.ceil(this.y))
   }
 
   /**
    * Truncates the `x` and `y` values.
    *
    * @public
-   * @returns {this} The modified vector after truncating the `x` and `y` values.
+   * @returns {Vector2D} New vector after truncating the `x` and `y` values.
    * @example
    * const vector = Vector2D.create(1.5, 2.5)
    * vector.trunc() // Vector2D { x: 1, y: 2 }
    */
-  trunc(): this {
-    this.x = Math.trunc(this.x)
-    this.y = Math.trunc(this.y)
-
-    return this
+  trunc(): Vector2D {
+    return Vector2D.create(Math.trunc(this.x), Math.trunc(this.y))
   }
 
   /**
@@ -893,7 +871,7 @@ export class Vector2D {
    * vector.limit(0, 1) // Vector2D { x: 0.4472135954999579, y: 0.8944271909999159 }
    * vector.limit(5, 0) // throws RangeError
    */
-  limit(min: number, max: number): this {
+  limit(min: number, max: number): Vector2D {
     if (min >= max)
       throw new RangeError('Cannot limit vector with min greater than max.')
 
@@ -914,7 +892,7 @@ export class Vector2D {
    * @param {Coordinates2D} min Minimum coordinates to randomize.
    * @param {Coordinates2D} max Maximum coordinates to randomize.
    * @param asFloat Sets the random values to be floats or integers. Defaults to `true`.
-   * @returns {this} The modified vector after randomizing the `x` and `y` values.
+   * @returns {Vector2D} New vector after randomization.
    * @throws {RangeError} Will throw when `min` is greater than or equal to `max`.
    * @example
    * const vector = Vector2D.create(1, 2)
@@ -922,27 +900,27 @@ export class Vector2D {
    * vector.randomize({ x: 0, y: 0 }, { x: 10, y: 10 }, false) // Vector2D { x: 5, y: 7 }
    * vector.randomize({ x: 10, y: 10 }, { x: 0, y: 0 }) // throws RangeError
    */
-  randomize(min: Coordinates2D, max: Coordinates2D, asFloat: Parameters<typeof randomBetween>[2] = 'float'): this {
+  randomize(min: Coordinates2D, max: Coordinates2D, asFloat: Parameters<typeof randomBetween>[2] = 'float'): Vector2D {
     if (min.x >= max.x || min.y >= max.y)
       throw new RangeError('Cannot randomize vector with min greater than max.')
 
-    this.x = randomBetween(min.x, max.x, asFloat)
-    this.y = randomBetween(min.y, max.y, asFloat)
+    const newX = randomBetween(min.x, max.x, asFloat)
+    const newY = randomBetween(min.y, max.y, asFloat)
 
-    return this
+    return Vector2D.create(newX, newY)
   }
 
   /**
    * Clones the vector.
    *
    * @public
-   * @returns {Vector2D} The cloned vector.
+   * @returns {Vector2D} A new vector with the same `x` and `y` values.
    * @example
    * const vector = Vector2D.create(1, 2)
    * vector.clone() // Vector2D { x: 1, y: 2 }
    */
   clone(): Vector2D {
-    return new Vector2D(Vector2D.#constructorKey, this.x, this.y)
+    return Vector2D.create(this.x, this.y)
   }
 
   /**
@@ -950,25 +928,20 @@ export class Vector2D {
    *
    * @public
    * @param {Vector2D} normal The normal to reflect to.
-   * @returns {this} The modified vector after reflecting to the specified normal.
-   * @throws {TypeError} If the normal vector is zero.
+   * @returns {Vector2D} The new vector after reflecting to the specified normal.
    * @example
    * const vector = Vector2D.create(1, 2)
    * vector.reflectInPlace({ x: 1, y: 0 }) // Vector2D { x: 1, y: 0 }
    * vector.reflectInPlace({ x: 0, y: 1 }) // Vector2D { x: 0, y: 2 }
    * vector.reflectInPlace({ x: 1, y: 1 }) // Vector2D { x: 1.5, y: 1.5 }
-   * vector.reflectInPlace({ x: 0, y: 0 }) // throws TypeError
+   * vector.reflectInPlace({ x: 0, y: 0 }) // Vector2D { x: 1, y: 2 }
    */
-  reflectInPlace(normal: Vector2D): this {
+  reflectInPlace(normal: Vector2D): Vector2D {
     const normalizedNormal = normal.normalize()
     const coefficient = 2 * Vector2D.dotProduct(this, normalizedNormal)
     const reflection = normalizedNormal.multiply({ x: coefficient, y: coefficient })
-    const result = reflection.subtract(this)
 
-    this.x = result.x
-    this.y = result.y
-
-    return this
+    return reflection.subtract(this)
   }
 
   /**
@@ -1032,7 +1005,7 @@ export class Vector2D {
    */
   distance(vector: Coordinates2D, coordinate?: keyof Coordinates2D): number {
     if (coordinate === undefined)
-      return Math.sqrt(this.distanceSquared(vector))
+      return Math.hypot(this.x - vector.x, this.y - vector.y)
 
     this.#validateCoordinate(coordinate)
 

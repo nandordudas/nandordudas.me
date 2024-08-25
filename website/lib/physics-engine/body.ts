@@ -15,17 +15,17 @@ export interface BodyConstructorProps {
 }
 
 export class Body implements BodyConstructorProps {
-  inert: boolean = false
+  isInert: boolean = false
   /**
-   * @default Vector2D.zero
+   * @default Vector2D.zero()
    */
   position: Vector2D = Vector2D.zero()
   /**
-   * @default Vector2D.zero
+   * @default Vector2D.zero()
    */
   velocity: Vector2D = Vector2D.zero()
   /**
-   * @default Vector2D.zero
+   * @default Vector2D.zero()
    */
   acceleration: Vector2D = Vector2D.zero()
   /**
@@ -51,11 +51,11 @@ export class Body implements BodyConstructorProps {
   }
 
   updatePosition(deltaTime: number): void {
-    this.velocity.add(this.acceleration.clone().multiply(Vector2D.create(deltaTime, deltaTime)))
-    this.position.add(this.velocity.clone().multiply(Vector2D.create(deltaTime, deltaTime)))
+    this.velocity = this.velocity.add(this.acceleration.multiplyScalar(deltaTime))
+    this.position = this.position.add(this.velocity.multiplyScalar(deltaTime))
   }
 
   applyGravity(gravity: Vector2D): void {
-    this.acceleration.add(gravity)
+    this.acceleration = this.acceleration.add(gravity)
   }
 }

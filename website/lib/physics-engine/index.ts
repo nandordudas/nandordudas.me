@@ -25,19 +25,12 @@ export { OffscreenCanvasScale } from './constants'
 export function createGame(params: Parameters<typeof setup>[0]): Game {
   const { renderer, world } = setup(params)
 
-  const collisionDetector = new CustomCollisionDetector()
-  const collisionResolver = new CustomCollisionResolver()
-
-  const physicsEngine = new PhysicsEngine({
-    world,
-    collisionDetector,
-    collisionResolver,
-  })
-
-  const game = new Game({
-    physicsEngine,
+  return new Game({
+    physicsEngine: new PhysicsEngine({
+      world,
+      collisionDetector: new CustomCollisionDetector(),
+      collisionResolver: new CustomCollisionResolver(),
+    }),
     renderer,
   })
-
-  return game
 }

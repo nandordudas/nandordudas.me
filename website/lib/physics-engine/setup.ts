@@ -79,7 +79,8 @@ export function setup(params: SetupParams): { renderer: Renderer, world: World }
 
   const ball = new Ball({
     position: Vector2D.create(100, 100),
-    velocity: Vector2D.zero().randomize(Vector2D.create(40, -40), Vector2D.create(100, 100)),
+    // velocity: Vector2D.zero().randomize(Vector2D.create(40, -40), Vector2D.create(100, 100)),
+    velocity: Vector2D.create(100, -100),
     shape: new Circle(),
   })
 

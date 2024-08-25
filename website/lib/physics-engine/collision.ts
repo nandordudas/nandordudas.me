@@ -9,7 +9,7 @@ interface CollisionConstructorProps {
   normal: Vector2D
   depth: number
   contactPoint: Vector2D
-  // type: CollisionType
+  type: string
 }
 
 export class Collision implements CollisionConstructorProps {
@@ -18,6 +18,7 @@ export class Collision implements CollisionConstructorProps {
   readonly normal: Vector2D = Vector2D.zero()
   readonly depth: number = 0
   readonly contactPoint: Vector2D = Vector2D.zero()
+  readonly type: string = ''
 
   constructor(props: CollisionConstructorProps) {
     Object.assign(this, props)
