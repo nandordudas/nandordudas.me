@@ -197,16 +197,9 @@ emitter.on('setup', (data) => {
     .setPosition(vector(300, 300))
     .setDrawOptions({ fill: Colors.Transparent, stroke: Colors.White })
 
-  const shapeBodyAggregators: ShapeBodyAggregator<Shape>[] = [ball, line, box]
+  const shapeBodyAggregators: ShapeBodyAggregator<Shape>[] = []
 
   const renderCallback: RenderCallback = (deltaTime: number) => {
-    drawer.safeDraw((context) => {
-      context.setLineDash([5, 1, 5])
-      drawer.draw(rectangle.shape, rectangle.getDrawerOptions())
-    })
-
-    ball.physicsBody.update(deltaTime)
-
     for (const shapeBodyAggregator of shapeBodyAggregators)
       drawer.draw(shapeBodyAggregator.shape, shapeBodyAggregator.getDrawerOptions())
 

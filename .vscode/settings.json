@@ -132,5 +132,8 @@
     "vitest",
     "vueuse"
   ],
-  "arrayIndexInlay.enabled": true
+  "arrayIndexInlay.enabled": true,
+  "workbench.editor.customLabels.patterns": {
+    "**/pages/**/index.vue": "${dirname}/index.vue",
+  }
 }
