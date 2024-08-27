@@ -2,7 +2,7 @@
   "name": "@workspace/vector-2d",
   "type": "module",
   "version": "0.7.2",
-  "packageManager": "pnpm@9.7.1",
+  "packageManager": "pnpm@9.9.0",
   "sideEffects": false,
   "exports": {
     ".": {
@@ -39,7 +39,7 @@
     "@total-typescript/tsconfig": "catalog:",
     "@vitest/ui": "catalog:",
     "eslint-plugin-vitest": "^0.5.4",
-    "tslib": "^2.6.3",
+    "tslib": "^2.7.0",
     "tsup": "catalog:",
     "typescript": "catalog:",
     "vitest": "catalog:"
