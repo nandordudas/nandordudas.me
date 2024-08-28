@@ -1,12 +1,13 @@
-import type { Transferable } from 'canvas'
+import type { Rendering, Transferable } from 'canvas'
+import type { Body } from '~/workers/canvas/lib/core/physics/body'
 
 import mitt, { type EventType } from 'mitt'
 
 import { BoxBody } from '~/workers/canvas/lib/core/physics/body.box'
 import { CircleBody } from '~/workers/canvas/lib/core/physics/body.circle'
 import { vector } from '~/workers/canvas/lib/core/physics/math/vector-2d'
-import { Box } from '~/workers/canvas/lib/core/physics/shape.box'
-import { Circle } from '~/workers/canvas/lib/core/physics/shape.circle'
+import { Box, type DrawBoxOptions } from '~/workers/canvas/lib/core/physics/shape.box'
+import { Circle, type DrawCircleOptions } from '~/workers/canvas/lib/core/physics/shape.circle'
 import { World } from '~/workers/canvas/lib/core/physics/world'
 import { Renderer } from '~/workers/canvas/lib/core/rendering/renderer'
 import { DebugNamespace } from '~/workers/canvas/shared/constants/enums.constants'
@@ -39,38 +40,98 @@ emitter.on('setup', (data) => {
 
   state.sendPort.postMessage({ type: 'ready' })
 
-  const box = new BoxBody({
+  const PADDLE_WIDTH = 4
+  const PADDLE_HEIGHT = 200
+
+  const world = new World()
+  const renderer = new Renderer(state.offscreenCanvas.getContext('2d'))
+
+  const PADDLE_Y = (renderer.context.canvas.height - PADDLE_HEIGHT) / 2
+
+  const leftPaddle = new BoxBody({
+    id: 'paddle',
     density: 1,
-    width: 100,
-    height: 100,
-    position: vector(100, 100),
-    isStatic: false,
+    width: PADDLE_WIDTH,
+    height: PADDLE_HEIGHT,
+    position: vector(10, PADDLE_Y),
+    isStatic: true,
     restitution: 0.5,
   })
 
-  const circle = new CircleBody({
+  const rightPaddle = new BoxBody({
+    id: 'paddle',
     density: 1,
-    radius: 50,
+    width: PADDLE_WIDTH,
+    height: PADDLE_HEIGHT,
+    position: vector(renderer.context.canvas.width - 10 - PADDLE_WIDTH, PADDLE_Y),
+    isStatic: true,
+    restitution: 0.5,
+  })
+
+  const ball = new CircleBody({
+    id: 'ball',
+    density: 1,
+    radius: 4,
     position: vector(300, 100),
     isStatic: false,
     restitution: 0.5,
   })
 
-  const world = new World()
-  const renderer = new Renderer(state.offscreenCanvas.getContext('2d'))
+  const topLine = new BoxBody({
+    id: 'line',
+    density: 1,
+    width: renderer.context.canvas.width,
+    height: 1,
+    position: vector(0, 0),
+    isStatic: true,
+    restitution: 0.5,
+  })
 
-  world.addBody(box)
-  world.addBody(circle)
+  const bottomLine = new BoxBody({
+    id: 'line',
+    density: 1,
+    width: renderer.context.canvas.width,
+    height: 1,
+    position: vector(0, renderer.context.canvas.height),
+    isStatic: true,
+    restitution: 0.5,
+  })
+
+  world.addBody(topLine)
+  world.addBody(bottomLine)
+  world.addBody(leftPaddle)
+  world.addBody(rightPaddle)
+  world.addBody(ball)
 
   renderer.render((deltaTime) => {
     world.step(deltaTime)
-
-    for (const body of world.bodies) {
-      if (body.isInstanceOf(BoxBody))
-        Box.draw(renderer, body, { radii: 4 })
-
-      if (body.isInstanceOf(CircleBody))
-        Circle.draw(renderer, body)
-    }
+    world.bodies.forEach(drawBody(renderer))
   })
 })
+
+const boxOptionMap: Record<string, DrawBoxOptions> = {
+  paddle: { fill: 'gray', stroke: 'transparent', radii: 4 },
+  line: { fill: 'transparent', stroke: 'transparent' },
+} as const
+
+const circleOptionMap: Record<string, DrawCircleOptions> = {
+  ball: { fill: 'tomato', stroke: 'transparent' },
+} as const
+
+function drawBody(renderer: Renderer<Rendering.Context2D>): (value: Body) => void {
+  return (value) => {
+    const boxOptions: DrawBoxOptions = boxOptionMap[value.id] ?? { radii: 4 }
+    const circleOptions: DrawCircleOptions = circleOptionMap[value.id] ?? {}
+
+    base.doIf(isBoxBody, Box.draw(renderer, boxOptions), value)
+    base.doIf(isCircleBody, Circle.draw(renderer, circleOptions), value)
+  }
+}
+
+function isCircleBody(value: Body): value is CircleBody {
+  return value.isInstanceOf(CircleBody)
+}
+
+function isBoxBody(value: Body): value is BoxBody {
+  return value.isInstanceOf(BoxBody)
+}

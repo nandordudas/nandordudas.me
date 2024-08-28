@@ -6,6 +6,7 @@ import * as bodyConstants from './constants/body.constants'
 import * as base from '~/workers/canvas/utils/helpers/base'
 
 interface BoxBodyConstructorOptions extends Omit<Physics.BodyBase, 'shapeType'> {
+  id: string
   width: number
   height: number
 }
@@ -14,6 +15,7 @@ export class BoxBody extends Body {
   constructor(options: BoxBodyConstructorOptions) {
     const area = options.width * options.height
     const mass = options.density * area
+
     const restitution = base.clamp(
       options.restitution,
       bodyConstants.MIN_RESTITUTION,

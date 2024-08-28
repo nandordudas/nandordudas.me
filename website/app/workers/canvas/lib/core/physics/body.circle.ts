@@ -6,6 +6,7 @@ import * as bodyConstants from './constants/body.constants'
 import * as base from '~/workers/canvas/utils/helpers/base'
 
 interface CircleBodyConstructorOptions extends Omit<Physics.BodyBase, 'shapeType'> {
+  id: string
   radius: number
 }
 
@@ -13,6 +14,7 @@ export class CircleBody extends Body {
   constructor(options: CircleBodyConstructorOptions) {
     const area = Math.PI * options.radius * options.radius
     const mass = options.density * area
+
     const restitution = base.clamp(
       options.restitution,
       bodyConstants.MIN_RESTITUTION,

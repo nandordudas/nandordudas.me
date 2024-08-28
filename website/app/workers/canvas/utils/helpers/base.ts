@@ -51,11 +51,28 @@ export function assertIsFunction<T extends <T>(...args: any[]) => T>(
 export function doIf<T>(
   condition: boolean,
   callback: () => T,
-): T | undefined {
+): T | undefined
+
+export function doIf<T, U extends T>(
+  condition: (value: T) => value is U,
+  callback: (value: U) => void,
+  value: T,
+): void
+
+export function doIf<T, U extends T>(
+  condition: boolean | ((value: T) => value is U),
+  callback: (() => T) | ((value: U) => void),
+  value?: T,
+): T | undefined | void {
   assertIsFunction(callback, 'Callback must be a function')
 
-  if (condition)
+  if (check.isFunction(condition)) {
+    if (check.isDefined(value) && condition(value))
+      return callback(value)
+  }
+  else if (condition) {
     return callback()
+  }
 }
 
 export function listenToMessagePort<T = any>(
@@ -98,4 +115,20 @@ export function clamp(
   assert(min < max, 'Minimum value must be less than maximum value')
 
   return Math.min(Math.max(value, min), max)
+}
+
+export function lerp(
+  start: number,
+  end: number,
+  t: number,
+): number {
+  assertIsNumber(start, 'Start value must be a number')
+  assertIsNumber(end, 'End value must be a number')
+  assertIsNumber(t, 'T value must be a number')
+  assert(start < end, 'Start value must be less than end value')
+  assert(t >= 0 && t <= 1, 'T value must be between 0 and 1')
+
+  const interpolation = clamp(t, 0, 1)
+
+  return start + interpolation * (end - start) // * (start < end ? 1 : -1)
 }

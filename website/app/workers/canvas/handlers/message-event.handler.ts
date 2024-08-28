@@ -6,7 +6,10 @@ import { useDebugger } from '~/workers/canvas/utils/helpers/use-debugger.helper'
 
 const debug = useDebugger(DebugNamespace.MessageEventHandler)
 
-export function messageEventHandler(event: Utils.MessageEvent<mee.MessageTypes>) {
+/**
+ * Handles the message event from the main thread
+ */
+export function messageEventHandler(event: Utils.MessageEvent<mee.MessageTypes>): void {
   const { data, type } = event.data
   debug('messageEventHandler', event.data)
   mee.emitter.emit(type, data)

@@ -4,14 +4,14 @@ import type { Renderer } from '~/workers/canvas/lib/core/rendering/renderer'
 
 import { Shape } from './shape'
 
-interface DrawBoxOptions {
+export interface DrawBoxOptions {
   stroke?: Rendering.Color
   fill?: Rendering.Color
   radii?: Rendering.Radii
 }
 
 export class Box extends Shape {
-  static draw<T extends BoxBody>(
+  static #draw<T extends BoxBody>(
     renderer: Renderer<Rendering.Context2D>,
     body: T,
     options: DrawBoxOptions = {},
@@ -25,5 +25,12 @@ export class Box extends Shape {
     context.fill()
     context.strokeStyle = stroke
     context.stroke()
+  }
+
+  static draw<T extends BoxBody>(
+    renderer: Renderer<Rendering.Context2D>,
+    options: DrawBoxOptions = {},
+  ): (body: T) => void {
+    return body => Box.#draw(renderer, body, options)
   }
 }

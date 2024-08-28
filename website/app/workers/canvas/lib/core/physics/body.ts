@@ -6,6 +6,7 @@ import { Vector2D, vector } from './math/vector-2d'
 import * as base from '~/workers/canvas/utils/helpers/base'
 
 interface BodyConstructorOptions extends Physics.BodyBase {
+  id: string
   mass: number
   restitution: number
   radius: number
@@ -17,6 +18,7 @@ interface BodyContract {
   get position(): Vector2D
   get velocity(): Vector2D
   get isStatic(): boolean
+  get width(): number
   isInstanceOf: <T extends Body>(value: Utils.Constructor<T>) => this is T
   applyForce: (value: Vector2D) => void
   step: (deltaTime: number) => void
@@ -64,6 +66,7 @@ export class Body implements BodyContract {
   //
   #vertices: null | Physics.Vertices = null
   #shapeType: bodyConstants.ShapeType
+  #id: string
 
   get position(): Vector2D {
     return this.#position
@@ -87,6 +90,10 @@ export class Body implements BodyContract {
 
   get radius(): number {
     return this.#radius
+  }
+
+  get id(): string {
+    return this.#id
   }
 
   constructor(options: BodyConstructorOptions) {
@@ -120,6 +127,8 @@ export class Body implements BodyContract {
 
     if (this.#shapeType === bodyConstants.ShapeType.Box)
       this.#vertices = Body.#createBoxVertices(options.width, options.height)
+
+    this.#id = options.id
   }
 
   isInstanceOf<T extends Body>(value: Utils.Constructor<T>): this is T {
