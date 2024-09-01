@@ -1,7 +1,7 @@
 {
   "name": "@workspace/vector-2d",
   "type": "module",
-  "version": "0.7.2",
+  "version": "0.7.3",
   "packageManager": "pnpm@9.9.0",
   "sideEffects": false,
   "exports": {
