@@ -53,6 +53,24 @@ export default defineNuxtConfig({
       },
     },
   },
+  vite: {
+    server: {
+      headers: {
+        'Cross-Origin-Opener-Policy': 'same-origin',
+        'Cross-Origin-Embedder-Policy': 'require-corp',
+      },
+    },
+  },
+  nitro: {
+    routeRules: {
+      '**': {
+        headers: {
+          'Cross-Origin-Embedder-Policy': 'require-corp',
+          'Cross-Origin-Opener-Policy': 'same-origin',
+        },
+      },
+    },
+  },
   routeRules: {
     '/api/search.json': { prerender: true },
   },
