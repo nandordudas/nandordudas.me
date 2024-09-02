@@ -71,7 +71,7 @@ export class Renderer {
     this.#lastTimestamp = null
   }
 
-  #animate(timestamp: number) : void {
+  #animate(timestamp: number): void {
     if (this.#callback === null)
       return
 

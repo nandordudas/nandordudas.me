@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import Worker from '~/workers/physics/_worker?worker';
-import { SharedArrayIndex } from '~/workers/physics/shared/enum.constants';
+import Worker from '~/workers/physics/_worker?worker'
+import { SharedArrayIndex } from '~/workers/physics/shared/enum.constants'
 
 defineOptions({
   inheritAttrs: false,
